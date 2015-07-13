@@ -1,0 +1,58 @@
+{
+  "name": "justo-runner",
+  "version": "0.1.0",
+  "description": "Runner.",
+  "homepage": "http://www.justojs.org",
+  "license": "MIT",
+  "author": {
+    "name": "The Justo.js Development Group",
+    "email": "justojs.org@outlook.com",
+    "url": "http://www.justojs.org"
+  },
+  "contributors": [
+    {
+      "name": "Raúl G. González",
+      "email": "raulggonzalezsw@outlook.com",
+      "url": ""
+    }
+  ],
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/justojs/justo-runner/issues",
+    "email": "justojs.org@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justojs/justo-runner.git"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "dependencies": {
+
+  },
+  "peerDependencies": {
+    "justo-injector": "*"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-babel": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-mocha-test": "*",
+    "grunt-travis-lint": "*",
+    "justo-assert": "*",
+    "mocha": "*"
+  },
+  "preferGlobal": false,
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "test"
+  ],
+  "scripts": {
+    "test": "grunt mochaTest:es5"
+  }
+}
