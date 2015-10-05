@@ -2,4 +2,4 @@
 
 Runner.
 
-*Proudly made in Valencia (The Software City), Spain, EU.*
+*Proudly made with ♥ in Valencia, Spain, EU.*
