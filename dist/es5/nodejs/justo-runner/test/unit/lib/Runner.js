@@ -13,7 +13,7 @@ describe("Runner", function() {
   describe("#runSync()", function() {
     describe("Non-parameterized", function() {
       it("runSync(fn, undefined, {}) - pass", function() {
-        function fn() { for (var i = 0; i < 1000000; ++i) i = i; }
+        function fn() { for (var i = 0; i < 100000000; ++i) i = i; }
         var res;
 
         res = runner.runSync(fn, undefined, {});
@@ -24,7 +24,7 @@ describe("Runner", function() {
 
       it("runSync(fn, undefined, {}) - fail", function() {
         function fn() {
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           throw new Error("The error.");
         }
 
@@ -42,7 +42,7 @@ describe("Runner", function() {
       it("runSync(fn, undefined, {params}) - pass", function() {
         function fn(params) {
           if (!params) throw new Error();
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
         }
         var res;
 
@@ -54,7 +54,7 @@ describe("Runner", function() {
 
       it("runSync(fn, undefined, {params}) - fail", function() {
         function fn(params) {
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           throw new Error(params);
         }
 
@@ -73,7 +73,7 @@ describe("Runner", function() {
     describe("Non-parameterized", function() {
       it("runAsync(fn, undefined, {}, done) - pass", function(done) {
         function fn(done) {
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           done();
         }
 
@@ -89,7 +89,7 @@ describe("Runner", function() {
 
       it("runAsync(fn, undefined, {}) - fail", function(done) {
         function fn(done) {
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           done(new Error("The error."));
         }
 
@@ -109,7 +109,7 @@ describe("Runner", function() {
       it("runAsync(fn, undefined, {params}, done) - pass", function(done) {
         function fn(done, params) {
           if (!params) done(new Error());
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           done();
         }
 
@@ -125,7 +125,7 @@ describe("Runner", function() {
 
       it("runAsync(fn, undefined, {params}) - fail", function(done) {
         function fn(done, params) {
-          for (var i = 0; i < 1000000; ++i) i = i;
+          for (var i = 0; i < 100000000; ++i) i = i;
           done(new Error(params));
         }
 
