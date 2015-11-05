@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     babel: {
       options: {
         sourceMap: false,
+        comments: false
       },
 
       es5: {
