@@ -283,6 +283,18 @@ var Runner = (function () {
 
       this.reporters.end(macro, state, err, start, end);
     }
+  }, {
+    key: "start",
+    value: function start(title) {
+      this.reporters.start(title);
+      this.loggers.debug("Starting report '" + title + "'.");
+    }
+  }, {
+    key: "end",
+    value: function end() {
+      this.reporters.end();
+      this.loggers.debug("Ending report.");
+    }
   }], [{
     key: "DEFAULT_DISPLAY",
     get: function get() {
