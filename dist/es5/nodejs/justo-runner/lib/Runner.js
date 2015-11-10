@@ -107,6 +107,18 @@ var Runner = (function () {
         enumerable: true
       });
 
+      Object.defineProperty(wrapper, "mute", {
+        value: function value(opts) {
+          for (var _len4 = arguments.length, params = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+            params[_key4 - 1] = arguments[_key4];
+          }
+
+          if (typeof opts == "string") opts = { title: opts };
+          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));
+        },
+        enumerable: true
+      });
+
       return wrapper;
     }
   }, {
@@ -116,15 +128,15 @@ var Runner = (function () {
 
       title = opts.title || task.fqn;
 
+      if (!opts.mute) this.reporters.start(title, task);
+
       if (opts.ignore) {
-        this.reporters.start(title, task);
         this.loggers.debug("Ignoring simple task '" + title + "'.");
         state = "ignored";
       } else {
         try {
           var fn = task.fn;
           params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
-          this.reporters.start(title, task);
           this.loggers.debug("Starting run of simple task '" + title + "'.");
           start = Date.now();
           res = fn.apply(undefined, _toConsumableArray(params));
@@ -138,7 +150,7 @@ var Runner = (function () {
         this.loggers.debug("Ended run of simple task '" + title + "' in '" + state + "' state.");
       }
 
-      this.reporters.end(task, state, err, start, end);
+      if (!opts.mute) this.reporters.end(task, state, err, start, end);
 
       return res;
     }
@@ -149,8 +161,8 @@ var Runner = (function () {
 
       var ns, name, opts, tasks, wrapper, mcr;
 
-      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
+      for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
       }
 
       if (args.length === 0) {
@@ -192,8 +204,8 @@ var Runner = (function () {
       mcr = new _justoTask.Macro(ns, name, opts, tasks);
 
       wrapper = function (opts) {
-        for (var _len5 = arguments.length, params = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
-          params[_key5 - 1] = arguments[_key5];
+        for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+          params[_key6 - 1] = arguments[_key6];
         }
 
         if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
@@ -206,12 +218,24 @@ var Runner = (function () {
 
       Object.defineProperty(wrapper, "ignore", {
         value: function value(opts) {
-          for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
-            params[_key6 - 1] = arguments[_key6];
+          for (var _len7 = arguments.length, params = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
+            params[_key7 - 1] = arguments[_key7];
           }
 
           if (typeof opts == "string") opts = { title: opts };
           wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));
+        },
+        enumerable: true
+      });
+
+      Object.defineProperty(wrapper, "mute", {
+        value: function value(opts) {
+          for (var _len8 = arguments.length, params = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
+            params[_key8 - 1] = arguments[_key8];
+          }
+
+          if (typeof opts == "string") opts = { title: opts };
+          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));
         },
         enumerable: true
       });
@@ -227,7 +251,7 @@ var Runner = (function () {
       title = opts.title;
       params = params.length === 0 ? undefined : params;
 
-      this.reporters.start(title, macro);
+      if (!opts.mute) this.reporters.start(title, macro);
 
       if (opts.ignore) {
         this.loggers.debug("Ignoring macro '" + title + "'.");
@@ -281,7 +305,7 @@ var Runner = (function () {
         this.loggers.debug("Ended run of macro '" + title + "' in '" + state + "' state.");
       }
 
-      this.reporters.end(macro, state, err, start, end);
+      if (!opts.mute) this.reporters.end(macro, state, err, start, end);
     }
   }, {
     key: "start",

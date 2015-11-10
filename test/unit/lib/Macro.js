@@ -43,6 +43,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("macro(name, tasks)", function() {
@@ -61,6 +62,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("macro(opts, tasks)", function() {
@@ -79,6 +81,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("macro(name, opts, tasks)", function() {
@@ -97,6 +100,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("macro(ns, name, tasks)", function() {
@@ -115,6 +119,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("macro(ns, name, opts, tasks)", function() {
@@ -133,6 +138,7 @@ describe("Macro", function() {
         {task: fn3, params: [3, 2, 1]}
       ]);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
   });
 
@@ -420,6 +426,19 @@ describe("Macro", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(1);
       runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
+    });
+
+    it("Mute", function() {
+      var fw = macro([function() {}]);
+
+      assert(fw.mute("test") === undefined);
+
+      runner.reporters.spy.called("start()").must.be.eq(0);
+      runner.reporters.spy.called("end()").must.be.eq(0);
+
+      runner.loggers.spy.called("debug()").must.be.eq(2);
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of macro 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of macro 'test' in 'ok' state.");
     });
 
     it("Ok", function() {

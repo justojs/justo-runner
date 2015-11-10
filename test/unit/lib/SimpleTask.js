@@ -37,6 +37,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("task(opts, fn)", function() {
@@ -51,6 +52,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("task(name, fn)", function() {
@@ -65,6 +67,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("task(name, opts, fn)", function() {
@@ -79,6 +82,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("task(ns, name, fn)", function() {
@@ -93,6 +97,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
 
     it("task(ns, name, opts, fn)", function() {
@@ -107,6 +112,7 @@ describe("SimpleTask", function() {
       });
       fw.task.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
     });
   });
 
@@ -179,6 +185,19 @@ describe("SimpleTask", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(1);
       runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring simple task 'test'.");
+    });
+
+    it("Mute", function() {
+      var fw = task(function sum(params) { return params[0] + params[1]; });
+
+      assert(fw.mute("test", 1, 2) === undefined);
+
+      runner.reporters.spy.called("start()").must.be.eq(0);
+      runner.reporters.spy.called("end()").must.be.eq(0);
+
+      runner.loggers.spy.called("debug()").must.be.eq(2);
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'ok' state.");
     });
 
     it("Ok", function() {
