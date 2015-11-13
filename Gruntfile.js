@@ -10,14 +10,16 @@ module.exports = function(grunt) {
     babel: {
       options: {
         sourceMap: false,
-        comments: false
+        comments: false,
+        retainLines: true
       },
 
       es5: {
         files: {
         	"build/es5/lib/index.js": "lib/index.js",
+          "build/es5/lib/Automator.js": "lib/Automator.js",
           "build/es5/lib/RunError.js": "lib/RunError.js",
-          "build/es5/lib/Runner.js": "lib/Runner.js"
+          "build/es5/lib/Runner.js": "lib/Runner.js",
         }
       }
     },
