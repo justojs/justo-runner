@@ -1,12 +1,18 @@
 "use strict";Object.defineProperty(exports, "__esModule", { value: true });var _createClass = (function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};})();function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var _justoInjector = require(
 "justo-injector");var _justoTask = require(
-"justo-task");
+"justo-task");var _justoResult = require(
+"justo-result");
 
 
 var task = Symbol();
 var macro = Symbol();
+var workflow = Symbol();
 var runSimpleTask = Symbol();
-var runMacro = Symbol();var 
+var runMacro = Symbol();
+var runWorkflow = Symbol();
+var defineTask = Symbol();
+var defineIgnore = Symbol();
+var defineMute = Symbol();var 
 
 
 
@@ -30,7 +36,8 @@ Runner = (function () {
     Object.defineProperty(this, "loggers", { value: config.loggers, enumerable: true });
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
     Object.defineProperty(this, "task", { value: this[task].bind(this), enumerable: true });
-    Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });}_createClass(Runner, [{ key: 
+    Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });
+    Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });}_createClass(Runner, [{ key: 
 
 
 
@@ -103,23 +110,9 @@ Runner = (function () {
         return _this[runSimpleTask](tsk, opts, params);};
 
 
-      Object.defineProperty(wrapper, "task", { value: tsk });
-
-      Object.defineProperty(wrapper, "ignore", { 
-        value: function value(opts) {for (var _len3 = arguments.length, params = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {params[_key3 - 1] = arguments[_key3];}
-          if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));}, 
-
-        enumerable: true });
-
-
-      Object.defineProperty(wrapper, "mute", { 
-        value: function value(opts) {for (var _len4 = arguments.length, params = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {params[_key4 - 1] = arguments[_key4];}
-          if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
-
-        enumerable: true });
-
+      this[defineTask](wrapper, tsk);
+      this[defineIgnore](wrapper);
+      this[defineMute](wrapper);
 
 
       return wrapper;} }, { key: 
@@ -133,35 +126,38 @@ Runner = (function () {
 
 
     runSimpleTask, value: function value(task, opts, params) {
-      var title, res, state, err, start, end;
+      var title, res;
 
 
       title = opts.title || task.fqn;
 
 
-      if (!opts.mute) this.reporters.start(title, task);
-
       if (opts.ignore) {
         this.loggers.debug("Ignoring simple task '" + title + "'.");
-        state = "ignored";} else 
+        if (!opts.mute) this.reporters.ignore(title, task);} else 
       {
+        var state = undefined, err = undefined, start = undefined, end = undefined;
+
         try {
           var fn = task.fn;
           params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
+
           this.loggers.debug("Starting run of simple task '" + title + "'.");
+          if (!opts.mute) this.reporters.start(title, task);
+
           start = Date.now();
-          res = fn.apply(undefined, _toConsumableArray(params));} 
+          res = fn.apply(undefined, _toConsumableArray(params));
+          state = _justoResult.ResultState.OK;} 
         catch (e) {
-          err = e;} finally 
+          err = e;
+          state = _justoResult.ResultState.FAILED;} finally 
         {
           end = Date.now();}
 
 
-        state = err ? "failed" : "ok";
-        this.loggers.debug("Ended run of simple task '" + title + "' in '" + state + "' state.");}
+        this.loggers.debug("Ended run of simple task '" + title + "' in '" + state + "' state.");
+        if (!opts.mute) this.reporters.end(task, state, err, start, end);}
 
-
-      if (!opts.mute) this.reporters.end(task, state, err, start, end);
 
 
       return res;} }, { key: 
@@ -205,7 +201,7 @@ Runner = (function () {
 
 
     macro, value: function value() {var _this2 = this;
-      var ns, name, opts, tasks, wrapper, mcr;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+      var ns, name, opts, tasks, wrapper, mcr;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
 
 
       if (args.length === 0) {
@@ -226,10 +222,20 @@ Runner = (function () {
       if (!opts) opts = {};
 
 
-      mcr = new _justoTask.Macro(ns, name, opts, tasks);
+      mcr = new _justoTask.Macro(ns, name, opts, []);var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+
+        for (var _iterator = tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var t = _step.value;
+          if (t instanceof Function) {
+            if (!t.__task__) t = this[task](t);} else 
+          {
+            if (!t.task.__task__) t.task = this[task](t.task);}
 
 
-      wrapper = function (opts) {for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {params[_key6 - 1] = arguments[_key6];}
+          mcr.add(t);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
+
+
+
+      wrapper = function (opts) {for (var _len4 = arguments.length, params = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {params[_key4 - 1] = arguments[_key4];}
 
         if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
         if (typeof opts == "string") opts = { title: opts };
@@ -238,23 +244,9 @@ Runner = (function () {
         return _this2[runMacro](mcr, opts, params);};
 
 
-      Object.defineProperty(wrapper, "macro", { value: mcr });
-
-      Object.defineProperty(wrapper, "ignore", { 
-        value: function value(opts) {for (var _len7 = arguments.length, params = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {params[_key7 - 1] = arguments[_key7];}
-          if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));}, 
-
-        enumerable: true });
-
-
-      Object.defineProperty(wrapper, "mute", { 
-        value: function value(opts) {for (var _len8 = arguments.length, params = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {params[_key8 - 1] = arguments[_key8];}
-          if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
-
-        enumerable: true });
-
+      this[defineTask](wrapper, mcr);
+      this[defineIgnore](wrapper);
+      this[defineMute](wrapper);
 
 
       return wrapper;} }, { key: 
@@ -268,48 +260,201 @@ Runner = (function () {
 
 
     runMacro, value: function value(macro, opts, params) {
-      var title, res, state, err, start, end, self;
+      var title, res;
 
 
-      self = this;
       title = opts.title;
       params = params.length === 0 ? undefined : params;
 
 
-      if (!opts.mute) this.reporters.start(title, macro);
-
       if (opts.ignore) {
         this.loggers.debug("Ignoring macro '" + title + "'.");
-        state = "ignored";} else 
+        if (!opts.mute) this.reporters.ignore(title, macro);} else 
       {
         this.loggers.debug("Starting run of macro '" + title + "'.");
+        if (!opts.mute) this.reporters.start(title, macro);var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
+
+          for (var _iterator2 = macro.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var t = _step2.value;
+            var _task = t.task;
+            var __task__ = _task.__task__;
+            var oo = { title: t.title, mute: opts.mute };
+            var pp = params || t.params || [];
+
+            if (__task__ instanceof _justoTask.SimpleTask) this[runSimpleTask](__task__, oo, pp);else 
+            if (__task__ instanceof _justoTask.Macro) this[runMacro](__task__, oo, pp);else 
+            if (__task__ instanceof _justoTask.Workflow) this[runWorkflow](__task__, oo, pp);else 
+            throw new Error("Invalid task of macro.");}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}
+
+
+        this.loggers.debug("Ended run of macro '" + title + "'.");
+        if (!opts.mute) this.reporters.end(macro);}} }, { key: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    workflow, value: function value() {var _this3 = this;
+      var ns, name, opts, fn, tsk, wrapper;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+
+
+      if (args.length === 0) {
+        throw new Error("Invalid number of arguments. At least, the workflow function must be passed.");} else 
+      if (args.length == 1) {
+        fn = args[0];} else 
+      if (args.length == 2) {
+        if (typeof args[0] == "string") {;name = args[0];fn = args[1];} else {
+          ;opts = args[0];fn = args[1];}} else 
+      if (args.length == 3) {
+        if (typeof args[1] == "object") {;name = args[0];opts = args[1];fn = args[2];} else {
+          ;ns = args[0];name = args[1];fn = args[2];}} else 
+      if (args.length >= 4) {
+        ns = args[0];name = args[1];opts = args[2];fn = args[3];}
+
+
+      if (!name) name = fn.name;
+      if (!opts) opts = {};
+
+
+      tsk = new _justoTask.Workflow(ns, name, opts, fn);
+
+
+      wrapper = function (opts) {for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {params[_key6 - 1] = arguments[_key6];}
+
+        if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
+        if (typeof opts == "string") opts = { title: opts };
+
+
+        return _this3[runWorkflow](tsk, opts, params);};
+
+
+      this[defineTask](wrapper, tsk);
+      this[defineIgnore](wrapper);
+      this[defineMute](wrapper);
+
+
+      return wrapper;} }, { key: 
+
+
+
+
+
+
+
+
+
+
+    runWorkflow, value: function value(workflow, opts, params) {
+      var title, res;
+
+
+      title = opts.title || workflow.fqn;
+
+
+      if (opts.ignore) {
+        this.loggers.debug("Ignoring workflow '" + title + "'.");
+        if (!opts.mute) this.reporters.ignore(title, workflow);} else 
+      {
+        var state = undefined, err = undefined, start = undefined, end = undefined;
 
         try {
-          start = Date.now();var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+          var fn = workflow.fn;
+          params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
 
-            for (var _iterator = macro.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var t = _step.value;
-              var _task = t.task;
-              var pp = params || t.params || [];
+          this.loggers.debug("Starting run of workflow '" + title + "'.");
+          if (!opts.mute) this.reporters.start(title, workflow);
 
-              if (_task.task && _task.task instanceof _justoTask.SimpleTask) {
-                this[runSimpleTask](_task.task, opts, pp);} else 
-              if (_task.macro && _task.macro instanceof _justoTask.Macro) {
-                this[runMacro](_task.macro, opts, pp);} else 
-              {
-                _task.apply(undefined, _toConsumableArray(pp));}}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}} 
-
-
+          start = Date.now();
+          res = fn.apply(undefined, _toConsumableArray(params));
+          state = _justoResult.ResultState.OK;} 
         catch (e) {
-          err = e;} finally 
+          err = e;
+          state = _justoResult.ResultState.FAILED;} finally 
         {
           end = Date.now();}
 
 
-        state = err ? "failed" : "ok";
-        this.loggers.debug("Ended run of macro '" + title + "' in '" + state + "' state.");}
+        this.loggers.debug("Ended run of workflow '" + title + "' in '" + state + "' state.");
+        if (!opts.mute) this.reporters.end(workflow, state, err, start, end);}
 
 
-      if (!opts.mute) this.reporters.end(macro, state, err, start, end);} }, { key: "start", value: 
+
+      return res;} }, { key: 
+
+
+
+
+
+
+
+
+    defineTask, value: function value(wrapper, task) {
+      Object.defineProperty(wrapper, "__task__", { value: task });} }, { key: 
+
+
+
+
+
+
+
+
+    defineIgnore, value: function value(wrapper) {
+      Object.defineProperty(wrapper, "ignore", { 
+        value: function value(opts) {for (var _len7 = arguments.length, params = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {params[_key7 - 1] = arguments[_key7];}
+          if (typeof opts == "string") opts = { title: opts };
+          wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));}, 
+
+        enumerable: true });} }, { key: 
+
+
+
+
+
+
+
+
+
+    defineMute, value: function value(wrapper) {
+      Object.defineProperty(wrapper, "mute", { 
+        value: function value(opts) {for (var _len8 = arguments.length, params = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {params[_key8 - 1] = arguments[_key8];}
+          if (typeof opts == "string") opts = { title: opts };
+          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
+
+        enumerable: true });} }, { key: "start", value: 
+
 
 
 

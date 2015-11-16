@@ -11,7 +11,7 @@ describe("SimpleTask", function() {
 
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
-    reporters = dummy({}, ["start()", "end()"]);
+    reporters = dummy({}, ["start()", "end()", "ignore()"]);
     runner = new Runner({loggers, reporters});
     task = runner.task;
   });
@@ -29,13 +29,13 @@ describe("SimpleTask", function() {
       var fw = task(fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: undefined,
         name: "fn",
         description: undefined
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -44,13 +44,13 @@ describe("SimpleTask", function() {
       var fw = task({desc: "Description."}, fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: undefined,
         name: "fn",
         description: "Description."
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -59,13 +59,13 @@ describe("SimpleTask", function() {
       var fw = task("test", fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: undefined,
         name: "test",
         description: undefined
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -74,13 +74,13 @@ describe("SimpleTask", function() {
       var fw = task("test", {desc: "Description."}, fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: undefined,
         name: "test",
         description: "Description."
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -89,13 +89,13 @@ describe("SimpleTask", function() {
       var fw = task("ns", "test", fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: "ns",
         name: "test",
         description: undefined
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -104,13 +104,13 @@ describe("SimpleTask", function() {
       var fw = task("ns", "test", {desc: "Description."}, fn);
 
       fw.must.be.instanceOf(Function);
-      fw.task.must.be.instanceOf(SimpleTask);
-      fw.task.must.have({
+      fw.__task__.must.be.instanceOf(SimpleTask);
+      fw.__task__.must.have({
         namespace: "ns",
         name: "test",
         description: "Description."
       });
-      fw.task.fn.must.be.same(fn);
+      fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
@@ -160,7 +160,7 @@ describe("SimpleTask", function() {
     beforeEach(function() {
       runner = spy(new Runner(
         {
-          reporters: spy({}, ["start() {}", "end() {}"]),
+          reporters: spy({}, ["start() {}", "end() {}", "ignore() {}"]),
           loggers: spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"])
         }
       ));
@@ -169,19 +169,17 @@ describe("SimpleTask", function() {
     });
 
     it("Ignore", function() {
-      var fw = task(function sum(params) { return params[0] + params[1]; });
+      var args, fw = task(function sum(params) { return params[0] + params[1]; });
 
       assert(fw.ignore("test", 1, 2) === undefined);
 
-      runner.reporters.spy.called("start()").must.be.eq(1);
-      runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
-      runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
-      runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("SimpleTask");
+      runner.reporters.spy.called("start()").must.be.eq(0);
+      runner.reporters.spy.called("end()").must.be.eq(0);
+      runner.reporters.spy.called("ignore()").must.be.eq(1);
 
-      runner.reporters.spy.called("end()").must.be.eq(1);
-      runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
-      runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("SimpleTask");
-      runner.reporters.spy.getCall("end()").arguments.slice(1).must.be.eq(["ignored", undefined, undefined, undefined]);
+      args = runner.reporters.spy.getArguments("ignore()");
+      args[0].must.be.eq("test");
+      args[1].must.be.instanceOf("SimpleTask");
 
       runner.loggers.spy.called("debug()").must.be.eq(1);
       runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring simple task 'test'.");
@@ -194,10 +192,11 @@ describe("SimpleTask", function() {
 
       runner.reporters.spy.called("start()").must.be.eq(0);
       runner.reporters.spy.called("end()").must.be.eq(0);
+      runner.reporters.spy.called("ignore()").must.be.eq(0);
 
       runner.loggers.spy.called("debug()").must.be.eq(2);
       runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'ok' state.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'OK' state.");
     });
 
     it("Ok", function() {
@@ -213,14 +212,16 @@ describe("SimpleTask", function() {
       runner.reporters.spy.called("end()").must.be.eq(1);
       runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
       runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("SimpleTask");
-      runner.reporters.spy.getCall("end()").arguments[1].must.be.eq("ok");
+      runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("OK");
       assert(runner.reporters.spy.getCall("end()").arguments[2] === undefined);
       runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
       runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
 
+      runner.reporters.spy.called("ignore()").must.be.eq(0);
+
       runner.loggers.spy.called("debug()").must.be.eq(2);
       runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'ok' state.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'OK' state.");
     });
 
     it("Failed", function() {
@@ -236,14 +237,16 @@ describe("SimpleTask", function() {
       runner.reporters.spy.called("end()").must.be.eq(1);
       runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
       runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("SimpleTask");
-      runner.reporters.spy.getCall("end()").arguments[1].must.be.eq("failed");
+      runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("FAILED");
       runner.reporters.spy.getCall("end()").arguments[2].must.be.eq(new Error("Test error."));
       runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
       runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
 
+      runner.reporters.spy.called("ignore()").must.be.eq(0);
+
       runner.loggers.spy.called("debug()").must.be.eq(2);
       runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'failed' state.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'FAILED' state.");
     });
   });
 });

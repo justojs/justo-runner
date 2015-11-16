@@ -9,7 +9,7 @@ describe("Runner", function() {
 
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
-    reporters = dummy({}, ["start()", "end()"]);
+    reporters = dummy({}, ["start()", "end()", "ignore()"]);
   });
 
   describe("#constructor()", function() {
