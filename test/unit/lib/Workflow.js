@@ -66,51 +66,6 @@ describe("Workflow", function() {
       fw.ignore.must.be.instanceOf(Function);
       fw.mute.must.be.instanceOf(Function);
     });
-
-    it("workflow(name, opts, fn)", function() {
-      var fw = workflow("test", {desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "test",
-        description: "Description."
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(ns, name, fn)", function() {
-      var fw = workflow("ns", "test", fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: "ns",
-        name: "test",
-        description: undefined
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(ns, name, opts, fn)", function() {
-      var fw = workflow("ns", "test", {desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: "ns",
-        name: "test",
-        description: "Description."
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
   });
 
   describe("Wrapper", function() {

@@ -7,26 +7,26 @@ const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("SimpleTask", function() {
-  var runner, task, loggers, reporters;
+  var runner, simple, loggers, reporters;
 
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
     runner = new Runner({loggers, reporters});
-    task = runner.task;
+    simple = runner.simple;
   });
 
-  describe("#task()", function() {
+  describe("#simple()", function() {
     function fn() {}
 
-    it("task()", function() {
+    it("simple()", function() {
       (function() {
-        var fw = task();
+        var fw = simple();
       }).must.raise("Invalid number of arguments. At least, the task function must be passed.");
     });
 
-    it("task(fn)", function() {
-      var fw = task(fn);
+    it("simple(fn)", function() {
+      var fw = simple(fn);
 
       fw.must.be.instanceOf(Function);
       fw.__task__.must.be.instanceOf(SimpleTask);
@@ -40,8 +40,8 @@ describe("SimpleTask", function() {
       fw.mute.must.be.instanceOf(Function);
     });
 
-    it("task(opts, fn)", function() {
-      var fw = task({desc: "Description."}, fn);
+    it("simple(opts, fn)", function() {
+      var fw = simple({desc: "Description."}, fn);
 
       fw.must.be.instanceOf(Function);
       fw.__task__.must.be.instanceOf(SimpleTask);
@@ -55,8 +55,8 @@ describe("SimpleTask", function() {
       fw.mute.must.be.instanceOf(Function);
     });
 
-    it("task(name, fn)", function() {
-      var fw = task("test", fn);
+    it("simple(name, fn)", function() {
+      var fw = simple("test", fn);
 
       fw.must.be.instanceOf(Function);
       fw.__task__.must.be.instanceOf(SimpleTask);
@@ -64,51 +64,6 @@ describe("SimpleTask", function() {
         namespace: undefined,
         name: "test",
         description: undefined
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("task(name, opts, fn)", function() {
-      var fw = task("test", {desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "test",
-        description: "Description."
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("task(ns, name, fn)", function() {
-      var fw = task("ns", "test", fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: "ns",
-        name: "test",
-        description: undefined
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("task(ns, name, opts, fn)", function() {
-      var fw = task("ns", "test", {desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: "ns",
-        name: "test",
-        description: "Description."
       });
       fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
@@ -118,37 +73,36 @@ describe("SimpleTask", function() {
 
   describe("Wrapper", function() {
     it("call()", function() {
-      var fw = task(function() {});
+      var fw = simple(function() {});
       fw.must.raise("Invalid number of arguments. At least, the title must be specified.");
     });
 
     it("call(title)", function() {
-      var pp, fw = task(function(params) { pp = params; });
+      var pp, fw = simple(function(params) { pp = params; });
       fw("title");
       pp.must.be.eq([]);
     });
 
     it("call(title, params)", function() {
-      var pp, fw = task(function(params) { pp = params; });
+      var pp, fw = simple(function(params) { pp = params; });
       fw("title", 1, 2, 3);
       pp.must.be.eq([1, 2, 3]);
     });
 
     it("call(opts)", function() {
-      var pp, fw = task(function(params) { pp = params; });
+      var pp, fw = simple(function(params) { pp = params; });
       fw({title: "title"});
       pp.must.be.eq([]);
     });
 
     it("call(opts, params)", function() {
-      var pp, fw = task(function(params) { pp = params; });
+      var pp, fw = simple(function(params) { pp = params; });
       fw({title: "title"}, 1, 2, 3);
       pp.must.be.eq([1, 2, 3]);
     });
 
     it("injection", function() {
-      var inj;
-      var fw = task(function(params, log, logger) { inj = [params, log, logger]; });
+      var inj, fw = simple(function(params, log, logger) { inj = [params, log, logger]; });
       fw("title", 1, 2, 3);
       inj[0].must.be.eq([1, 2, 3]);
       inj[1].must.not.be.eq(undefined);
@@ -165,11 +119,11 @@ describe("SimpleTask", function() {
         }
       ));
 
-      task = runner.task;
+      simple = runner.simple;
     });
 
     it("Ignore", function() {
-      var args, fw = task(function sum(params) { return params[0] + params[1]; });
+      var args, fw = simple(function sum(params) { return params[0] + params[1]; });
 
       assert(fw.ignore("test", 1, 2) === undefined);
 
@@ -186,7 +140,7 @@ describe("SimpleTask", function() {
     });
 
     it("Mute", function() {
-      var fw = task(function sum(params) { return params[0] + params[1]; });
+      var fw = simple(function sum(params) { return params[0] + params[1]; });
 
       assert(fw.mute("test", 1, 2) === undefined);
 
@@ -200,7 +154,7 @@ describe("SimpleTask", function() {
     });
 
     it("Ok", function() {
-      var fw = task(function sum(params) { return params[0] + params[1]; });
+      var fw = simple(function sum(params) { return params[0] + params[1]; });
 
       fw("test", 1, 2).must.be.eq(3);
 
@@ -225,7 +179,7 @@ describe("SimpleTask", function() {
     });
 
     it("Failed", function() {
-      var fw = task(function raise(params) { throw new Error(params[0]); });
+      var fw = simple(function raise(params) { throw new Error(params[0]); });
 
       assert(fw("test", "Test error.") === undefined);
 

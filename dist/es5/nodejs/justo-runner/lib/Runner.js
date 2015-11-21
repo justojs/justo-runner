@@ -4,7 +4,7 @@
 "justo-result");
 
 
-var task = Symbol();
+var simple = Symbol();
 var macro = Symbol();
 var workflow = Symbol();
 var runSimpleTask = Symbol();
@@ -35,7 +35,7 @@ Runner = (function () {
 
     Object.defineProperty(this, "loggers", { value: config.loggers, enumerable: true });
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
-    Object.defineProperty(this, "task", { value: this[task].bind(this), enumerable: true });
+    Object.defineProperty(this, "simple", { value: this[simple].bind(this), enumerable: true });
     Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });
     Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });}_createClass(Runner, [{ key: 
 
@@ -58,47 +58,23 @@ Runner = (function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    task, value: function value() {var _this = this;
-      var ns, name, opts, fn, tsk, wrapper;for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+    simple, value: function value() {var _this = this;
+      var opts, fn, task, wrapper;for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
 
 
       if (args.length === 0) {
         throw new Error("Invalid number of arguments. At least, the task function must be passed.");} else 
       if (args.length == 1) {
-        fn = args[0];} else 
-      if (args.length == 2) {
-        if (typeof args[0] == "string") {;name = args[0];fn = args[1];} else {
-          ;opts = args[0];fn = args[1];}} else 
-      if (args.length == 3) {
-        if (typeof args[1] == "object") {;name = args[0];opts = args[1];fn = args[2];} else {
-          ;ns = args[0];name = args[1];fn = args[2];}} else 
-      if (args.length >= 4) {
-        ns = args[0];name = args[1];opts = args[2];fn = args[3];}
+        fn = args[0];
+        opts = {};} else 
+      if (args.length >= 2) {
+        opts = args[0];fn = args[1];}
 
 
-      if (!name) name = fn.name;
-      if (!opts) opts = {};
+      if (typeof opts == "object" && !opts.name) opts.name = fn.name || "simple anonymous task";
 
 
-      tsk = new _justoTask.SimpleTask(ns, name, opts, fn);
+      task = new _justoTask.SimpleTask(opts, fn);
 
 
       wrapper = function (opts) {for (var _len2 = arguments.length, params = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {params[_key2 - 1] = arguments[_key2];}
@@ -107,10 +83,10 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this[runSimpleTask](tsk, opts, params);};
+        return _this[runSimpleTask](task, opts, params);};
 
 
-      this[defineTask](wrapper, tsk);
+      this[defineTask](wrapper, task);
       this[defineIgnore](wrapper);
       this[defineMute](wrapper);
 
@@ -180,58 +156,32 @@ Runner = (function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     macro, value: function value() {var _this2 = this;
-      var ns, name, opts, tasks, wrapper, mcr;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
+      var opts, tasks, wrapper, task;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
 
 
       if (args.length === 0) {
         throw new Error("Invalid number of arguments. At least, the array of tasks must be passed.");} else 
       if (args.length == 1) {
-        tasks = args[0];} else 
-      if (args.length == 2) {
-        if (typeof args[0] == "string") {;name = args[0];tasks = args[1];} else {
-          ;opts = args[0];tasks = args[1];}} else 
-      if (args.length == 3) {
-        if (typeof args[1] == "string") {;ns = args[0];name = args[1];tasks = args[2];} else {
-          ;name = args[0];opts = args[1];tasks = args[2];}} else 
-      if (args.length >= 4) {
-        ns = args[0];name = args[1];opts = args[2];tasks = args[3];}
+        tasks = args[0];
+        opts = {};} else 
+      if (args.length >= 2) {
+        opts = args[0];tasks = args[1];}
 
 
-      if (!name) name = "macro";
-      if (!opts) opts = {};
+      if (typeof opts == "object" && !opts.name) opts.name = "anonymous macro";
 
 
-      mcr = new _justoTask.Macro(ns, name, opts, []);var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+      task = new _justoTask.Macro(opts, []);var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
         for (var _iterator = tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var t = _step.value;
           if (t instanceof Function) {
-            if (!t.__task__) t = this[task](t);} else 
+            if (!t.__task__) t = this[simple](t);} else 
           {
-            if (!t.task.__task__) t.task = this[task](t.task);}
+            if (!t.task.__task__) t.task = this[simple](t.task);}
 
 
-          mcr.add(t);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
+          task.add(t);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
 
 
 
@@ -241,10 +191,10 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this2[runMacro](mcr, opts, params);};
+        return _this2[runMacro](task, opts, params);};
 
 
-      this[defineTask](wrapper, mcr);
+      this[defineTask](wrapper, task);
       this[defineIgnore](wrapper);
       this[defineMute](wrapper);
 
@@ -275,8 +225,8 @@ Runner = (function () {
         if (!opts.mute) this.reporters.start(title, macro);var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
 
           for (var _iterator2 = macro.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var t = _step2.value;
-            var _task = t.task;
-            var __task__ = _task.__task__;
+            var task = t.task;
+            var __task__ = task.__task__;
             var oo = { title: t.title, mute: opts.mute };
             var pp = params || t.params || [];
 
@@ -308,48 +258,23 @@ Runner = (function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     workflow, value: function value() {var _this3 = this;
-      var ns, name, opts, fn, tsk, wrapper;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+      var opts, fn, task, wrapper;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
 
 
       if (args.length === 0) {
         throw new Error("Invalid number of arguments. At least, the workflow function must be passed.");} else 
       if (args.length == 1) {
-        fn = args[0];} else 
-      if (args.length == 2) {
-        if (typeof args[0] == "string") {;name = args[0];fn = args[1];} else {
-          ;opts = args[0];fn = args[1];}} else 
-      if (args.length == 3) {
-        if (typeof args[1] == "object") {;name = args[0];opts = args[1];fn = args[2];} else {
-          ;ns = args[0];name = args[1];fn = args[2];}} else 
-      if (args.length >= 4) {
-        ns = args[0];name = args[1];opts = args[2];fn = args[3];}
+        fn = args[0];
+        opts = {};} else 
+      if (args.length >= 2) {
+        opts = args[0];fn = args[1];}
 
 
-      if (!name) name = fn.name;
-      if (!opts) opts = {};
+      if (typeof opts == "object" && !opts.name) opts.name = fn.name || "anonymous workflow";
 
 
-      tsk = new _justoTask.Workflow(ns, name, opts, fn);
+      task = new _justoTask.Workflow(opts, fn);
 
 
       wrapper = function (opts) {for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {params[_key6 - 1] = arguments[_key6];}
@@ -358,10 +283,10 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this3[runWorkflow](tsk, opts, params);};
+        return _this3[runWorkflow](task, opts, params);};
 
 
-      this[defineTask](wrapper, tsk);
+      this[defineTask](wrapper, task);
       this[defineIgnore](wrapper);
       this[defineMute](wrapper);
 

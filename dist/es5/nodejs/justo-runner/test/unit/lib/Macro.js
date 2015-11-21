@@ -7,7 +7,7 @@ const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("Macro", function() {
-  var runner, loggers, reporters, macro, task;
+  var runner, loggers, reporters, macro, simple;
   function fn1() {}
   function fn2() {}
   function fn3() {}
@@ -17,7 +17,7 @@ describe("Macro", function() {
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
     runner = new Runner({loggers, reporters});
     macro = runner.macro;
-    task = runner.task;
+    simple = runner.simple;
   });
 
   describe("#macro()", function() {
@@ -34,7 +34,7 @@ describe("Macro", function() {
       fw.__task__.must.be.instanceOf(Macro);
       fw.__task__.must.have({
         namespace: undefined,
-        name: "macro",
+        name: "anonymous macro",
         description: undefined
       });
 
@@ -112,124 +112,7 @@ describe("Macro", function() {
       fw.__task__.must.be.instanceOf(Macro);
       fw.__task__.must.have({
         namespace: undefined,
-        name: "macro",
-        description: "Description."
-      });
-
-      tsk = fw.__task__.tasks[0];
-      tsk.must.have({
-        title: "fn1",
-        params: undefined
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[1];
-      tsk.must.have({
-        title: "fn2",
-        params: [1, 2, 3]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[2];
-      tsk.must.have({
-        title: "fn3",
-        params: [3, 2, 1]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("macro(name, opts, tasks)", function() {
-      var tsk, fw = macro("test", {desc: "Description."}, [fn1, {task: fn2, params: [1, 2, 3]}, {task: fn3, params: [3, 2, 1]}]);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(Macro);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "test",
-        description: "Description."
-      });
-
-      tsk = fw.__task__.tasks[0];
-      tsk.must.have({
-        title: "fn1",
-        params: undefined
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[1];
-      tsk.must.have({
-        title: "fn2",
-        params: [1, 2, 3]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[2];
-      tsk.must.have({
-        title: "fn3",
-        params: [3, 2, 1]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("macro(ns, name, tasks)", function() {
-      var tsk, fw = macro("org.justojs", "test", [fn1, {task: fn2, params: [1, 2, 3]}, {task: fn3, params: [3, 2, 1]}]);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(Macro);
-      fw.__task__.must.have({
-        namespace: "org.justojs",
-        name: "test",
-        description: undefined
-      });
-
-      tsk = fw.__task__.tasks[0];
-      tsk.must.have({
-        title: "fn1",
-        params: undefined
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[1];
-      tsk.must.have({
-        title: "fn2",
-        params: [1, 2, 3]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      tsk = fw.__task__.tasks[2];
-      tsk.must.have({
-        title: "fn3",
-        params: [3, 2, 1]
-      });
-      tsk.task.must.be.instanceOf(Function);
-      tsk.task.__task__.must.be.instanceOf("SimpleTask");
-
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("macro(ns, name, opts, tasks)", function() {
-      var tsk, fw = macro("org.justojs", "test", {desc: "Description."}, [fn1, {task: fn2, params: [1, 2, 3]}, {task: fn3, params: [3, 2, 1]}]);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(Macro);
-      fw.__task__.must.have({
-        namespace: "org.justojs",
-        name: "test",
+        name: "anonymous macro",
         description: "Description."
       });
 
@@ -275,13 +158,13 @@ describe("Macro", function() {
       beforeEach(function() {
         params1 = params2 = params3 = undefined;
 
-        task1 = task(function(params) { params1 = params; });
+        task1 = simple(function(params) { params1 = params; });
         task2 = function(params) { params2 = params; };
-        task3 = task(function(params) { params3 = params; });
+        task3 = simple(function(params) { params3 = params; });
       });
 
       it("call(title)", function() {
-        var fw = macro([task1, task2, task3]);
+        var fw = macro("test", [task1, task2, task3]);
 
         fw("test");
 
@@ -291,7 +174,7 @@ describe("Macro", function() {
       });
 
       it("call(title) - with default parameters", function() {
-        var fw = macro([{task: task1, params: [1, 2, 3]}, {task: task2, params: [3, 2, 1]}, task3]);
+        var fw = macro("test", [{task: task1, params: [1, 2, 3]}, {task: task2, params: [3, 2, 1]}, task3]);
 
         fw("test");
 
@@ -301,7 +184,7 @@ describe("Macro", function() {
       });
 
       it("call(opts)", function() {
-        var fw = macro([task1, task2, task3]);
+        var fw = macro("test", [task1, task2, task3]);
 
         fw({title: "test"});
 
@@ -465,7 +348,7 @@ describe("Macro", function() {
       ));
 
       macro = runner.macro;
-      task = runner.task;
+      simple = runner.simple;
     });
 
     it("Ignore", function() {
@@ -496,8 +379,8 @@ describe("Macro", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(4);
       runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task ''."]);
-      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task '' in 'OK' state."]);
+      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
+      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
       runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
     });
 
@@ -511,7 +394,7 @@ describe("Macro", function() {
       args[0].must.be.eq("test");
       args[1].must.be.instanceOf("Macro");
       args  = runner.reporters.spy.getArguments("start()", 1);
-      args[0].must.be.eq("");
+      args[0].must.be.eq("simple anonymous task");
       args[1].must.be.instanceOf("SimpleTask");
 
       runner.reporters.spy.called("end()").must.be.eq(2);
@@ -531,8 +414,8 @@ describe("Macro", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(4);
       runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task ''."]);
-      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task '' in 'OK' state."]);
+      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
+      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
       runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
     });
 
