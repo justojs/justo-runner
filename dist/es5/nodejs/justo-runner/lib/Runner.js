@@ -1,7 +1,9 @@
-"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _createClass = (function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};})();function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var _justoInjector = require(
-"justo-injector");var _justoTask = require(
-"justo-task");var _justoResult = require(
-"justo-result");
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _createClass = (function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};})();function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var _justoInjector = require(
+"justo-injector");var _justoResult = require(
+"justo-result");var _SimpleTask = require(
+"./SimpleTask");var _SimpleTask2 = _interopRequireDefault(_SimpleTask);var _Macro = require(
+"./Macro");var _Macro2 = _interopRequireDefault(_Macro);var _Workflow = require(
+"./Workflow");var _Workflow2 = _interopRequireDefault(_Workflow);
 
 
 var simple = Symbol();
@@ -74,7 +76,7 @@ Runner = (function () {
       if (typeof opts == "object" && !opts.name) opts.name = fn.name || "simple anonymous task";
 
 
-      task = new _justoTask.SimpleTask(opts, fn);
+      task = new _SimpleTask2["default"](opts, fn);
 
 
       wrapper = function (opts) {for (var _len2 = arguments.length, params = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {params[_key2 - 1] = arguments[_key2];}
@@ -172,7 +174,7 @@ Runner = (function () {
       if (typeof opts == "object" && !opts.name) opts.name = "anonymous macro";
 
 
-      task = new _justoTask.Macro(opts, []);var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+      task = new _Macro2["default"](opts, []);var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
         for (var _iterator = tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var t = _step.value;
           if (t instanceof Function) {
@@ -230,9 +232,9 @@ Runner = (function () {
             var oo = { title: t.title, mute: opts.mute };
             var pp = params || t.params || [];
 
-            if (__task__ instanceof _justoTask.SimpleTask) this[runSimpleTask](__task__, oo, pp);else 
-            if (__task__ instanceof _justoTask.Macro) this[runMacro](__task__, oo, pp);else 
-            if (__task__ instanceof _justoTask.Workflow) this[runWorkflow](__task__, oo, pp);else 
+            if (__task__ instanceof _SimpleTask2["default"]) this[runSimpleTask](__task__, oo, pp);else 
+            if (__task__ instanceof _Macro2["default"]) this[runMacro](__task__, oo, pp);else 
+            if (__task__ instanceof _Workflow2["default"]) this[runWorkflow](__task__, oo, pp);else 
             throw new Error("Invalid task of macro.");}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}
 
 
@@ -274,7 +276,7 @@ Runner = (function () {
       if (typeof opts == "object" && !opts.name) opts.name = fn.name || "anonymous workflow";
 
 
-      task = new _justoTask.Workflow(opts, fn);
+      task = new _Workflow2["default"](opts, fn);
 
 
       wrapper = function (opts) {for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {params[_key6 - 1] = arguments[_key6];}

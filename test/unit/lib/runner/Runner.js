@@ -1,7 +1,7 @@
 //imports
 const dummy = require("justo-dummy");
 const spy = require("justo-spy");
-const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
+const Runner = require("../../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("Runner", function() {

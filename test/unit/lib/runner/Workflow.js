@@ -2,10 +2,10 @@
 const assert = require("assert");
 const dummy = require("justo-dummy");
 const spy = require("justo-spy");
-const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
+const Runner = require("../../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
-describe("Workflow", function() {
+describe("Workflow (runner)", function() {
   var runner, workflow, loggers, reporters;
 
   beforeEach(function() {

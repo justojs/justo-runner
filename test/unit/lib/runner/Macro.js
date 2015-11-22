@@ -2,11 +2,12 @@
 const assert = require("assert");
 const dummy = require("justo-dummy");
 const spy = require("justo-spy");
-const Macro = require("justo-task").Macro;
-const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
+const PKG = require("../../../../dist/es5/nodejs/justo-runner");
+const Macro = PKG.Macro;
+const Runner = PKG.Runner;
 
 //suite
-describe("Macro", function() {
+describe("Macro (runner)", function() {
   var runner, loggers, reporters, macro, simple;
   function fn1() {}
   function fn2() {}

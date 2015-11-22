@@ -1,6 +1,6 @@
 {
   "name": "justo-runner",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "The Justo.js runner.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -33,7 +33,6 @@
   },
   "peerDependencies": {
     "justo-injector": "*",
-    "justo-task": "*",
     "justo-result": "*"
   },
   "devDependencies": {
@@ -49,7 +48,6 @@
     "justo-injector": "*",
     "justo-result": "*",
     "justo-spy": "*",
-    "justo-task": "*",
     "mocha": "*"
   },
   "preferGlobal": false,

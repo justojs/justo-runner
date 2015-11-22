@@ -2,11 +2,12 @@
 const assert = require("assert");
 const dummy = require("justo-dummy");
 const spy = require("justo-spy");
-const SimpleTask = require("justo-task").SimpleTask;
-const Runner = require("../../../dist/es5/nodejs/justo-runner").Runner;
+const PKG = require("../../../../dist/es5/nodejs/justo-runner");
+const SimpleTask = PKG.SimpleTask;
+const Runner = PKG.Runner;
 
 //suite
-describe("SimpleTask", function() {
+describe("SimpleTask (runner)", function() {
   var runner, simple, loggers, reporters;
 
   beforeEach(function() {
