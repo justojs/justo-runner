@@ -348,7 +348,7 @@ Runner = (function () {
       var title, res;
 
 
-      title = opts.title || workflow.fqn;
+      title = opts.title || workflow.title;
       if (!opts.hasOwnProperty("ignore")) opts.ignore = workflow.ignore;
       if (!opts.hasOwnProperty("mute")) opts.mute = workflow.mute;
 
