@@ -8,13 +8,7 @@
 
 var simple = Symbol();
 var macro = Symbol();
-var workflow = Symbol();
-var runSimpleTask = Symbol();
-var runMacro = Symbol();
-var runWorkflow = Symbol();
-var defineTask = Symbol();
-var defineIgnore = Symbol();
-var defineMute = Symbol();var 
+var workflow = Symbol();var 
 
 
 
@@ -97,16 +91,13 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this[runSimpleTask](task, opts, params);};
+        return _this.runSimpleTask(task, opts, params);};
 
 
-      this[defineTask](wrapper, task);
-      this[defineIgnore](wrapper);
-      this[defineMute](wrapper);
+      this.initWrapper(wrapper, task);
 
 
-      return wrapper;} }, { key: 
-
+      return wrapper;} }, { key: "runSimpleTask", value: 
 
 
 
@@ -115,7 +106,9 @@ Runner = (function () {
 
 
 
-    runSimpleTask, value: function value(task, opts, params) {
+
+
+    function runSimpleTask(task, opts, params) {
       var title, res;
 
 
@@ -219,16 +212,13 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this2[runMacro](task, opts, params);};
+        return _this2.runMacro(task, opts, params);};
 
 
-      this[defineTask](wrapper, task);
-      this[defineIgnore](wrapper);
-      this[defineMute](wrapper);
+      this.initWrapper(wrapper, task);
 
 
-      return wrapper;} }, { key: 
-
+      return wrapper;} }, { key: "runMacro", value: 
 
 
 
@@ -237,7 +227,9 @@ Runner = (function () {
 
 
 
-    runMacro, value: function value(macro, opts, params) {
+
+
+    function runMacro(macro, opts, params) {
       var title, res;
 
 
@@ -260,9 +252,9 @@ Runner = (function () {
             var oo = { title: t.title, mute: opts.mute };
             var pp = params || t.params || [];
 
-            if (__task__ instanceof _SimpleTask2["default"]) this[runSimpleTask](__task__, oo, pp);else 
-            if (__task__ instanceof _Macro2["default"]) this[runMacro](__task__, oo, pp);else 
-            if (__task__ instanceof _Workflow2["default"]) this[runWorkflow](__task__, oo, pp);else 
+            if (__task__ instanceof _SimpleTask2["default"]) this.runSimpleTask(__task__, oo, pp);else 
+            if (__task__ instanceof _Macro2["default"]) this.runMacro(__task__, oo, pp);else 
+            if (__task__ instanceof _Workflow2["default"]) this.runWorkflow(__task__, oo, pp);else 
             throw new Error("Invalid task of macro.");}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}
 
 
@@ -325,15 +317,13 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this3[runWorkflow](task, opts, params);};
+        return _this3.runWorkflow(task, opts, params);};
 
 
-      this[defineTask](wrapper, task);
-      this[defineIgnore](wrapper);
-      this[defineMute](wrapper);
+      this.initWrapper(wrapper, task);
 
 
-      return wrapper;} }, { key: 
+      return wrapper;} }, { key: "runWorkflow", value: 
 
 
 
@@ -344,7 +334,7 @@ Runner = (function () {
 
 
 
-    runWorkflow, value: function value(workflow, opts, params) {
+    function runWorkflow(workflow, opts, params) {
       var title, res;
 
 
@@ -381,7 +371,7 @@ Runner = (function () {
 
 
 
-      return res;} }, { key: 
+      return res;} }, { key: "initWrapper", value: 
 
 
 
@@ -390,33 +380,18 @@ Runner = (function () {
 
 
 
-    defineTask, value: function value(wrapper, task) {
-      Object.defineProperty(wrapper, "__task__", { value: task });} }, { key: 
 
+    function initWrapper(wrapper, task) {
+      Object.defineProperty(wrapper, "__task__", { value: task });
 
-
-
-
-
-
-
-    defineIgnore, value: function value(wrapper) {
       Object.defineProperty(wrapper, "ignore", { 
         value: function value(opts) {for (var _len7 = arguments.length, params = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {params[_key7 - 1] = arguments[_key7];}
           if (typeof opts == "string") opts = { title: opts };
           wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));}, 
 
-        enumerable: true });} }, { key: 
+        enumerable: true });
 
 
-
-
-
-
-
-
-
-    defineMute, value: function value(wrapper) {
       Object.defineProperty(wrapper, "mute", { 
         value: function value(opts) {for (var _len8 = arguments.length, params = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {params[_key8 - 1] = arguments[_key8];}
           if (typeof opts == "string") opts = { title: opts };
