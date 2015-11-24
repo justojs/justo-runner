@@ -70,8 +70,9 @@ describe("Workflow (runner)", function() {
 
   describe("Wrapper", function() {
     it("call()", function() {
-      var fw = workflow(function() {});
-      fw.must.raise("Invalid number of arguments. At least, the title must be specified.");
+      var pp, fw = workflow(function(params) { pp = params; });
+      fw();
+      pp.must.be.eq([]);
     });
 
     it("call(title)", function() {
@@ -120,35 +121,70 @@ describe("Workflow (runner)", function() {
       workflow = runner.workflow;
     });
 
-    it("Ignore", function() {
-      var args, fw = workflow(function sum(params) { return params[0] + params[1]; });
+    describe("Ignore", function() {
+      it("Explicitly", function() {
+        var args, fw = workflow(function sum(params) { return params[0] + params[1]; });
 
-      assert(fw.ignore("test", 1, 2) === undefined);
+        assert(fw.ignore("test", 1, 2) === undefined);
 
-      runner.reporters.spy.called("start()").must.be.eq(0);
-      runner.reporters.spy.called("end()").must.be.eq(0);
-      runner.reporters.spy.called("ignore()").must.be.eq(1);
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
 
-      args = runner.reporters.spy.getArguments("ignore()");
-      args[0].must.be.eq("test");
-      args[1].must.be.instanceOf("Workflow");
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("Workflow");
 
-      runner.loggers.spy.called("debug()").must.be.eq(1);
-      runner.loggers.spy.getArguments("debug()")[0].must.be.eq("Ignoring workflow 'test'.");
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getArguments("debug()")[0].must.be.eq("Ignoring workflow 'test'.");
+      });
+
+      it("Implicitly", function() {
+        var args, fw = workflow({ignore: true}, function sum(params) { return params[0] + params[1]; });
+
+        assert(fw("test", 1, 2) === undefined);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
+
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("Workflow");
+
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getArguments("debug()")[0].must.be.eq("Ignoring workflow 'test'.");
+      });
     });
 
-    it("Mute", function() {
-      var fw = workflow(function sum(params) { return params[0] + params[1]; });
+    describe("Mute", function() {
+      it("Explicitly", function() {
+        var fw = workflow(function sum(params) { return params[0] + params[1]; });
 
-      assert(fw.mute("test", 1, 2) === undefined);
+        fw.mute("test", 1, 2).must.be.eq(3);
 
-      runner.reporters.spy.called("start()").must.be.eq(0);
-      runner.reporters.spy.called("end()").must.be.eq(0);
-      runner.reporters.spy.called("ignore()").must.be.eq(0);
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
 
-      runner.loggers.spy.called("debug()").must.be.eq(2);
-      runner.loggers.spy.getArguments("debug()", 0)[0].must.be.eq("Starting run of workflow 'test'.");
-      runner.loggers.spy.getArguments("debug()", 1)[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getArguments("debug()", 0)[0].must.be.eq("Starting run of workflow 'test'.");
+        runner.loggers.spy.getArguments("debug()", 1)[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
+      });
+
+      it("Implicitly", function() {
+        var fw = workflow({mute: true}, function sum(params) { return params[0] + params[1]; });
+
+        fw("test", 1, 2).must.be.eq(3);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getArguments("debug()", 0)[0].must.be.eq("Starting run of workflow 'test'.");
+        runner.loggers.spy.getArguments("debug()", 1)[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
+      });
     });
 
     it("Ok", function() {

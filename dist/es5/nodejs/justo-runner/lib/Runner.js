@@ -60,8 +60,8 @@ Runner = (function () {
 
 
 
-    simple, value: function value() {var _this = this;
-      var opts, fn, task, wrapper;for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+    simple, value: function value() {var _this = this;for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+      var opts, fn, task, wrapper;
 
 
       if (args.length === 0) {
@@ -79,9 +79,21 @@ Runner = (function () {
       task = new _SimpleTask2["default"](opts, fn);
 
 
-      wrapper = function (opts) {for (var _len2 = arguments.length, params = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {params[_key2 - 1] = arguments[_key2];}
+      wrapper = function () {for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {args[_key2] = arguments[_key2];}
+        var opts, params;
 
-        if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
+
+        if (args.length === 0) {
+          opts = {};
+          params = [];} else 
+        if (args.length == 1) {
+          opts = args[0];
+          params = [];} else 
+        if (args.length >= 2) {
+          opts = args[0];
+          params = args.slice(1);}
+
+
         if (typeof opts == "string") opts = { title: opts };
 
 
@@ -107,7 +119,9 @@ Runner = (function () {
       var title, res;
 
 
-      title = opts.title || task.fqn;
+      title = opts.title || task.title;
+      if (!opts.hasOwnProperty("ignore")) opts.ignore = task.ignore;
+      if (!opts.hasOwnProperty("mute")) opts.mute = task.mute;
 
 
       if (opts.ignore) {
@@ -158,8 +172,8 @@ Runner = (function () {
 
 
 
-    macro, value: function value() {var _this2 = this;
-      var opts, tasks, wrapper, task;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
+    macro, value: function value() {var _this2 = this;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
+      var opts, tasks, wrapper, task;
 
 
       if (args.length === 0) {
@@ -187,9 +201,21 @@ Runner = (function () {
 
 
 
-      wrapper = function (opts) {for (var _len4 = arguments.length, params = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {params[_key4 - 1] = arguments[_key4];}
+      wrapper = function () {for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {args[_key4] = arguments[_key4];}
+        var opts, params;
 
-        if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
+
+        if (args.length === 0) {
+          opts = {};
+          params = [];} else 
+        if (args.length == 1) {
+          opts = args[0];
+          params = [];} else 
+        if (args.length >= 2) {
+          opts = args[0];
+          params = args.slice(1);}
+
+
         if (typeof opts == "string") opts = { title: opts };
 
 
@@ -215,7 +241,9 @@ Runner = (function () {
       var title, res;
 
 
-      title = opts.title;
+      title = opts.title || macro.title;
+      if (!opts.hasOwnProperty("ignore")) opts.ignore = macro.ignore;
+      if (!opts.hasOwnProperty("mute")) opts.mute = macro.mute;
       params = params.length === 0 ? undefined : params;
 
 
@@ -260,8 +288,8 @@ Runner = (function () {
 
 
 
-    workflow, value: function value() {var _this3 = this;
-      var opts, fn, task, wrapper;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+    workflow, value: function value() {var _this3 = this;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+      var opts, fn, task, wrapper;
 
 
       if (args.length === 0) {
@@ -279,9 +307,21 @@ Runner = (function () {
       task = new _Workflow2["default"](opts, fn);
 
 
-      wrapper = function (opts) {for (var _len6 = arguments.length, params = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {params[_key6 - 1] = arguments[_key6];}
+      wrapper = function () {for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {args[_key6] = arguments[_key6];}
+        var opts, params;
 
-        if (!opts) throw new Error("Invalid number of arguments. At least, the title must be specified.");
+
+        if (args.length === 0) {
+          opts = {};
+          params = [];} else 
+        if (args.length == 1) {
+          opts = args[0];
+          params = [];} else 
+        if (args.length >= 2) {
+          opts = args[0];
+          params = args.slice(1);}
+
+
         if (typeof opts == "string") opts = { title: opts };
 
 
@@ -309,6 +349,8 @@ Runner = (function () {
 
 
       title = opts.title || workflow.fqn;
+      if (!opts.hasOwnProperty("ignore")) opts.ignore = workflow.ignore;
+      if (!opts.hasOwnProperty("mute")) opts.mute = workflow.mute;
 
 
       if (opts.ignore) {
@@ -378,7 +420,7 @@ Runner = (function () {
       Object.defineProperty(wrapper, "mute", { 
         value: function value(opts) {for (var _len8 = arguments.length, params = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {params[_key8 - 1] = arguments[_key8];}
           if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
+          return wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
 
         enumerable: true });} }, { key: "start", value: 
 

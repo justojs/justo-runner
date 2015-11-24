@@ -149,7 +149,7 @@ describe("Macro (runner)", function() {
   describe("Wrapper", function() {
     it("call()", function() {
       var fw = macro([]);
-      fw.must.raise("Invalid number of arguments. At least, the title must be specified.");
+      fw();
     });
 
     describe("Tasks are simple tasks", function() {
@@ -352,37 +352,74 @@ describe("Macro (runner)", function() {
       simple = runner.simple;
     });
 
-    it("Ignore", function() {
-      var args, fw = macro([function() { throw new Error(); }]);
+    describe("Ignore", function() {
+      it("Explicitly", function() {
+        var args, fw = macro([function() { throw new Error(); }]);
 
-      assert(fw.ignore("test") === undefined);
+        assert(fw.ignore("test") === undefined);
 
-      runner.reporters.spy.called("start()").must.be.eq(0);
-      runner.reporters.spy.called("end()").must.be.eq(0);
-      runner.reporters.spy.called("ignore()").must.be.eq(1);
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
 
-      args = runner.reporters.spy.getArguments("ignore()");
-      args[0].must.be.eq("test");
-      args[1].must.be.instanceOf("Macro");
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("Macro");
 
-      runner.loggers.spy.called("debug()").must.be.eq(1);
-      runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
+      });
+
+      it("Implicitly", function() {
+        var args, fw = macro({ignore: true}, [function() { throw new Error(); }]);
+
+        assert(fw("test") === undefined);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
+
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("Macro");
+
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
+      });
     });
 
-    it("Mute", function() {
-      var fw = macro([function() {}]);
+    describe("Mute", function() {
+      it("Explicitly", function() {
+        var fw = macro([function() {}]);
 
-      assert(fw.mute("test") === undefined);
+        assert(fw.mute("test") === undefined);
 
-      runner.reporters.spy.called("start()").must.be.eq(0);
-      runner.reporters.spy.called("end()").must.be.eq(0);
-      runner.reporters.spy.called("ignore()").must.be.eq(0);
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
 
-      runner.loggers.spy.called("debug()").must.be.eq(4);
-      runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
-      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
-      runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
+        runner.loggers.spy.called("debug()").must.be.eq(4);
+        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
+        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
+        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
+        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
+      });
+
+      it("Implicitly", function() {
+        var fw = macro({mute: true}, [function() {}]);
+
+        assert(fw("test") === undefined);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(4);
+        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
+        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
+        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
+        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
+      });
     });
 
     it("Ok", function() {
