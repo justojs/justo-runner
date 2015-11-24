@@ -7,7 +7,6 @@
 
 
 
-
 Task = (function () {
 
 
@@ -27,9 +26,18 @@ Task = (function () {
     Object.defineProperty(this, "name", { value: opts.name, enumerable: true });
     Object.defineProperty(this, "namespace", { value: opts.namespace || opts.ns, enumerable: true });
     Object.defineProperty(this, "description", { value: opts.description || opts.desc, enumerable: true });
-    Object.defineProperty(this, "title", { value: opts.title || this.name, enumerable: true });
+    Object.defineProperty(this, "_title", { value: opts.title });
     Object.defineProperty(this, "ignore", { value: opts.hasOwnProperty("ignore") ? !!opts.ignore : false, enumerable: true });
     Object.defineProperty(this, "mute", { value: opts.hasOwnProperty("mute") ? !!opts.mute : false, enumerable: true });}_createClass(Task, [{ key: "isSimple", value: 
+
+
+
+
+
+
+
+
+
 
 
 
@@ -132,4 +140,4 @@ Task = (function () {
 
 
     function isWorkflow() {
-      throw new Error("Abstract method.");} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];
+      throw new Error("Abstract method.");} }, { key: "title", get: function get() {return this._title || this.name;} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];
