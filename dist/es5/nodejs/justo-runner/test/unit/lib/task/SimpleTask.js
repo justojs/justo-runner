@@ -14,6 +14,7 @@ describe("SimpleTask (task)", function() {
         namespace: undefined,
         ns: undefined,
         name: "task",
+        title: "task",
         fqn: "task",
         description: undefined,
         fn: sync,
@@ -21,7 +22,9 @@ describe("SimpleTask (task)", function() {
         sync: true,
         asynchronous: false,
         async: false,
-        parameterized: false
+        parameterized: false,
+        ignore: false,
+        mute: false
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
@@ -30,12 +33,20 @@ describe("SimpleTask (task)", function() {
     });
 
     it("constructor(opts, fn) - sync task", function() {
-      var task = new SimpleTask({ns: "org.justojs", name: "task", desc: "Task."}, sync);
+      var task = new SimpleTask({
+        ns: "org.justojs",
+        name: "task",
+        desc: "Task.",
+        title: "The task",
+        ignore: true,
+        mute: true
+      }, sync);
 
       task.must.have({
         namespace: "org.justojs",
         ns: "org.justojs",
         name: "task",
+        title: "The task",
         fqn: "org.justojs.task",
         description: "Task.",
         fn: sync,
@@ -43,7 +54,9 @@ describe("SimpleTask (task)", function() {
         sync: true,
         asynchronous: false,
         async: false,
-        parameterized: false
+        parameterized: false,
+        ignore: true,
+        mute: true
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
@@ -52,12 +65,20 @@ describe("SimpleTask (task)", function() {
     });
 
     it("constructor(opts, fn) - async task and parameterized", function() {
-      var task = new SimpleTask({ns: "org.justojs", name: "task", desc: "Task."}, async);
+      var task = new SimpleTask({
+        ns: "org.justojs",
+        name: "task",
+        title: "Task",
+        desc: "Task.",
+        ignore: true,
+        mute: true
+      }, async);
 
       task.must.have({
         namespace: "org.justojs",
         ns: "org.justojs",
         name: "task",
+        title: "Task",
         fqn: "org.justojs.task",
         description: "Task.",
         fn: async,
@@ -65,7 +86,9 @@ describe("SimpleTask (task)", function() {
         sync: false,
         asynchronous: true,
         async: true,
-        parameterized: true
+        parameterized: true,
+        ignore: true,
+        mute: true
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
