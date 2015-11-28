@@ -37,4 +37,19 @@ describe("Runner", function() {
       runner.reporters.must.not.be.eq(undefined);
     });
   });
+
+  it("#publishInto(object)", function() {
+    var justo = {}, runner = new Runner({loggers, reporters});
+    runner.publishInto(justo);
+    justo.simple.must.be.eq(runner.simple);
+    justo.macro.must.be.eq(runner.macro);
+    justo.workflow.must.be.eq(runner.workflow);
+  });
+
+  it("#unpublishFrom(object)", function() {
+    var justo = {}, runner = new Runner({loggers, reporters});
+    runner.publishInto(justo);
+    runner.unpublishFrom(justo);
+    justo.must.not.have(["simple", "macro", "workflow"]);
+  });
 });

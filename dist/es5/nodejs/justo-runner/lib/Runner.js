@@ -33,7 +33,29 @@ Runner = (function () {
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
     Object.defineProperty(this, "simple", { value: this[simple].bind(this), enumerable: true });
     Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });
-    Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });}_createClass(Runner, [{ key: 
+    Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });}_createClass(Runner, [{ key: "publishInto", value: 
+
+
+
+
+
+
+
+    function publishInto(obj) {
+      Object.defineProperty(obj, "simple", { value: this.simple, enumerable: true, configurable: true });
+      Object.defineProperty(obj, "macro", { value: this.macro, enumerable: true, configurable: true });
+      Object.defineProperty(obj, "workflow", { value: this.workflow, enumerable: true, configurable: true });} }, { key: "unpublishFrom", value: 
+
+
+
+
+
+
+
+    function unpublishFrom(obj) {
+      delete obj.simple;
+      delete obj.macro;
+      delete obj.workflow;} }, { key: 
 
 
 
