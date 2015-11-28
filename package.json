@@ -1,6 +1,6 @@
 {
   "name": "justo-runner",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "The Justo.js runner.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -16,7 +16,10 @@
       "url": ""
     }
   ],
-  "keywords": [],
+  "keywords": [
+    "Justo",
+    "Justo.js"
+  ],
   "bugs": {
     "url": "https://github.com/justojs/justo-runner/issues",
     "email": "justojs.org@outlook.com"

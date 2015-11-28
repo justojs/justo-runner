@@ -397,18 +397,8 @@ Runner = (function () {
           if (typeof opts == "string") opts = { title: opts };
           return wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
 
-        enumerable: true });} }, { key: "start", value: 
+        enumerable: true });} }, { key: "end", value: 
 
-
-
-
-
-
-
-
-    function start(title) {
-      this.reporters.start(title);
-      this.loggers.debug("Starting report '" + title + "'.");} }, { key: "end", value: 
 
 
 
