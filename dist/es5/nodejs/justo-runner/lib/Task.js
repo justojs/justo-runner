@@ -118,26 +118,5 @@ Task = (function () {
 
 
 
-
     function isComposite() {
-      throw new Error("Abstract method.");} }, { key: "isMacro", value: 
-
-
-
-
-
-
-
-
-    function isMacro() {
-      throw new Error("Abstract method.");} }, { key: "isWorkflow", value: 
-
-
-
-
-
-
-
-
-    function isWorkflow() {
-      throw new Error("Abstract method.");} }, { key: "title", get: function get() {return this._title || this.name;} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];
+      return !this.isSimple();} }, { key: "title", get: function get() {return this._title || this.name;} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];

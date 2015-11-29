@@ -25,8 +25,6 @@ describe("Workflow (task)", function() {
       });
       task.isSimple().must.be.eq(false);
       task.isComposite().must.be.eq(true);
-      task.isWorkflow().must.be.eq(true);
-      task.isMacro().must.be.eq(false);
     });
 
     it("constructor(opts, fn) - sync workflow", function() {
@@ -47,8 +45,6 @@ describe("Workflow (task)", function() {
       });
       task.isSimple().must.be.eq(false);
       task.isComposite().must.be.eq(true);
-      task.isWorkflow().must.be.eq(true);
-      task.isMacro().must.be.eq(false);
     });
 
     it("constructor(opts, fn) - async workflow", function() {
@@ -69,8 +65,6 @@ describe("Workflow (task)", function() {
       });
       task.isSimple().must.be.eq(false);
       task.isComposite().must.be.eq(true);
-      task.isWorkflow().must.be.eq(true);
-      task.isMacro().must.be.eq(false);
     });
   });
 });

@@ -51,49 +51,21 @@ Macro = (function (_CompositeTask) {_inherits(Macro, _CompositeTask);
 
 
 
-      this.tasks.push(t);} }, { key: "isSimple", value: 
+      this.tasks.push(t);} }, { key: "length", get: function get() {return this.tasks.length;} }, { key: "synchronous", get: 
 
 
 
 
 
+    function get() {
+      var res;
+
+
+      res = true;
+
+      for (var i = 0, tasks = this.tasks; res && i < tasks.length; ++i) {
+        if (tasks[i].async) res = false;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function isSimple() {
-      return false;} }, { key: "isComposite", value: 
-
-
-
-
-
-    function isComposite() {
-      return true;} }, { key: "isMacro", value: 
-
-
-
-
-
-    function isMacro() {
-      return true;} }, { key: "isWorkflow", value: 
-
-
-
-
-
-    function isWorkflow() {
-      return false;} }, { key: "length", get: function get() {return this.tasks.length;} }, { key: "synchronous", get: function get() {var res;res = true;for (var i = 0, tasks = this.tasks; res && i < tasks.length; ++i) {if (tasks[i].async) res = false;}return res;} }]);return Macro;})(_CompositeTask3["default"]);exports["default"] = Macro;module.exports = exports["default"];
+      return res;} }]);return Macro;})(_CompositeTask3["default"]);exports["default"] = Macro;module.exports = exports["default"];

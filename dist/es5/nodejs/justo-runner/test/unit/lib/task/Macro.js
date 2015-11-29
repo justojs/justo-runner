@@ -29,8 +29,6 @@ describe("Macro (task)", function() {
       });
       task.isSimple().must.be.eq(false);
       task.isComposite().must.be.eq(true);
-      task.isMacro().must.be.eq(true);
-      task.isWorkflow().must.be.eq(false);
     });
 
     it("constructor(opts, tasks)", function() {
@@ -51,8 +49,6 @@ describe("Macro (task)", function() {
       });
       task.isSimple().must.be.eq(false);
       task.isComposite().must.be.eq(true);
-      task.isMacro().must.be.eq(true);
-      task.isWorkflow().must.be.eq(false);
     });
   });
 

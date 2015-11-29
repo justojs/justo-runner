@@ -28,8 +28,6 @@ describe("SimpleTask (task)", function() {
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
-      task.isMacro().must.be.eq(false);
-      task.isWorkflow().must.be.eq(false);
     });
 
     it("constructor(opts, fn) - sync task", function() {
@@ -60,8 +58,6 @@ describe("SimpleTask (task)", function() {
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
-      task.isMacro().must.be.eq(false);
-      task.isWorkflow().must.be.eq(false);
     });
 
     it("constructor(opts, fn) - async task and parameterized", function() {
@@ -92,8 +88,6 @@ describe("SimpleTask (task)", function() {
       });
       task.isSimple().must.be.eq(true);
       task.isComposite().must.be.eq(false);
-      task.isMacro().must.be.eq(false);
-      task.isWorkflow().must.be.eq(false);
     });
   });
 });

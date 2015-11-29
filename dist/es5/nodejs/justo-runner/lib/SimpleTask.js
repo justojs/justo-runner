@@ -61,25 +61,4 @@ SimpleTask = (function (_Task) {_inherits(SimpleTask, _Task);
 
 
     function isSimple() {
-      return true;} }, { key: "isComposite", value: 
-
-
-
-
-
-    function isComposite() {
-      return false;} }, { key: "isMacro", value: 
-
-
-
-
-
-    function isMacro() {
-      return false;} }, { key: "isWorkflow", value: 
-
-
-
-
-
-    function isWorkflow() {
-      return false;} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return SimpleTask;})(_Task3["default"]);exports["default"] = SimpleTask;module.exports = exports["default"];
+      return true;} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return SimpleTask;})(_Task3["default"]);exports["default"] = SimpleTask;module.exports = exports["default"];

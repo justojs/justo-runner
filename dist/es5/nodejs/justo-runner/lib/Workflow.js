@@ -31,7 +31,14 @@ Workflow = (function (_CompositeTask) {_inherits(Workflow, _CompositeTask);
 
     Object.defineProperty(this, "fn", { value: fn, enumerable: true });
     Object.defineProperty(this, "synchronous", { value: !(0, _justoInjector.hasParameter)("done", this.fn), enumerable: true });
-    Object.defineProperty(this, "parameterized", { value: (0, _justoInjector.hasParameter)("params", this.fn), enumerable: true });}_createClass(Workflow, [{ key: "isSimple", value: 
+    Object.defineProperty(this, "parameterized", { value: (0, _justoInjector.hasParameter)("params", this.fn), enumerable: true });}_createClass(Workflow, [{ key: "sync", get: 
+
+
+
+
+
+    function get() {
+      return this.synchronous;} }, { key: "asynchronous", get: 
 
 
 
@@ -39,47 +46,12 @@ Workflow = (function (_CompositeTask) {_inherits(Workflow, _CompositeTask);
 
 
 
+    function get() {
+      return !this.sync;} }, { key: "async", get: 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function isSimple() {
-      return false;} }, { key: "isComposite", value: 
-
-
-
-
-
-    function isComposite() {
-      return true;} }, { key: "isMacro", value: 
-
-
-
-
-
-    function isMacro() {
-      return false;} }, { key: "isWorkflow", value: 
-
-
-
-
-
-    function isWorkflow() {
-      return true;} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Workflow;})(_CompositeTask3["default"]);exports["default"] = Workflow;module.exports = exports["default"];
+    function get() {
+      return this.asynchronous;} }]);return Workflow;})(_CompositeTask3["default"]);exports["default"] = Workflow;module.exports = exports["default"];
