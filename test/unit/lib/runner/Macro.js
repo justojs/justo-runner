@@ -400,8 +400,8 @@ describe("Macro (runner)", function() {
 
         runner.loggers.spy.called("debug()").must.be.eq(4);
         runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
+        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'simple anonymous task'."]);
+        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'simple anonymous task' in 'OK' state."]);
         runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
 
@@ -416,8 +416,8 @@ describe("Macro (runner)", function() {
 
         runner.loggers.spy.called("debug()").must.be.eq(4);
         runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
+        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'simple anonymous task'."]);
+        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'simple anonymous task' in 'OK' state."]);
         runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
     });
@@ -452,8 +452,8 @@ describe("Macro (runner)", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(4);
       runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'simple anonymous task'."]);
-      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'simple anonymous task' in 'OK' state."]);
+      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'simple anonymous task'."]);
+      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'simple anonymous task' in 'OK' state."]);
       runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
     });
 
@@ -487,8 +487,8 @@ describe("Macro (runner)", function() {
 
       runner.loggers.spy.called("debug()").must.be.eq(4);
       runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of simple task 'raise'."]);
-      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of simple task 'raise' in 'FAILED' state."]);
+      runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'raise'."]);
+      runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'raise' in 'FAILED' state."]);
       runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
     });
   });

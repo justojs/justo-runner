@@ -8,7 +8,9 @@
 
 var simple = Symbol();
 var macro = Symbol();
-var workflow = Symbol();var 
+var workflow = Symbol();
+var runSyncSimpleTask = Symbol();
+var runAsyncSimpleTask = Symbol();var 
 
 
 
@@ -131,45 +133,78 @@ Runner = (function () {
 
 
     function runSimpleTask(task, opts, params) {
-      var title, res;
+      var res;
 
 
-      title = opts.title || task.title;
-      if (!opts.hasOwnProperty("ignore")) opts.ignore = task.ignore;
-      if (!opts.hasOwnProperty("mute")) opts.mute = task.mute;
+      opts = Object.assign({ title: task.title, ignore: task.ignore, mute: task.mute }, opts);
 
 
       if (opts.ignore) {
-        this.loggers.debug("Ignoring simple task '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, task);} else 
+        this.loggers.debug("Ignoring simple task '" + opts.title + "'.");
+        if (!opts.mute) this.reporters.ignore(opts.title, task);} else 
       {
-        var state = undefined, err = undefined, start = undefined, end = undefined;
-
-        try {
-          var fn = task.fn;
-          params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
-
-          this.loggers.debug("Starting run of simple task '" + title + "'.");
-          if (!opts.mute) this.reporters.start(title, task);
-
-          start = Date.now();
-          res = fn.apply(undefined, _toConsumableArray(params));
-          state = _justoResult.ResultState.OK;} 
-        catch (e) {
-          err = e;
-          state = _justoResult.ResultState.FAILED;} finally 
-        {
-          end = Date.now();}
-
-
-        this.loggers.debug("Ended run of simple task '" + title + "' in '" + state + "' state.");
-        if (!opts.mute) this.reporters.end(task, state, err, start, end);}
+        if (task.sync) res = this[runSyncSimpleTask](task, opts, params);else 
+        this[runAsyncSimpleTask](task, opts, params);}
 
 
 
       return res;} }, { key: 
 
 
+    runSyncSimpleTask, value: function value(task, opts, params) {
+      var res = undefined, state = undefined, err = undefined, start = undefined, end = undefined;
+
+
+      try {
+        var fn = task.fn;
+
+        params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
+
+        this.loggers.debug("Starting sync run of simple task '" + opts.title + "'.");
+        if (!opts.mute) this.reporters.start(opts.title, task);
+
+        start = Date.now();
+        res = fn.apply(undefined, _toConsumableArray(params));
+        state = _justoResult.ResultState.OK;} 
+      catch (e) {
+        err = e;
+        state = _justoResult.ResultState.FAILED;} finally 
+      {
+        end = Date.now();}
+
+
+      this.loggers.debug("Ended sync run of simple task '" + opts.title + "' in '" + state + "' state.");
+      if (!opts.mute) this.reporters.end(task, state, err, start, end);
+
+
+      return res;} }, { key: 
+
+
+    runAsyncSimpleTask, value: function value(task, opts, params) {var _this2 = this;
+      var deasync = require("deasync");
+      var state, err, start, end;
+
+      try {(function () {
+          var fn = task.fn;
+
+          _this2.loggers.debug("Starting async run of simple task '" + opts.title + "'.");
+          if (!opts.mute) _this2.reporters.start(opts.title, task);
+
+          start = Date.now();
+          err = deasync(function (done) {
+            params = (0, _justoInjector.inject)({ done: done, params: params, logger: this.loggers, log: this.loggers }, fn);
+            fn.apply(undefined, _toConsumableArray(params));})();
+
+          state = err ? Result.FAILED : _justoResult.ResultState.OK;})();} 
+      catch (e) {
+        err = e;
+        state = _justoResult.ResultState.FAILED;} finally 
+      {
+        end = Date.now();}
+
+
+      this.loggers.debug("Ended async run of simple task '" + opts.title + "' in '" + state + "' state.");
+      if (!opts.mute) this.reporters.end(task, state, err, start, end);} }, { key: 
 
 
 
@@ -187,7 +222,9 @@ Runner = (function () {
 
 
 
-    macro, value: function value() {var _this2 = this;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
+
+
+    macro, value: function value() {var _this3 = this;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
       var opts, tasks, wrapper, task;
 
 
@@ -234,7 +271,7 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this2.runMacro(task, opts, params);};
+        return _this3.runMacro(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
@@ -302,7 +339,7 @@ Runner = (function () {
 
 
 
-    workflow, value: function value() {var _this3 = this;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+    workflow, value: function value() {var _this4 = this;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
       var opts, fn, task, wrapper;
 
 
@@ -339,7 +376,7 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this3.runWorkflow(task, opts, params);};
+        return _this4.runWorkflow(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);

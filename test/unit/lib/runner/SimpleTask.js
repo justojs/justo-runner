@@ -112,7 +112,7 @@ describe("SimpleTask (runner)", function() {
     });
   });
 
-  describe("#[runSimpleTask]()", function() {
+  describe("#[runSyncSimpleTask]()", function() {
     beforeEach(function() {
       runner = spy(new Runner(
         {
@@ -171,8 +171,8 @@ describe("SimpleTask (runner)", function() {
         runner.reporters.spy.called("ignore()").must.be.eq(0);
 
         runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'OK' state.");
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting sync run of simple task 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended sync run of simple task 'test' in 'OK' state.");
       });
 
       it("Implicitly", function() {
@@ -185,8 +185,8 @@ describe("SimpleTask (runner)", function() {
         runner.reporters.spy.called("ignore()").must.be.eq(0);
 
         runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'OK' state.");
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting sync run of simple task 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended sync run of simple task 'test' in 'OK' state.");
       });
     });
 
@@ -211,8 +211,8 @@ describe("SimpleTask (runner)", function() {
       runner.reporters.spy.called("ignore()").must.be.eq(0);
 
       runner.loggers.spy.called("debug()").must.be.eq(2);
-      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'OK' state.");
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting sync run of simple task 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended sync run of simple task 'test' in 'OK' state.");
     });
 
     it("Failed", function() {
@@ -236,8 +236,140 @@ describe("SimpleTask (runner)", function() {
       runner.reporters.spy.called("ignore()").must.be.eq(0);
 
       runner.loggers.spy.called("debug()").must.be.eq(2);
-      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of simple task 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of simple task 'test' in 'FAILED' state.");
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting sync run of simple task 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended sync run of simple task 'test' in 'FAILED' state.");
+    });
+  });
+
+  describe("#[runAsyncSimpleTask]()", function() {
+    beforeEach(function() {
+      runner = spy(new Runner(
+        {
+          reporters: spy({}, ["start() {}", "end() {}", "ignore() {}"]),
+          loggers: spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"])
+        }
+      ));
+
+      simple = runner.simple;
+    });
+
+    describe("Ignore", function() {
+      it("Explicitly", function() {
+        var args, fw = simple(function async(params, done) { done(); });
+
+        assert(fw.ignore("test", 1, 2) === undefined);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
+
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("SimpleTask");
+
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring simple task 'test'.");
+      });
+
+      it("Implicitly", function() {
+        var args, fw = simple({ignore: true}, function async(params, done) { done(); });
+
+        assert(fw("test", 1, 2) === undefined);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(1);
+
+        args = runner.reporters.spy.getArguments("ignore()");
+        args[0].must.be.eq("test");
+        args[1].must.be.instanceOf("SimpleTask");
+
+        runner.loggers.spy.called("debug()").must.be.eq(1);
+        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring simple task 'test'.");
+      });
+    });
+
+    describe("Mute", function() {
+      it("Explicitly", function() {
+        var res, fw = simple(function sum(params, done) {res = params[0] + params[1]; done(); });
+
+        assert(fw.mute("test", 1, 2) === undefined);
+        res.must.be.eq(3);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting async run of simple task 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended async run of simple task 'test' in 'OK' state.");
+      });
+
+      it("Implicitly", function() {
+        var res, fw = simple({mute: true}, function sum(params, done) { res = params[0] + params[1]; done(); });
+
+        assert(fw("test", 1, 2) === undefined);
+        res.must.be.eq(3);
+
+        runner.reporters.spy.called("start()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(0);
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting async run of simple task 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended async run of simple task 'test' in 'OK' state.");
+      });
+    });
+
+    it("Ok", function() {
+      var res, fw = simple(function sum(params, done) { res = params[0] + params[1]; done(); });
+
+      assert(fw("test", 1, 2) === undefined);
+      res.must.be.eq(3);
+
+      runner.reporters.spy.called("start()").must.be.eq(1);
+      runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
+      runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
+      runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("SimpleTask");
+
+      runner.reporters.spy.called("end()").must.be.eq(1);
+      runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
+      runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("SimpleTask");
+      runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("OK");
+      assert(runner.reporters.spy.getCall("end()").arguments[2] === undefined);
+      runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
+      runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
+
+      runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+      runner.loggers.spy.called("debug()").must.be.eq(2);
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting async run of simple task 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended async run of simple task 'test' in 'OK' state.");
+    });
+
+    it("Failed", function() {
+      var fw = simple(function raise(params, done) { done(new Error(params[0])); });
+
+      assert(fw("test", "Test error.") === undefined);
+
+      runner.reporters.spy.called("start()").must.be.eq(1);
+      runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
+      runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
+      runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("SimpleTask");
+
+      runner.reporters.spy.called("end()").must.be.eq(1);
+      runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
+      runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("SimpleTask");
+      runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("FAILED");
+      runner.reporters.spy.getCall("end()").arguments[2].must.be.eq(new Error("Test error."));
+      runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
+      runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
+
+      runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+      runner.loggers.spy.called("debug()").must.be.eq(2);
+      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting async run of simple task 'test'.");
+      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended async run of simple task 'test' in 'FAILED' state.");
     });
   });
 });
