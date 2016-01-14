@@ -180,22 +180,18 @@ Runner = (function () {
       return res;} }, { key: 
 
 
-    runAsyncSimpleTask, value: function value(task, opts, params) {var _this2 = this;
-      var deasync = require("deasync");
+    runAsyncSimpleTask, value: function value(task, opts, params) {
       var state, err, start, end;
 
-      try {(function () {
-          var fn = task.fn;
+      try {
+        var fn = task.fn;
 
-          _this2.loggers.debug("Starting async run of simple task '" + opts.title + "'.");
-          if (!opts.mute) _this2.reporters.start(opts.title, task);
+        this.loggers.debug("Starting async run of simple task '" + opts.title + "'.");
+        if (!opts.mute) this.reporters.start(opts.title, task);
 
-          start = Date.now();
-          err = deasync(function (done) {
-            params = (0, _justoInjector.inject)({ done: done, params: params, logger: this.loggers, log: this.loggers }, fn);
-            fn.apply(undefined, _toConsumableArray(params));})();
-
-          state = err ? Result.FAILED : _justoResult.ResultState.OK;})();} 
+        start = Date.now();
+        err = this.runAsyncFunction(fn, params);
+        state = err ? Result.FAILED : _justoResult.ResultState.OK;} 
       catch (e) {
         err = e;
         state = _justoResult.ResultState.FAILED;} finally 
@@ -204,7 +200,41 @@ Runner = (function () {
 
 
       this.loggers.debug("Ended async run of simple task '" + opts.title + "' in '" + state + "' state.");
-      if (!opts.mute) this.reporters.end(task, state, err, start, end);} }, { key: 
+      if (!opts.mute) this.reporters.end(task, state, err, start, end);} }, { key: "runAsyncFunction", value: 
+
+
+
+
+
+
+
+
+
+
+
+    function runAsyncFunction(fn, params) {
+      var deasync = require("deasync");
+      var err;
+
+      try {
+        err = deasync(function (done) {
+          function jdone(err) {
+            if (err) {
+              if (err instanceof Error) done(err);else 
+              done(new Error(err));} else 
+            {
+              done();}}
+
+
+
+          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: this.loggers, log: this.loggers }, fn);
+          fn.apply(undefined, _toConsumableArray(params));})();} 
+
+      catch (e) {
+        err = e;}
+
+
+      return err;} }, { key: 
 
 
 
@@ -224,7 +254,7 @@ Runner = (function () {
 
 
 
-    macro, value: function value() {var _this3 = this;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
+    macro, value: function value() {var _this2 = this;for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {args[_key3] = arguments[_key3];}
       var opts, tasks, wrapper, task;
 
 
@@ -271,7 +301,7 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this3.runMacro(task, opts, params);};
+        return _this2.runMacro(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
@@ -339,7 +369,7 @@ Runner = (function () {
 
 
 
-    workflow, value: function value() {var _this4 = this;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
+    workflow, value: function value() {var _this3 = this;for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {args[_key5] = arguments[_key5];}
       var opts, fn, task, wrapper;
 
 
@@ -376,7 +406,7 @@ Runner = (function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this4.runWorkflow(task, opts, params);};
+        return _this3.runWorkflow(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
