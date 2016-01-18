@@ -21,6 +21,8 @@ Task = (function () {
 
     if (typeof opts == "string") opts = { name: opts };
     if (!opts.name) throw new Error("Expected task name.");
+    if (opts.hasOwnProperty("onlyIf")) opts.ignore = !opts.onlyIf;
+    if (opts.hasOwnProperty("onlyif")) opts.inore = !opts.onlyif;
 
 
     Object.defineProperty(this, "name", { value: opts.name, enumerable: true });
@@ -29,6 +31,22 @@ Task = (function () {
     Object.defineProperty(this, "_title", { value: opts.title });
     Object.defineProperty(this, "ignore", { value: opts.hasOwnProperty("ignore") ? !!opts.ignore : false, enumerable: true });
     Object.defineProperty(this, "mute", { value: opts.hasOwnProperty("mute") ? !!opts.mute : false, enumerable: true });}_createClass(Task, [{ key: "isSimple", value: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,4 +137,4 @@ Task = (function () {
 
 
     function isComposite() {
-      return !this.isSimple();} }, { key: "title", get: function get() {return this._title || this.name;} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];
+      return !this.isSimple();} }, { key: "onlyIf", get: function get() {return !this.ignore;} }, { key: "onlyif", get: function get() {return this.onlyIf;} }, { key: "title", get: function get() {return this._title || this.name;} }, { key: "ns", get: function get() {return this.namespace;} }, { key: "fullQualifiedName", get: function get() {return (this.namespace ? this.namespace + "." : "") + this.name;} }, { key: "fqn", get: function get() {return this.fullQualifiedName;} }, { key: "desc", get: function get() {return this.description;} }, { key: "synchronous", get: function get() {throw new Error("Abstract property.");} }, { key: "sync", get: function get() {return this.synchronous;} }, { key: "asynchronous", get: function get() {return !this.sync;} }, { key: "async", get: function get() {return this.asynchronous;} }]);return Task;})();exports["default"] = Task;module.exports = exports["default"];

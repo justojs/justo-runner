@@ -30,7 +30,9 @@ describe("Workflow (runner)", function() {
       fw.__task__.must.have({
         namespace: undefined,
         name: "fn",
-        description: undefined
+        description: undefined,
+        ignore: false,
+        onlyif: true
       });
       fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
@@ -45,7 +47,60 @@ describe("Workflow (runner)", function() {
       fw.__task__.must.have({
         namespace: undefined,
         name: "fn",
-        description: "Description."
+        description: "Description.",
+        ignore: false,
+        onlyif: true
+      });
+      fw.__task__.fn.must.be.same(fn);
+      fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
+    });
+
+    it("workflow(opts, fn) - ignore indicated", function() {
+      var fw = workflow({ignore: true}, fn);
+
+      fw.must.be.instanceOf(Function);
+      fw.__task__.must.be.instanceOf("Workflow");
+      fw.__task__.must.have({
+        namespace: undefined,
+        name: "fn",
+        description: undefined,
+        ignore: true,
+        onlyif: false
+      });
+      fw.__task__.fn.must.be.same(fn);
+      fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
+    });
+
+    it("workflow(opts, fn) - onlyIf indicated", function() {
+      var fw = workflow({onlyIf: true}, fn);
+
+      fw.must.be.instanceOf(Function);
+      fw.__task__.must.be.instanceOf("Workflow");
+      fw.__task__.must.have({
+        namespace: undefined,
+        name: "fn",
+        description: undefined,
+        ignore: false,
+        onlyif: true
+      });
+      fw.__task__.fn.must.be.same(fn);
+      fw.ignore.must.be.instanceOf(Function);
+      fw.mute.must.be.instanceOf(Function);
+    });
+
+    it("workflow(opts, fn) - onlyif indicated", function() {
+      var fw = workflow({onlyif: true}, fn);
+
+      fw.must.be.instanceOf(Function);
+      fw.__task__.must.be.instanceOf("Workflow");
+      fw.__task__.must.have({
+        namespace: undefined,
+        name: "fn",
+        description: undefined,
+        ignore: false,
+        onlyif: true
       });
       fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
@@ -60,7 +115,9 @@ describe("Workflow (runner)", function() {
       fw.__task__.must.have({
         namespace: undefined,
         name: "test",
-        description: undefined
+        description: undefined,
+        ignore: false,
+        onlyif: true
       });
       fw.__task__.fn.must.be.same(fn);
       fw.ignore.must.be.instanceOf(Function);
@@ -109,19 +166,18 @@ describe("Workflow (runner)", function() {
     });
   });
 
-  describe("#[runWorkflow]()", function() {
+  describe("#runWorkflow()", function() {
     beforeEach(function() {
-      runner = spy(new Runner(
-        {
-          reporters: spy({}, ["start() {}", "end() {}", "ignore() {}"]),
-          loggers: spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"])
-        }
-      ));
-
-      workflow = runner.workflow;
+      reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
+      loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
     });
 
     describe("Ignore", function() {
+      beforeEach(function() {
+        runner = new Runner({loggers, reporters});
+        workflow = runner.workflow;
+      });
+
       it("Explicitly", function() {
         var args, fw = workflow(function sum(params) { return params[0] + params[1]; });
 
@@ -158,6 +214,11 @@ describe("Workflow (runner)", function() {
     });
 
     describe("Mute", function() {
+      beforeEach(function() {
+        runner = new Runner({loggers, reporters});
+        workflow = runner.workflow;
+      });
+
       it("Explicitly", function() {
         var fw = workflow(function sum(params) { return params[0] + params[1]; });
 
@@ -187,54 +248,99 @@ describe("Workflow (runner)", function() {
       });
     });
 
-    it("Ok", function() {
-      var fw = workflow(function sum(params) { return params[0] + params[1]; });
+    describe("OK", function() {
+      beforeEach(function() {
+        runner = new Runner({loggers, reporters});
+        workflow = runner.workflow;
+      });
 
-      fw("test", 1, 2).must.be.eq(3);
+      it("Ok", function() {
+        var fw = workflow(function sum(params) { return params[0] + params[1]; });
 
-      runner.reporters.spy.called("start()").must.be.eq(1);
-      runner.reporters.spy.getArguments("start()").length.must.be.eq(2);
-      runner.reporters.spy.getArguments("start()")[0].must.be.eq("test");
-      runner.reporters.spy.getArguments("start()")[1].must.be.instanceOf("Workflow");
+        fw("test", 1, 2).must.be.eq(3);
 
-      runner.reporters.spy.called("end()").must.be.eq(1);
-      runner.reporters.spy.getArguments("end()").length.must.be.eq(5);
-      runner.reporters.spy.getArguments("end()")[0].must.be.instanceOf("Workflow");
-      runner.reporters.spy.getArguments("end()")[1].name.must.be.eq("OK");
-      assert(runner.reporters.spy.getArguments("end()")[2] === undefined);
-      runner.reporters.spy.getArguments("end()")[3].must.be.instanceOf(Number);
-      runner.reporters.spy.getArguments("end()")[4].must.be.instanceOf(Number);
+        runner.reporters.spy.called("start()").must.be.eq(1);
+        runner.reporters.spy.getArguments("start()").length.must.be.eq(2);
+        runner.reporters.spy.getArguments("start()")[0].must.be.eq("test");
+        runner.reporters.spy.getArguments("start()")[1].must.be.instanceOf("Workflow");
 
-      runner.reporters.spy.called("ignore()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(1);
+        runner.reporters.spy.getArguments("end()").length.must.be.eq(5);
+        runner.reporters.spy.getArguments("end()")[0].must.be.instanceOf("Workflow");
+        runner.reporters.spy.getArguments("end()")[1].name.must.be.eq("OK");
+        assert(runner.reporters.spy.getArguments("end()")[2] === undefined);
+        runner.reporters.spy.getArguments("end()")[3].must.be.instanceOf(Number);
+        runner.reporters.spy.getArguments("end()")[4].must.be.instanceOf(Number);
 
-      runner.loggers.spy.called("debug()").must.be.eq(2);
-      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
+      });
     });
 
-    it("Failed", function() {
-      var fw = workflow(function raise(params) { throw new Error(params[0]); });
+    describe("Failed", function() {
+      it("Failed - continue on error", function() {
+        runner = new Runner({loggers, reporters});
+        workflow = runner.workflow;
 
-      assert(fw("test", "Test error.") === undefined);
+        var fw = workflow(function raise(params) { throw new Error(params[0]); });
 
-      runner.reporters.spy.called("start()").must.be.eq(1);
-      runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
-      runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
-      runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("Workflow");
+        assert(fw("test", "Test error.") === undefined);
 
-      runner.reporters.spy.called("end()").must.be.eq(1);
-      runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
-      runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("Workflow");
-      runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("FAILED");
-      runner.reporters.spy.getCall("end()").arguments[2].must.be.eq(new Error("Test error."));
-      runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
-      runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
+        runner.reporters.spy.called("start()").must.be.eq(1);
+        runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
+        runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
+        runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("Workflow");
 
-      runner.reporters.spy.called("ignore()").must.be.eq(0);
+        runner.reporters.spy.called("end()").must.be.eq(1);
+        runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
+        runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("Workflow");
+        runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("FAILED");
+        runner.reporters.spy.getCall("end()").arguments[2].must.be.eq(new Error("Test error."));
+        runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
+        runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
 
-      runner.loggers.spy.called("debug()").must.be.eq(2);
-      runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
-      runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'FAILED' state.");
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'FAILED' state.");
+      });
+
+      it("Failed - break on error", function() {
+        runner = new Runner({loggers, reporters, onError: "break"});
+        workflow = runner.workflow;
+
+        var fw = workflow(function raise(params) { throw new Error(params[0]); });
+
+        try {
+          fw("test", "Test error.");
+          assert(true);
+        } catch (e) {
+          e.must.be.instanceOf("RunError");
+        }
+
+        runner.reporters.spy.called("start()").must.be.eq(1);
+        runner.reporters.spy.getCall("start()").arguments.length.must.be.eq(2);
+        runner.reporters.spy.getCall("start()").arguments[0].must.be.eq("test");
+        runner.reporters.spy.getCall("start()").arguments[1].must.be.instanceOf("Workflow");
+
+        runner.reporters.spy.called("end()").must.be.eq(1);
+        runner.reporters.spy.getCall("end()").arguments.length.must.be.eq(5);
+        runner.reporters.spy.getCall("end()").arguments[0].must.be.instanceOf("Workflow");
+        runner.reporters.spy.getCall("end()").arguments[1].name.must.be.eq("FAILED");
+        runner.reporters.spy.getCall("end()").arguments[2].must.be.eq(new Error("Test error."));
+        runner.reporters.spy.getCall("end()").arguments[3].must.be.instanceOf(Number);
+        runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
+
+        runner.reporters.spy.called("ignore()").must.be.eq(0);
+
+        runner.loggers.spy.called("debug()").must.be.eq(2);
+        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
+        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'FAILED' state.");
+      });
     });
   });
 });

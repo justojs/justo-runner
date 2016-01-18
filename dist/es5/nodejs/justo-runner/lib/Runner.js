@@ -3,7 +3,8 @@
 "justo-result");var _SimpleTask = require(
 "./SimpleTask");var _SimpleTask2 = _interopRequireDefault(_SimpleTask);var _Macro = require(
 "./Macro");var _Macro2 = _interopRequireDefault(_Macro);var _Workflow = require(
-"./Workflow");var _Workflow2 = _interopRequireDefault(_Workflow);
+"./Workflow");var _Workflow2 = _interopRequireDefault(_Workflow);var _RunError = require(
+"./RunError");var _RunError2 = _interopRequireDefault(_RunError);
 
 
 var simple = Symbol();
@@ -11,6 +12,7 @@ var macro = Symbol();
 var workflow = Symbol();
 var runSyncSimpleTask = Symbol();
 var runAsyncSimpleTask = Symbol();var 
+
 
 
 
@@ -35,7 +37,17 @@ Runner = (function () {
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
     Object.defineProperty(this, "simple", { value: this[simple].bind(this), enumerable: true });
     Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });
-    Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });}_createClass(Runner, [{ key: "publishInto", value: 
+    Object.defineProperty(this, "workflow", { value: this[workflow].bind(this), enumerable: true });
+    Object.defineProperty(this, "breakOnError", { value: config.onError == "break", enumerable: true });}_createClass(Runner, [{ key: "publishInto", value: 
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,6 +149,8 @@ Runner = (function () {
 
 
       opts = Object.assign({ title: task.title, ignore: task.ignore, mute: task.mute }, opts);
+      if (opts.hasOwnProperty("onlyIf")) opts.ignore = !opts.onlyIf;
+      if (opts.hasOwnProperty("onlyif")) opts.ignore = !opts.onlyif;
 
 
       if (opts.ignore) {
@@ -175,6 +189,7 @@ Runner = (function () {
 
       this.loggers.debug("Ended sync run of simple task '" + opts.title + "' in '" + state + "' state.");
       if (!opts.mute) this.reporters.end(task, state, err, start, end);
+      if (err && this.breakOnError) throw new _RunError2["default"](task, err);
 
 
       return res;} }, { key: 
@@ -200,7 +215,8 @@ Runner = (function () {
 
 
       this.loggers.debug("Ended async run of simple task '" + opts.title + "' in '" + state + "' state.");
-      if (!opts.mute) this.reporters.end(task, state, err, start, end);} }, { key: "runAsyncFunction", value: 
+      if (!opts.mute) this.reporters.end(task, state, err, start, end);
+      if (err && this.breakOnError) throw new _RunError2["default"](task, err);} }, { key: "runAsyncFunction", value: 
 
 
 
@@ -332,23 +348,35 @@ Runner = (function () {
         this.loggers.debug("Ignoring macro '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, macro);} else 
       {
+        var err = undefined;
+
         this.loggers.debug("Starting run of macro '" + title + "'.");
-        if (!opts.mute) this.reporters.start(title, macro);var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
+        if (!opts.mute) this.reporters.start(title, macro);
 
-          for (var _iterator2 = macro.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var t = _step2.value;
-            var task = t.task;
-            var __task__ = task.__task__;
-            var oo = { title: t.title, mute: opts.mute };
-            var pp = params || t.params || [];
+        try {var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
+            for (var _iterator2 = macro.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var t = _step2.value;
+              var task = t.task;
+              var __task__ = task.__task__;
+              var oo = { title: t.title, mute: opts.mute };
+              var pp = params || t.params || [];
 
-            if (__task__ instanceof _SimpleTask2["default"]) this.runSimpleTask(__task__, oo, pp);else 
-            if (__task__ instanceof _Macro2["default"]) this.runMacro(__task__, oo, pp);else 
-            if (__task__ instanceof _Workflow2["default"]) this.runWorkflow(__task__, oo, pp);else 
-            throw new Error("Invalid task of macro.");}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}
+              if (__task__ instanceof _SimpleTask2["default"]) this.runSimpleTask(__task__, oo, pp);else 
+              if (__task__ instanceof _Macro2["default"]) this.runMacro(__task__, oo, pp);else 
+              if (__task__ instanceof _Workflow2["default"]) this.runWorkflow(__task__, oo, pp);else 
+              throw new Error("Invalid task of macro.");}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}} 
+
+        catch (e) {
+          err = e;} finally 
+        {
+          if (err && this.breakOnError) {
+            this.loggers.debug("Ended run of macro '" + title + "' on error.");
+            if (!opts.mute) this.reporters.end(macro);
+            throw err;} else 
+          {
+            this.loggers.debug("Ended run of macro '" + title + "'.");
+            if (!opts.mute) this.reporters.end(macro);}}}} }, { key: 
 
 
-        this.loggers.debug("Ended run of macro '" + title + "'.");
-        if (!opts.mute) this.reporters.end(macro);}} }, { key: 
 
 
 
@@ -456,7 +484,8 @@ Runner = (function () {
 
 
         this.loggers.debug("Ended run of workflow '" + title + "' in '" + state + "' state.");
-        if (!opts.mute) this.reporters.end(workflow, state, err, start, end);}
+        if (!opts.mute) this.reporters.end(workflow, state, err, start, end);
+        if (err && this.breakOnError) throw new _RunError2["default"](workflow, err);}
 
 
 
@@ -495,7 +524,7 @@ Runner = (function () {
 
     function end() {
       this.reporters.end();
-      this.loggers.debug("Ending report.");} }], [{ key: "DEFAULT_DISPLAY", get: 
+      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }], [{ key: "DEFAULT_DISPLAY", get: 
 
 
     function get() {

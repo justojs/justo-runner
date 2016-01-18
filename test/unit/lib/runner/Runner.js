@@ -32,10 +32,20 @@ describe("Runner", function() {
       }).must.raise("Expected loggers.");
     });
 
-    it("constructor(config)", function() {
+    it("constructor({loggers, reporters})", function() {
       var runner = new Runner({loggers: {}, reporters: {}});
       runner.loggers.must.not.be.eq(undefined);
       runner.reporters.must.not.be.eq(undefined);
+      runner.breakOnError.must.be.eq(false);
+      runner.continueOnError.must.be.eq(true);
+    });
+
+    it("constructor({loggers, reporters, onError})", function() {
+      var runner = new Runner({loggers: {}, reporters: {}, onError: "break"});
+      runner.loggers.must.not.be.eq(undefined);
+      runner.reporters.must.not.be.eq(undefined);
+      runner.breakOnError.must.be.eq(true);
+      runner.continueOnError.must.be.eq(false);
     });
   });
 
