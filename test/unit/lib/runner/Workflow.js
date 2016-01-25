@@ -15,96 +15,16 @@ describe("Workflow (runner)", function() {
     workflow = runner.workflow;
   });
 
-  describe("#workflow()", function() {
+  describe("#Runner.workflow()", function() {
     function fn() {}
-
-    it("workflow()", function() {
-      workflow.must.raise("Invalid number of arguments. At least, the workflow function must be passed.");
-    });
 
     it("workflow(fn)", function() {
       var fw = workflow(fn);
 
       fw.must.be.instanceOf(Function);
       fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
+      fw.__task__.name.must.be.eq("fn");
       fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(opts, fn)", function() {
-      var fw = workflow({desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: "Description.",
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(opts, fn) - ignore indicated", function() {
-      var fw = workflow({ignore: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: true,
-        onlyif: false
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(opts, fn) - onlyIf indicated", function() {
-      var fw = workflow({onlyIf: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("workflow(opts, fn) - onlyif indicated", function() {
-      var fw = workflow({onlyif: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
     });
 
     it("workflow(name, fn)", function() {
@@ -112,16 +32,17 @@ describe("Workflow (runner)", function() {
 
       fw.must.be.instanceOf(Function);
       fw.__task__.must.be.instanceOf("Workflow");
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "test",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
+      fw.__task__.name.must.be.eq("test");
       fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
+    });
+
+    it("workflow(opts, fn)", function() {
+      var fw = workflow("test", fn);
+
+      fw.must.be.instanceOf(Function);
+      fw.__task__.must.be.instanceOf("Workflow");
+      fw.__task__.name.must.be.eq("test");
+      fw.__task__.fn.must.be.same(fn);
     });
   });
 
@@ -166,7 +87,7 @@ describe("Workflow (runner)", function() {
     });
   });
 
-  describe("#runWorkflow()", function() {
+  describe("#Runner.runWorkflow()", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
       loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);

@@ -1,6 +1,6 @@
 {
   "name": "justo-runner",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "The Justo.js runner.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -29,14 +29,16 @@
     "url": "https://github.com/justojs/justo-runner.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
   },
   "dependencies": {
     "deasync": "*"
   },
   "peerDependencies": {
     "justo-injector": "*",
-    "justo-result": "*"
+    "justo-result": "*",
+    "justo-fs": "*"
   },
   "devDependencies": {
     "grunt": "*",
@@ -48,7 +50,9 @@
     "grunt-travis-lint": "*",
     "justo-assert": "*",
     "justo-dummy": "*",
+    "justo-fs": "*",
     "justo-injector": "*",
+    "justo-loader": "*",
     "justo-result": "*",
     "justo-spy": "*",
     "mocha": "*"

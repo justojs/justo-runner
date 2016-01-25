@@ -17,12 +17,20 @@ module.exports = function(grunt) {
       es5: {
         files: {
         	"build/es5/lib/index.js": "lib/index.js",
+          "build/es5/lib/Catalog.js": "lib/Catalog.js",
           "build/es5/lib/CompositeTask.js": "lib/CompositeTask.js",
-          "build/es5/lib/Macro.js": "lib/Macro.js",
+          "build/es5/lib/FileMacro.js": "lib/FileMacro.js",
+          "build/es5/lib/Finalizer.js": "lib/Finalizer.js",
+          "build/es5/lib/Initializer.js": "lib/Initializer.js",
+          "build/es5/lib/Operation.js": "lib/Operation.js",
           "build/es5/lib/RunError.js": "lib/RunError.js",
           "build/es5/lib/Runner.js": "lib/Runner.js",
           "build/es5/lib/SimpleTask.js": "lib/SimpleTask.js",
+          "build/es5/lib/Stack.js": "lib/Stack.js",
+          "build/es5/lib/Suite.js": "lib/Suite.js",
           "build/es5/lib/Task.js": "lib/Task.js",
+          "build/es5/lib/TaskMacro.js": "lib/TaskMacro.js",
+          "build/es5/lib/Test.js": "lib/Test.js",
           "build/es5/lib/Workflow.js": "lib/Workflow.js"
         }
       }
@@ -60,7 +68,8 @@ module.exports = function(grunt) {
         options: {
         	jshintrc: true,
           ignores: [
-            "test/mocha.opts"
+            "test/mocha.opts",
+            "test/unit/data/invalid.js"
           ]
         },
 

@@ -6,7 +6,7 @@
 
 
 
-Macro = (function (_CompositeTask) {_inherits(Macro, _CompositeTask);
+TaskMacro = (function (_CompositeTask) {_inherits(TaskMacro, _CompositeTask);
 
 
 
@@ -18,13 +18,13 @@ Macro = (function (_CompositeTask) {_inherits(Macro, _CompositeTask);
 
 
 
-  function Macro(opts, tasks) {_classCallCheck(this, Macro);
+  function TaskMacro(opts, tasks) {_classCallCheck(this, TaskMacro);
 
-    _get(Object.getPrototypeOf(Macro.prototype), "constructor", this).call(this, opts);
+    _get(Object.getPrototypeOf(TaskMacro.prototype), "constructor", this).call(this, opts);
 
 
     Object.defineProperty(this, "tasks", { value: [], enumerable: true });var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
-      for (var _iterator = tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var task = _step.value;this.add(task);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}}_createClass(Macro, [{ key: "add", value: 
+      for (var _iterator = tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var task = _step.value;this.add(task);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}}_createClass(TaskMacro, [{ key: "add", value: 
 
 
 
@@ -41,17 +41,8 @@ Macro = (function (_CompositeTask) {_inherits(Macro, _CompositeTask);
 
 
 
-    function add(t) {
-
-      if (t instanceof Function) t = { task: t, params: undefined };
-      if (!t.task) throw new Error("No task of macro indicated.");
-      if (!t.title) {
-        if (t.task.__task__) t.title = t.task.__task__.name;else 
-        t.title = t.task.name || "anonymous";}
-
-
-
-      this.tasks.push(t);} }, { key: "length", get: function get() {return this.tasks.length;} }, { key: "synchronous", get: 
+    function add(task) {
+      this.tasks.push(task);} }, { key: "length", get: function get() {return this.tasks.length;} }, { key: "synchronous", get: 
 
 
 
@@ -68,4 +59,4 @@ Macro = (function (_CompositeTask) {_inherits(Macro, _CompositeTask);
 
 
 
-      return res;} }]);return Macro;})(_CompositeTask3["default"]);exports["default"] = Macro;module.exports = exports["default"];
+      return res;} }]);return TaskMacro;})(_CompositeTask3["default"]);exports["default"] = TaskMacro;module.exports = exports["default"];

@@ -38,6 +38,7 @@ describe("Runner", function() {
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(false);
       runner.continueOnError.must.be.eq(true);
+      runner.only.must.be.eq(false);
     });
 
     it("constructor({loggers, reporters, onError})", function() {
@@ -46,59 +47,106 @@ describe("Runner", function() {
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(true);
       runner.continueOnError.must.be.eq(false);
+      runner.only.must.be.eq(false);
+    });
+
+    it("constructor(config) - with !only", function() {
+      var runner = new Runner({loggers: {}, reporters: {}});
+      runner.loggers.must.not.be.eq(undefined);
+      runner.reporters.must.not.be.eq(undefined);
+      runner.only.must.be.eq(false);
+    });
+
+    it("constructor(config) - with only", function() {
+      var runner = new Runner({loggers: {}, reporters: {}, only: true});
+      runner.loggers.must.not.be.eq(undefined);
+      runner.reporters.must.not.be.eq(undefined);
+      runner.only.must.be.eq(true);
     });
   });
 
-  it("#publishInto(object)", function() {
-    var justo = {}, runner = new Runner({loggers, reporters});
-    runner.publishInto(justo);
-    justo.simple.must.be.eq(runner.simple);
-    justo.macro.must.be.eq(runner.macro);
-    justo.workflow.must.be.eq(runner.workflow);
-  });
-
-  it("#unpublishFrom(object)", function() {
-    var justo = {}, runner = new Runner({loggers, reporters});
-    runner.publishInto(justo);
-    runner.unpublishFrom(justo);
-    justo.must.not.have(["simple", "macro", "workflow"]);
-  });
-
-  describe("#runAsyncFunction()", function() {
+  describe("Members", function() {
     var runner;
 
     beforeEach(function() {
       runner = new Runner({loggers, reporters});
     });
 
-    it("runAsyncFunction() - ok", function() {
-      function async(params, done) {
-        setTimeout(function() {
-          done();
-        }, 1000);
-      }
+    it("#publishInto(object)", function() {
+      var justo = {};
 
-      assert(runner.runAsyncFunction(async, []) === undefined);
+      runner.publishInto(justo);
+
+      justo.simple.must.be.same(runner.simple);
+      justo.macro.must.be.same(runner.macro);
+      justo.workflow.must.be.same(runner.workflow);
+      justo.init.must.be.same(runner.init);
+      justo.fin.must.be.same(runner.fin);
+      justo.suite.must.be.same(runner.suite);
+      justo.test.must.be.same(runner.test);
+      justo.register.must.be.same(runner.catalog.catalog);
     });
 
-    it("runAsyncFunction() - done(msg)", function() {
-      function async(params, done) {
-        setTimeout(function() {
-          done("The error.");
-        }, 1000);
-      }
+    it("#unpublishFrom(object)", function() {
+      var justo = {};
 
-      runner.runAsyncFunction(async, []).must.be.eq(new Error("The error."));
+      runner.publishInto(justo);
+      runner.unpublishFrom(justo);
+
+      justo.must.not.have([
+        "simple",
+        "macro",
+        "workflow",
+        "register",
+        "catalog",
+        "init",
+        "fin",
+        "suite",
+        "test"
+      ]);
     });
 
-    it("runAsyncFunction() - done(Error)", function() {
-      function async(params, done) {
-        setTimeout(function() {
-          done(new Error("The error."));
-        }, 1000);
-      }
+    describe("#runAsyncFunction()", function() {
+      it("runAsyncFunction() - ok", function() {
+        function async(params, done) {
+          setTimeout(function() {
+            done();
+          }, 1000);
+        }
 
-      runner.runAsyncFunction(async, []).must.be.eq(new Error("The error."));
+        assert(runner.runAsyncFunction(async, []) === undefined);
+      });
+
+      it("runAsyncFunction() - done(msg)", function() {
+        function async(params, done) {
+          setTimeout(function() {
+            done("The error.");
+          }, 1000);
+        }
+
+        runner.runAsyncFunction(async, []).must.be.eq(new Error("The error."));
+      });
+
+      it("runAsyncFunction() - done(Error)", function() {
+        function async(params, done) {
+          setTimeout(function() {
+            done(new Error("The error."));
+          }, 1000);
+        }
+
+        runner.runAsyncFunction(async, []).must.be.eq(new Error("The error."));
+      });
+    });
+
+    describe.skip("runCatalogedTask()", function() {
+      it("runCatalogedTask(fqn) - existing", function() {
+        runner.catalog.catalog.simple("test", function() { return 123; });
+        runner.runCatalogedTask("test", []).must.be.eq(123);
+      });
+
+      it("runCatalogedTask(fqn) - not existing", function() {
+        runner.runCatalogedTask.must.raise(Error, ["unknown", []]);
+      });
     });
   });
 });

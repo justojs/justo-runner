@@ -17,115 +17,34 @@ describe("SimpleTask (runner)", function() {
     simple = runner.simple;
   });
 
-  describe("#simple()", function() {
+  describe("#Rummer.simple()", function() {
     function fn() {}
-
-    it("simple()", function() {
-      (function() {
-        var fw = simple();
-      }).must.raise("Invalid number of arguments. At least, the task function must be passed.");
-    });
 
     it("simple(fn)", function() {
       var fw = simple(fn);
 
       fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
+      fw.__task__.must.be.instanceOf("SimpleTask");
+      fw.__task__.name.must.be.eq("fn");
       fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("simple(opts, fn)", function() {
-      var fw = simple({desc: "Description."}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: "Description.",
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("simple(opts, fn) - ignore indicated", function() {
-      var fw = simple({ignore: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: true,
-        onlyif: false
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("simple(opts, fn) - onlyIf indicated", function() {
-      var fw = simple({onlyIf: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
-    });
-
-    it("simple(opts, fn) - onlyif indicated", function() {
-      var fw = simple({onlyi: true}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "fn",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
-      fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
     });
 
     it("simple(name, fn)", function() {
       var fw = simple("test", fn);
 
       fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf(SimpleTask);
-      fw.__task__.must.have({
-        namespace: undefined,
-        name: "test",
-        description: undefined,
-        ignore: false,
-        onlyif: true
-      });
+      fw.__task__.must.be.instanceOf("SimpleTask");
+      fw.__task__.name.must.be.eq("test");
       fw.__task__.fn.must.be.same(fn);
-      fw.ignore.must.be.instanceOf(Function);
-      fw.mute.must.be.instanceOf(Function);
+    });
+
+    it("simple(opts, fn)", function() {
+      var fw = simple({name: "test"}, fn);
+
+      fw.must.be.instanceOf(Function);
+      fw.__task__.must.be.instanceOf("SimpleTask");
+      fw.__task__.name.must.be.eq("test");
+      fw.__task__.fn.must.be.same(fn);
     });
   });
 
@@ -169,7 +88,7 @@ describe("SimpleTask (runner)", function() {
     });
   });
 
-  describe("#runSimpleTask()", function() {
+  describe("#Runner.runSimpleTask()", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
       loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
