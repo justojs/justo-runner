@@ -162,7 +162,8 @@ Runner = (function () {
 
         for (var _iterator2 = calls[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var call = _step2.value;
           this.reporters.start(call.name);
-          this.catalog.get(call.name).apply(undefined, [call.name].concat(_toConsumableArray(call.params)));}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}} }, { key: 
+          this.catalog.get(call.name).apply(undefined, [call.name].concat(_toConsumableArray(call.params)));
+          this.reporters.end();}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2["return"]) {_iterator2["return"]();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}} }, { key: 
 
 
 
