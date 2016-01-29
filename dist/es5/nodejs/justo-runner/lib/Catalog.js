@@ -1,5 +1,5 @@
-"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _createClass = (function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};})();function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj["default"] = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var _justoFs = require(
-"justo-fs");var fs = _interopRequireWildcard(_justoFs);
+"use strict";var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();Object.defineProperty(exports, "__esModule", { value: true });var _justoFs = require("justo-fs");var 
+fs = _interopRequireWildcard(_justoFs);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
 
 var catalog = Symbol();
@@ -12,7 +12,7 @@ var catalogSimple = Symbol();var
 
 
 
-Catalog = (function () {
+Catalog = function () {
 
 
 
@@ -24,7 +24,7 @@ Catalog = (function () {
     Object.defineProperty(this, "catalog", { enumerable: true, value: this[catalog].bind(this) });
     Object.defineProperty(this.catalog, "workflow", { enumerable: true, value: this[catalogWorkflow].bind(this) });
     Object.defineProperty(this.catalog, "macro", { enumerable: true, value: this[catalogMacro].bind(this) });
-    Object.defineProperty(this.catalog, "simple", { enumerable: true, value: this[catalogSimple].bind(this) });}_createClass(Catalog, [{ key: "add", value: 
+    Object.defineProperty(this.catalog, "simple", { enumerable: true, value: this[catalogSimple].bind(this) });}_createClass(Catalog, [{ key: "add", value: function add(
 
 
 
@@ -32,18 +32,8 @@ Catalog = (function () {
 
 
 
-    function add(wrapper) {
-      this.tasks[wrapper.__task__.fqn] = wrapper;} }, { key: "get", value: 
-
-
-
-
-
-
-
-
-    function get(fqn) {
-      return this.tasks[fqn];} }, { key: "exists", value: 
+    wrapper) {
+      this.tasks[wrapper.__task__.fqn] = wrapper;} }, { key: "get", value: function get(
 
 
 
@@ -52,7 +42,17 @@ Catalog = (function () {
 
 
 
-    function exists(fqn) {
+    fqn) {
+      return this.tasks[fqn];} }, { key: "exists", value: function exists(
+
+
+
+
+
+
+
+
+    fqn) {
       return !!this.tasks[fqn];} }, { key: 
 
 
@@ -141,4 +141,4 @@ Catalog = (function () {
 
 
     catalogSimple, value: function value(opts, fn) {
-      this.add(this.runner.simple(opts, fn));} }]);return Catalog;})();exports["default"] = Catalog;module.exports = exports["default"];
+      this.add(this.runner.simple(opts, fn));} }]);return Catalog;}();exports.default = Catalog;

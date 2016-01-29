@@ -1,6 +1,6 @@
 //imports
 const Runner = require("../../../../dist/es5/nodejs/justo-runner").Runner;
-const Catalog = require("../../../../dist/es5/nodejs/justo-runner/lib/Catalog");
+const Catalog = require("../../../../dist/es5/nodejs/justo-runner/lib/Catalog").default;
 
 //suite
 describe("Catalog", function() {

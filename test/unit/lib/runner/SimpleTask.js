@@ -242,7 +242,7 @@ describe("SimpleTask (runner)", function() {
             fw("test", "Test error.");
           } catch (e) {
             assert(true);
-            e.must.be.instanceOf("RunError");
+            e.must.be.instanceOf(Error);
           }
 
           runner.reporters.spy.called("start()").must.be.eq(1);
@@ -418,7 +418,7 @@ describe("SimpleTask (runner)", function() {
             fw("test", "Test error.");
             assert(true);
           } catch (e) {
-            e.must.be.instanceOf("RunError");
+            e.must.be.instanceOf(Error);
           }
 
           runner.reporters.spy.called("start()").must.be.eq(1);

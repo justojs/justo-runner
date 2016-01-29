@@ -1,18 +1,17 @@
 {
   "name": "justo-runner",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "description": "The Justo.js runner.",
   "homepage": "http://www.justojs.org",
-  "license": "MIT",
   "author": {
-    "name": "The Justo.js Development Group",
-    "email": "justojs.org@outlook.com",
+    "name": "Justo Labs",
+    "email": "justojs@justolabs.com",
     "url": "http://www.justojs.org"
   },
   "contributors": [
     {
       "name": "Raúl G. González",
-      "email": "raulggonzalezsw@outlook.com",
+      "email": "raulggonzalez@justojs.org",
       "url": ""
     }
   ],
@@ -22,7 +21,7 @@
   ],
   "bugs": {
     "url": "https://github.com/justojs/justo-runner/issues",
-    "email": "justojs.org@outlook.com"
+    "email": "issues@justojs.org"
   },
   "repository": {
     "type": "git",
@@ -41,8 +40,9 @@
     "justo-fs": "*"
   },
   "devDependencies": {
+    "babel-preset-es2015": "*",
     "grunt": "*",
-    "grunt-babel": "^5",
+    "grunt-babel": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
@@ -58,7 +58,7 @@
     "mocha": "*"
   },
   "preferGlobal": false,
-  "main": "lib/index.js",
+  "main": "index.js",
   "files": [
     "lib"
   ],
