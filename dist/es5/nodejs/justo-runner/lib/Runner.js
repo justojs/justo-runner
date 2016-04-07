@@ -1,19 +1,19 @@
-"use strict";var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();Object.defineProperty(exports, "__esModule", { value: true });var _justoInjector = require("justo-injector");var _justoResult = require("justo-result");var _justoLoader = require("justo-loader");var _justoFs = require("justo-fs");var 
-
-
-
-fs = _interopRequireWildcard(_justoFs);var _SimpleTask = require("./SimpleTask");var _SimpleTask2 = _interopRequireDefault(_SimpleTask);var _FileMacro = require("./FileMacro");var _FileMacro2 = _interopRequireDefault(_FileMacro);var _TaskMacro = require("./TaskMacro");var _TaskMacro2 = _interopRequireDefault(_TaskMacro);var _Workflow = require("./Workflow");var _Workflow2 = _interopRequireDefault(_Workflow);var _RunError = require("./RunError");var _RunError2 = _interopRequireDefault(_RunError);var _Catalog = require("./Catalog");var _Catalog2 = _interopRequireDefault(_Catalog);var _Stack = require("./Stack");var _Stack2 = _interopRequireDefault(_Stack);var _Initializer = require("./Initializer");var _Initializer2 = _interopRequireDefault(_Initializer);var _Finalizer = require("./Finalizer");var _Finalizer2 = _interopRequireDefault(_Finalizer);var _Suite = require("./Suite");var _Suite2 = _interopRequireDefault(_Suite);var _Test = require("./Test");var _Test2 = _interopRequireDefault(_Test);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
-
-
-
-
-
-
-
-
-
-
-
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+var _justoInjector = require("justo-injector");
+var _justoResult = require("justo-result");
+var _justoLoader = require("justo-loader");
+var _justoFs = require("justo-fs");var fs = _interopRequireWildcard(_justoFs);
+var _SimpleTask = require("./SimpleTask");var _SimpleTask2 = _interopRequireDefault(_SimpleTask);
+var _FileMacro = require("./FileMacro");var _FileMacro2 = _interopRequireDefault(_FileMacro);
+var _TaskMacro = require("./TaskMacro");var _TaskMacro2 = _interopRequireDefault(_TaskMacro);
+var _Workflow = require("./Workflow");var _Workflow2 = _interopRequireDefault(_Workflow);
+var _RunError = require("./RunError");var _RunError2 = _interopRequireDefault(_RunError);
+var _Catalog = require("./Catalog");var _Catalog2 = _interopRequireDefault(_Catalog);
+var _Stack = require("./Stack");var _Stack2 = _interopRequireDefault(_Stack);
+var _Initializer = require("./Initializer");var _Initializer2 = _interopRequireDefault(_Initializer);
+var _Finalizer = require("./Finalizer");var _Finalizer2 = _interopRequireDefault(_Finalizer);
+var _Suite = require("./Suite");var _Suite2 = _interopRequireDefault(_Suite);
+var _Test = require("./Test");var _Test2 = _interopRequireDefault(_Test);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];}}newObj.default = obj;return newObj;}}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
 
 var simple = Symbol();
@@ -160,9 +160,9 @@ Runner = function () {
 
 
 
-        for (var _iterator2 = calls[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var call = _step2.value;
-          this.reporters.start(call.name);
-          this.catalog.get(call.name).apply(undefined, [call.name].concat(_toConsumableArray(call.params)));
+        for (var _iterator2 = calls[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var _call = _step2.value;
+          this.reporters.start(_call.name);
+          this.catalog.get(_call.name).apply(undefined, [_call.name].concat(_toConsumableArray(_call.params)));
           this.reporters.end();}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2.return) {_iterator2.return();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}} }, { key: 
 
 
@@ -802,13 +802,11 @@ Runner = function () {
         if (!this.only) {var _iteratorNormalCompletion9 = true;var _didIteratorError9 = false;var _iteratorError9 = undefined;try {
             for (var _iterator9 = suite.tasks[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {var task = _step9.value;task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError9 = true;_iteratorError9 = err;} finally {try {if (!_iteratorNormalCompletion9 && _iterator9.return) {_iterator9.return();}} finally {if (_didIteratorError9) {throw _iteratorError9;}}}} else 
         {
-          if (suite.only) {
-            if (suite.fullyOnly) {var _iteratorNormalCompletion10 = true;var _didIteratorError10 = false;var _iteratorError10 = undefined;try {
-                for (var _iterator10 = suite.tasks[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {var task = _step10.value;task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError10 = true;_iteratorError10 = err;} finally {try {if (!_iteratorNormalCompletion10 && _iterator10.return) {_iterator10.return();}} finally {if (_didIteratorError10) {throw _iteratorError10;}}}} else 
-            {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
-                for (var _iterator11 = suite.tasks[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {var task = _step11.value;
-                  if (task.__task__.only) task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}}}}var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
-
+          if (suite.fullyOnly) {var _iteratorNormalCompletion10 = true;var _didIteratorError10 = false;var _iteratorError10 = undefined;try {
+              for (var _iterator10 = suite.tasks[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {var _task = _step10.value;_task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError10 = true;_iteratorError10 = err;} finally {try {if (!_iteratorNormalCompletion10 && _iterator10.return) {_iterator10.return();}} finally {if (_didIteratorError10) {throw _iteratorError10;}}}} else 
+          if (suite.only) {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
+              for (var _iterator11 = suite.tasks[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {var _task2 = _step11.value;
+                if (_task2.__task__.only) _task2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}}}var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
 
 
 

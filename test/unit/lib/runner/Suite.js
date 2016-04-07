@@ -416,31 +416,41 @@ describe("Suite (runner)", function() {
         test = runner.test;
       });
 
-      it("!suite.only", function() {
-        var fw, fn;
+      it("suite", function() {
+        var fw, fn1, fn2;
 
         fw = suite(function() {
-          test("mytest", fn = spy(function() {}));
+          test("mytest", fn1 = spy(function() {}));
+          suite(function() {
+            test("mytest", fn2 = spy(function() {}));
+          });
         });
 
         fw();
 
-        fn.spy.called().must.be.eq(0);
+        fn1.spy.called().must.be.eq(0);
+        fn2.spy.called().must.be.eq(0);
       });
 
       it("suite.only", function() {
-        var fw, fn;
+        var fw, fn1, fn2, fn3;
 
         fw = suite.only(function() {
-          test("mytest", fn = spy(function() {}));
+          test("mytest", fn1 = spy(function() {}));
+          test.only("mytest", fn2 = spy(function() {}));
+          suite(function() {
+            test("mytest", fn3 = spy(function() {}));
+          });
         });
 
         fw();
 
-        fn.spy.called().must.be.eq(1);
+        fn1.spy.called().must.be.eq(1);
+        fn2.spy.called().must.be.eq(1);
+        fn3.spy.called().must.be.eq(1);
       });
 
-      it("nested suite with !only", function() {
+      it("suite without subonly", function() {
         var fw, fn1, fn2;
 
         fw = suite(function() {
@@ -457,7 +467,7 @@ describe("Suite (runner)", function() {
         fn2.spy.called().must.be.eq(0);
       });
 
-      it("nested suite with only", function() {
+      it("suite with child only", function() {
         var fw, fn1, fn2;
 
         fw = suite(function() {
@@ -474,7 +484,7 @@ describe("Suite (runner)", function() {
         fn2.spy.called().must.be.eq(1);
       });
 
-      it("test with only", function() {
+      it("suite with test.only", function() {
         var fw, fn1, fn2, fn3;
 
         fw = suite(function() {
