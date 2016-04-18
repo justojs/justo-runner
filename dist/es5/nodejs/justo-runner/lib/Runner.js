@@ -151,6 +151,23 @@ Runner = function () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     calls) {
       var wrapper;var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
@@ -261,7 +278,7 @@ Runner = function () {
 
 
     runSyncSimpleTask, value: function value(task, opts, params) {
-      var res = undefined, state = undefined, err = undefined, start = undefined, end = undefined;
+      var res = void 0, state = void 0, err = void 0, start = void 0, end = void 0;
 
 
       try {
@@ -459,7 +476,7 @@ Runner = function () {
         this.loggers.debug("Ignoring macro '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, macro);} else 
       {
-        var err = undefined;
+        var err = void 0;
 
         this.loggers.debug("Starting run of macro '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, macro);
@@ -546,7 +563,7 @@ Runner = function () {
         this.loggers.debug("Ignoring macro '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, macro);} else 
       {
-        var err = undefined;
+        var err = void 0;
 
         this.loggers.debug("Starting run of macro '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, macro);
@@ -557,7 +574,7 @@ Runner = function () {
 
         try {var _iteratorNormalCompletion7 = true;var _didIteratorError7 = false;var _iteratorError7 = undefined;try {
             for (var _iterator7 = macro.src[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {var src = _step7.value;
-              var entry = undefined;
+              var entry = void 0;
 
               try {
                 try {
@@ -667,7 +684,7 @@ Runner = function () {
         this.loggers.debug("Ignoring workflow '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, workflow);} else 
       {
-        var state = undefined, err = undefined, start = undefined, end = undefined;
+        var state = void 0, err = void 0, start = void 0, end = void 0;
 
         try {
           var fn = workflow.fn;
@@ -1131,7 +1148,7 @@ Runner = function () {
 
     {
       this.reporters.end();
-      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }], [{ key: "DEFAULT_DISPLAY", get: function get() 
+      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion15 = true;var _didIteratorError15 = false;var _iteratorError15 = undefined;try {for (var _iterator15 = this.reporters.items[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {var rep = _step15.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError15 = true;_iteratorError15 = err;} finally {try {if (!_iteratorNormalCompletion15 && _iterator15.return) {_iterator15.return();}} finally {if (_didIteratorError15) {throw _iteratorError15;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get() 
 
 
     {
