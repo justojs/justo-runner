@@ -8,7 +8,15 @@ Finalizer = function (_Operation) {_inherits(Finalizer, _Operation);function Fin
 
 
 
-    {
-      if (this.isOfSuite()) return "fin()";else 
-      if (this.isOfForEach()) return "fin(*)";else 
-      return "fin(" + this.name + ")";} }]);return Finalizer;}(_Operation3.default);exports.default = Finalizer;
+        {
+            var res;
+
+
+            if (this.isOfSuite()) res = "fin()";else 
+            if (this.isOfForEach()) res = "fin(*)";else 
+            res = "fin(" + this.name + ")";
+
+            if (this._title) res += " - " + this._title;
+
+
+            return res;} }]);return Finalizer;}(_Operation3.default);exports.default = Finalizer;

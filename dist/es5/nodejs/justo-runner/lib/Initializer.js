@@ -8,7 +8,15 @@ Initializer = function (_Operation) {_inherits(Initializer, _Operation);function
 
 
 
-    {
-      if (this.isOfSuite()) return "init()";else 
-      if (this.isOfForEach()) return "init(*)";else 
-      return "init(" + this.name + ")";} }]);return Initializer;}(_Operation3.default);exports.default = Initializer;
+        {
+            var res;
+
+
+            if (this.isOfSuite()) res = "init()";else 
+            if (this.isOfForEach()) res = "init(*)";else 
+            res = "init(" + this.name + ")";
+
+            if (this._title) res += " - " + this._title;
+
+
+            return res;} }]);return Initializer;}(_Operation3.default);exports.default = Initializer;
