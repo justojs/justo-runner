@@ -772,7 +772,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        if (!_this7.only || _this7.only && task.only) {
+        if (!_this7.only || _this7.only && (task.only || task.superonly || task.subonly)) {
           return _this7.runSuite(task, opts, params);}};
 
 
@@ -819,11 +819,11 @@ Runner = function () {
         if (!this.only) {var _iteratorNormalCompletion9 = true;var _didIteratorError9 = false;var _iteratorError9 = undefined;try {
             for (var _iterator9 = suite.tasks[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {var task = _step9.value;task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError9 = true;_iteratorError9 = err;} finally {try {if (!_iteratorNormalCompletion9 && _iterator9.return) {_iterator9.return();}} finally {if (_didIteratorError9) {throw _iteratorError9;}}}} else 
         {
-          if (suite.fullyOnly) {var _iteratorNormalCompletion10 = true;var _didIteratorError10 = false;var _iteratorError10 = undefined;try {
+          if (suite.only || suite.superonly) {var _iteratorNormalCompletion10 = true;var _didIteratorError10 = false;var _iteratorError10 = undefined;try {
               for (var _iterator10 = suite.tasks[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {var _task = _step10.value;_task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError10 = true;_iteratorError10 = err;} finally {try {if (!_iteratorNormalCompletion10 && _iterator10.return) {_iterator10.return();}} finally {if (_didIteratorError10) {throw _iteratorError10;}}}} else 
-          if (suite.only) {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
+          if (suite.subonly) {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
               for (var _iterator11 = suite.tasks[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {var _task2 = _step11.value;
-                if (_task2.__task__.only) _task2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}}}var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
+                if (_task2.__task__.only || _task2.__task__.superonly || _task2.__task__.subonly) _task2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}}}var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
 
 
 

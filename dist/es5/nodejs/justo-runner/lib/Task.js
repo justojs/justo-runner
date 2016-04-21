@@ -22,7 +22,7 @@ Task = function () {
     if (typeof opts == "string") opts = { name: opts };
     if (!opts.name) throw new Error("Expected task name.");
     if (opts.hasOwnProperty("onlyIf")) opts.ignore = !opts.onlyIf;
-    if (opts.hasOwnProperty("onlyif")) opts.inore = !opts.onlyif;
+    if (opts.hasOwnProperty("onlyif")) opts.ignore = !opts.onlyif;
 
 
     Object.defineProperty(this, "name", { value: opts.name, enumerable: true });

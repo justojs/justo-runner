@@ -23,7 +23,7 @@ Suite = function (_CompositeTask) {_inherits(Suite, _CompositeTask);
     Object.defineProperty(_this, "testFinalizers", { value: [], enumerable: true });
     Object.defineProperty(_this, "tasks", { value: [], enumerable: true });
     Object.defineProperty(_this, "_parent", { value: undefined, writable: true });
-    Object.defineProperty(_this, "_only", { value: !!opts.only });return _this;}_createClass(Suite, [{ key: "hasParent", value: function hasParent() 
+    Object.defineProperty(_this, "only", { value: !!opts.only });return _this;}_createClass(Suite, [{ key: "hasParent", value: function hasParent() 
 
 
 
@@ -37,27 +37,6 @@ Suite = function (_CompositeTask) {_inherits(Suite, _CompositeTask);
 
     {
       return !!this._parent;} }, { key: "add", value: function add(
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -182,4 +161,4 @@ Suite = function (_CompositeTask) {_inherits(Suite, _CompositeTask);
 
 
 
-      return fins;} }, { key: "parent", get: function get() {return this._parent;} }, { key: "only", get: function get() {var res;if (this._only || this.hasParent() && this.parent._only) {res = true;} else {res = false;var _iteratorNormalCompletion3 = true;var _didIteratorError3 = false;var _iteratorError3 = undefined;try {for (var _iterator3 = this.tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {var child = _step3.value;if (child.__task__.only) {res = true;break;}}} catch (err) {_didIteratorError3 = true;_iteratorError3 = err;} finally {try {if (!_iteratorNormalCompletion3 && _iterator3.return) {_iterator3.return();}} finally {if (_didIteratorError3) {throw _iteratorError3;}}}}return res;} }, { key: "fullyOnly", get: function get() {var onlys;if (this._only) {onlys = 0;} else {onlys = 0;var _iteratorNormalCompletion4 = true;var _didIteratorError4 = false;var _iteratorError4 = undefined;try {for (var _iterator4 = this.tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {var child = _step4.value;onlys += child.__task__.only ? 1 : 0;}} catch (err) {_didIteratorError4 = true;_iteratorError4 = err;} finally {try {if (!_iteratorNormalCompletion4 && _iterator4.return) {_iterator4.return();}} finally {if (_didIteratorError4) {throw _iteratorError4;}}}}return onlys === 0;} }, { key: "hasOnly", get: function get() {} }, { key: "forEachInitializers", get: function get() {return (this.parent ? this.parent.forEachInitializers : []).concat(this._forEachInitializers);} }, { key: "forEachFinalizers", get: function get() {return (this.parent ? this.parent.forEachFinalizers : []).concat(this._forEachFinalizers);} }]);return Suite;}(_CompositeTask3.default);exports.default = Suite;
+      return fins;} }, { key: "parent", get: function get() {return this._parent;} }, { key: "superonly", get: function get() {var res;res = false;for (var prnt = this.parent; !res && prnt; prnt = prnt.parent) {res = !!prnt.only;}return res;} }, { key: "subonly", get: function get() {var res;res = false;var _iteratorNormalCompletion3 = true;var _didIteratorError3 = false;var _iteratorError3 = undefined;try {for (var _iterator3 = this.tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {var child = _step3.value;if (child.__task__ instanceof Suite) res = child.__task__.only || child.__task__.subonly;else res = child.__task__.only;if (res) break;}} catch (err) {_didIteratorError3 = true;_iteratorError3 = err;} finally {try {if (!_iteratorNormalCompletion3 && _iterator3.return) {_iterator3.return();}} finally {if (_didIteratorError3) {throw _iteratorError3;}}}return res;} }, { key: "forEachInitializers", get: function get() {return (this.parent ? this.parent.forEachInitializers : []).concat(this._forEachInitializers);} }, { key: "forEachFinalizers", get: function get() {return (this.parent ? this.parent.forEachFinalizers : []).concat(this._forEachFinalizers);} }]);return Suite;}(_CompositeTask3.default);exports.default = Suite;

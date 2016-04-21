@@ -416,13 +416,18 @@ describe("Suite (runner)", function() {
         test = runner.test;
       });
 
-      it("suite", function() {
-        var fw, fn1, fn2;
+      it("suite without onlys", function() {
+        var fw, fn1, fn2, fn3;
 
-        fw = suite(function() {
+        fw = suite("parent", function() {
           test("mytest", fn1 = spy(function() {}));
-          suite(function() {
+
+          suite("child", function() {
             test("mytest", fn2 = spy(function() {}));
+
+            suite("grandchild", function() {
+              test("mytest", fn3 = spy(function() {}));
+            });
           });
         });
 
@@ -430,16 +435,30 @@ describe("Suite (runner)", function() {
 
         fn1.spy.called().must.be.eq(0);
         fn2.spy.called().must.be.eq(0);
+        fn3.spy.called().must.be.eq(0);
       });
 
-      it("suite.only", function() {
-        var fw, fn1, fn2, fn3;
+      it("parent.only", function() {
+        var fw, fn1, fn2, fn3, fn4, fn5, fn6;
 
-        fw = suite.only(function() {
-          test("mytest", fn1 = spy(function() {}));
-          test.only("mytest", fn2 = spy(function() {}));
-          suite(function() {
-            test("mytest", fn3 = spy(function() {}));
+        fw = suite.only("parent suite", function() {
+          test("mytest1", fn1 = spy(function() {}));
+          test.only("mytest2", fn2 = spy(function() {}));
+
+          suite("child suite #1", function() {
+            test("mytest3", fn3 = spy(function() {}));
+          });
+
+          suite("child suite #2", function() {
+            test("mytest4", fn4 = spy(function() {}));
+
+            suite("grandchild suite", function() {
+              test("mytest5", fn5 = spy(function() {}));
+
+              suite("great grandchild suite", function() {
+                test("mytest6", fn6 = spy(function() {}));
+              });
+            });
           });
         });
 
@@ -448,33 +467,28 @@ describe("Suite (runner)", function() {
         fn1.spy.called().must.be.eq(1);
         fn2.spy.called().must.be.eq(1);
         fn3.spy.called().must.be.eq(1);
+        fn4.spy.called().must.be.eq(1);
+        fn5.spy.called().must.be.eq(1);
+        fn6.spy.called().must.be.eq(1);
       });
 
-      it("suite without subonly", function() {
-        var fw, fn1, fn2;
+      it("child.only", function() {
+        var fw, fn1, fn2, fn3, fn4, fn5;
 
-        fw = suite(function() {
+        fw = suite("parent", function() {
           test("mytest", fn1 = spy(function() {}));
 
-          suite(function() {
+          suite.only("child", function() {
             test("mytest", fn2 = spy(function() {}));
-          });
-        });
+            test.only("mytest", fn3 = spy(function() {}));
 
-        fw();
+            suite("grandchild", function() {
+              test("mytest", fn4 = spy(function() {}));
 
-        fn1.spy.called().must.be.eq(0);
-        fn2.spy.called().must.be.eq(0);
-      });
-
-      it("suite with child only", function() {
-        var fw, fn1, fn2;
-
-        fw = suite(function() {
-          test("mytest", fn1 = spy(function() {}));
-
-          suite.only(function() {
-            test("mytest", fn2 = spy(function() {}));
+              suite("great grandchild", function() {
+                test("mytest", fn5 = spy(function() {}));
+              });
+            });
           });
         });
 
@@ -482,22 +496,29 @@ describe("Suite (runner)", function() {
 
         fn1.spy.called().must.be.eq(0);
         fn2.spy.called().must.be.eq(1);
+        fn3.spy.called().must.be.eq(1);
+        fn4.spy.called().must.be.eq(1);
+        fn5.spy.called().must.be.eq(1);
       });
 
-      it("suite with test.only", function() {
-        var fw, fn1, fn2, fn3;
+      it("test.only", function() {
+        var fw, fn1, fn2, fn3, fn4;
 
-        fw = suite(function() {
+        fw = suite("parent", function() {
           test("mytest", fn1 = spy(function() {}));
           test.only("mytest", fn2 = spy(function() {}));
-          test("mytest", fn3 = spy(function() {}));
+          suite("child", function() {
+            test.only("mytest", fn3 = spy(function() {}));
+          });
+          test.only("mytest", fn4 = spy(function() {}));
         });
 
         fw();
 
         fn1.spy.called().must.be.eq(0);
         fn2.spy.called().must.be.eq(1);
-        fn3.spy.called().must.be.eq(0);
+        fn3.spy.called().must.be.eq(1);
+        fn4.spy.called().must.be.eq(1);
       });
     });
   });
