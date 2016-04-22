@@ -318,7 +318,7 @@ Runner = function () {
 
         start = Date.now();
         err = this.runAsyncFunction(fn, params);
-        state = err ? Result.FAILED : _justoResult.ResultState.OK;} 
+        state = err ? _justoResult.ResultState.FAILED : _justoResult.ResultState.OK;} 
       catch (e) {
         err = e;
         state = _justoResult.ResultState.FAILED;} finally 
