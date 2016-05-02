@@ -340,23 +340,23 @@ Runner = function () {
 
 
 
-    fn, params) {
-      var deasync = require("deasync");
+    fn, params) {var _this3 = this;
+      var sync = require("justo-sync");
       var err;
 
       try {
-        err = deasync(function (done) {
-          function jdone(err) {
+        err = sync(function (done) {
+          function jdone(err, res) {
             if (err) {
               if (err instanceof Error) done(err);else 
               done(new Error(err));} else 
             {
-              done();}}
+              done(undefined, res);}}
 
 
 
-          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: this.loggers, log: this.loggers }, fn);
-          fn.apply(undefined, _toConsumableArray(params));})();} 
+          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: _this3.loggers, log: _this3.loggers }, fn);
+          fn.apply(undefined, _toConsumableArray(params));});} 
 
       catch (e) {
         err = e;}
@@ -406,7 +406,7 @@ Runner = function () {
 
 
 
-    taskMacro, value: function value(opts, tasks) {var _this3 = this;
+    taskMacro, value: function value(opts, tasks) {var _this4 = this;
       var macro, wrapper;
 
 
@@ -445,7 +445,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this3.runTaskMacro(macro, opts, params);};
+        return _this4.runTaskMacro(macro, opts, params);};
 
 
       this.initWrapper(wrapper, macro);
@@ -505,7 +505,7 @@ Runner = function () {
 
 
 
-    fileMacro, value: function value(opts, config) {var _this4 = this;
+    fileMacro, value: function value(opts, config) {var _this5 = this;
       var macro, wrapper;
 
 
@@ -530,7 +530,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this4.runFileMacro(macro, opts, params);};
+        return _this5.runFileMacro(macro, opts, params);};
 
 
       this.initWrapper(wrapper, macro);
@@ -539,10 +539,10 @@ Runner = function () {
       return wrapper;} }, { key: "runFileMacro", value: function runFileMacro(
 
 
-    macro, opts, params) {var _this5 = this;
+    macro, opts, params) {var _this6 = this;
       var title, res;
       var loadFile = function loadFile(file) {
-        _this5.workflow(file, function () {_justoLoader.Loader.load(file);})({ title: file, mute: opts.mute });};
+        _this6.workflow(file, function () {_justoLoader.Loader.load(file);})({ title: file, mute: opts.mute });};
 
       var loadDir = function loadDir(dir) {var _iteratorNormalCompletion5 = true;var _didIteratorError5 = false;var _iteratorError5 = undefined;try {
           for (var _iterator5 = new fs.Dir(dir).entries[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {var entry = _step5.value;
@@ -617,7 +617,7 @@ Runner = function () {
 
 
 
-    workflow, value: function value() {var _this6 = this;for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {args[_key6] = arguments[_key6];}
+    workflow, value: function value() {var _this7 = this;for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {args[_key6] = arguments[_key6];}
       var opts, fn, task, wrapper;
 
 
@@ -654,7 +654,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this6.runWorkflow(task, opts, params);};
+        return _this7.runWorkflow(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
@@ -729,7 +729,7 @@ Runner = function () {
 
 
 
-    suite, value: function value() {var _this7 = this;for (var _len8 = arguments.length, args = Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {args[_key8] = arguments[_key8];}
+    suite, value: function value() {var _this8 = this;for (var _len8 = arguments.length, args = Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {args[_key8] = arguments[_key8];}
       var opts, def, task, wrapper;
 
 
@@ -772,8 +772,8 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        if (!_this7.only || _this7.only && (task.only || task.superonly || task.subonly)) {
-          return _this7.runSuite(task, opts, params);}};
+        if (!_this8.only || _this8.only && (task.only || task.superonly || task.subonly)) {
+          return _this8.runSuite(task, opts, params);}};
 
 
 
@@ -846,7 +846,7 @@ Runner = function () {
 
 
 
-    test, value: function value() {var _this8 = this;for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {args[_key10] = arguments[_key10];}
+    test, value: function value() {var _this9 = this;for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {args[_key10] = arguments[_key10];}
       var opts, fn, task, wrapper;
 
 
@@ -889,7 +889,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this8.runTest(task, opts, params);};
+        return _this9.runTest(task, opts, params);};
 
 
       this.initTestWrapper(wrapper, task);
@@ -952,7 +952,7 @@ Runner = function () {
 
 
 
-    init, value: function value() {var _this9 = this;for (var _len12 = arguments.length, args = Array(_len12), _key12 = 0; _key12 < _len12; _key12++) {args[_key12] = arguments[_key12];}
+    init, value: function value() {var _this10 = this;for (var _len12 = arguments.length, args = Array(_len12), _key12 = 0; _key12 < _len12; _key12++) {args[_key12] = arguments[_key12];}
       var opts, fn, task, wrapper;
 
 
@@ -995,7 +995,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this9.runInit(task, opts, params);};
+        return _this10.runInit(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
@@ -1033,7 +1033,7 @@ Runner = function () {
 
 
 
-    fin, value: function value() {var _this10 = this;for (var _len14 = arguments.length, args = Array(_len14), _key14 = 0; _key14 < _len14; _key14++) {args[_key14] = arguments[_key14];}
+    fin, value: function value() {var _this11 = this;for (var _len14 = arguments.length, args = Array(_len14), _key14 = 0; _key14 < _len14; _key14++) {args[_key14] = arguments[_key14];}
       var opts, fn, task, wrapper;
 
 
@@ -1076,7 +1076,7 @@ Runner = function () {
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this10.runFin(task, opts, params);};
+        return _this11.runFin(task, opts, params);};
 
 
       this.initWrapper(wrapper, task);
