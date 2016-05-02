@@ -107,10 +107,20 @@ describe("Runner", function() {
     });
 
     describe("#runAsyncFunction()", function() {
-      it("runAsyncFunction() - ok", function() {
+      it("runAsyncFunction() - done()", function() {
         function async(params, done) {
           setTimeout(function() {
             done();
+          }, 1000);
+        }
+
+        assert(runner.runAsyncFunction(async, []) === undefined);
+      });
+
+      it("runAsyncFunction() - done(undefined, value)", function() {
+        function async(params, done) {
+          setTimeout(function() {
+            done(undefined, "a value");
           }, 1000);
         }
 

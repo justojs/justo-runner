@@ -345,7 +345,7 @@ Runner = function () {
       var err;
 
       try {
-        err = sync(function (done) {
+        sync(function (done) {
           function jdone(err, res) {
             if (err) {
               if (err instanceof Error) done(err);else 
