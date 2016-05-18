@@ -13,7 +13,7 @@ describe("SimpleTask (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters});
+    runner = new Runner({loggers, reporters, console});
     simple = runner.simple;
   });
 
@@ -97,7 +97,7 @@ describe("SimpleTask (runner)", function() {
     describe("#[runSyncSimpleTask]()", function() {
       describe("Ignore", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -138,7 +138,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("Mute", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -173,7 +173,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("OK", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -205,7 +205,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("Failed", function() {
         it("Failed - continue on error", function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
 
           var fw = simple(function raise(params) { throw new Error(params[0]); });
@@ -233,7 +233,7 @@ describe("SimpleTask (runner)", function() {
         });
 
         it("Failed - break on error", function() {
-          runner = new Runner({loggers, reporters, onError: "break"});
+          runner = new Runner({loggers, reporters, console, onError: "break"});
           simple = runner.simple;
 
           var fw = simple(function raise(params) { throw new Error(params[0]); });
@@ -270,7 +270,7 @@ describe("SimpleTask (runner)", function() {
     describe("#[runAsyncSimpleTask]()", function() {
       describe("Ignore", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -311,7 +311,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("Mute", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -348,7 +348,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("OK", function() {
         beforeEach(function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
         });
 
@@ -381,7 +381,7 @@ describe("SimpleTask (runner)", function() {
 
       describe("Failed", function() {
         it("Failed - continue on error", function() {
-          runner = spy(new Runner({reporters, loggers}));
+          runner = spy(new Runner({reporters, loggers, console}));
           simple = runner.simple;
 
           var fw = simple(function raise(params, done) { done(new Error(params[0])); });
@@ -409,7 +409,7 @@ describe("SimpleTask (runner)", function() {
         });
 
         it("Failed - break on error", function() {
-          runner = spy(new Runner({reporters, loggers, onError: "break"}));
+          runner = spy(new Runner({reporters, loggers, console, onError: "break"}));
           simple = runner.simple;
 
           var fw = simple(function raise(params, done) { done(new Error(params[0])); });

@@ -11,7 +11,7 @@ describe("Suite (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = spy(new Tester({loggers, reporters}));
+    runner = spy(new Tester({loggers, reporters, console}));
     suite = runner.suite;
     init = runner.init;
     fin = runner.fin;
@@ -409,7 +409,7 @@ describe("Suite (runner)", function() {
       beforeEach(function() {
         loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
         reporters = dummy({}, ["start()", "end()", "ignore()"]);
-        runner = spy(new Tester({loggers, reporters, only: true}));
+        runner = spy(new Tester({loggers, reporters, console, only: true}));
         suite = runner.suite;
         init = runner.init;
         fin = runner.fin;
@@ -541,5 +541,9 @@ describe("Suite (runner)", function() {
     it("wrapper.mute() exists", function() {
       fw.mute.must.be.instanceOf(Function);
     });
+  });
+
+  it("suite.only()", function() {
+    suite.only(function() {}).__task__.must.have({only: true, ignore: false});
   });
 });

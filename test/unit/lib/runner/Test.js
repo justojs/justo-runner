@@ -13,7 +13,7 @@ describe("Test (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = spy(new Tester({loggers, reporters}));
+    runner = spy(new Tester({loggers, reporters, console}));
     suite = runner.suite;
     init = runner.init;
     fin = runner.fin;
@@ -348,6 +348,12 @@ describe("Test (runner)", function() {
         fin3.spy.called().must.be.eq(1);
         fin4.spy.called().must.be.eq(1);
       });
+    });
+  });
+
+  it("test.only()", function() {
+    suite(function() {
+      test.only(function() {}).__task__.must.have({only: true, ignore: false});
     });
   });
 });

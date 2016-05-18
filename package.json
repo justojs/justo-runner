@@ -1,12 +1,12 @@
 {
   "name": "justo-runner",
-  "version": "0.11.9",
+  "version": "0.12.0",
   "description": "The Justo.js runner.",
-  "homepage": "http://www.justojs.org",
+  "homepage": "http://justojs.org",
   "author": {
     "name": "Justo Labs",
-    "email": "justojs@justolabs.com",
-    "url": "http://www.justojs.org"
+    "email": "info@justolabs.com",
+    "url": "http://justojs.org"
   },
   "contributors": [
     {
@@ -32,13 +32,12 @@
     "npm": ">=3.0.0"
   },
   "dependencies": {
-    "justo-sync": "*"
-  },
-  "peerDependencies": {
+    "justo-fs": "*",
     "justo-injector": "*",
     "justo-result": "*",
-    "justo-fs": "*"
+    "justo-sync": "*"
   },
+  "peerDependencies": {},
   "devDependencies": {
     "babel-preset-es2015": "*",
     "grunt": "*",

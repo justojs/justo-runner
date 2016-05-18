@@ -13,7 +13,7 @@ describe("FileMacro (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters});
+    runner = new Runner({loggers, reporters, console});
     macro = runner.macro;
   });
 
@@ -68,7 +68,7 @@ describe("FileMacro (runner)", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
       loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
-      runner = new Runner({loggers, reporters});
+      runner = new Runner({loggers, reporters, console});
       macro = runner.macro;
     });
 
@@ -271,7 +271,7 @@ describe("FileMacro (runner)", function() {
 
           reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
           loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
-          runner = new Runner({loggers, reporters, onError: "break"});
+          runner = new Runner({loggers, reporters, console, onError: "break"});
           macro = runner.macro;
 
           fw = macro("test", {src: ["test/unit/data/invalid.js", "test/unit/data/valid.js"]});

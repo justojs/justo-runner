@@ -46,6 +46,7 @@ Runner = function () {
     if (!config) throw new Error("Expected runner configuration.");
     if (!config.reporters) throw new Error("Expected reporters.");
     if (!config.loggers) throw new Error("Expected loggers.");
+    if (!config.console) throw new Error("Expected console.");
 
 
     Object.defineProperty(this, "breakOnError", { value: config.onError == "break", enumerable: true });
@@ -54,6 +55,7 @@ Runner = function () {
     Object.defineProperty(this, "stack", { value: new _Stack2.default() });
     Object.defineProperty(this, "tasks", { value: [] });
     Object.defineProperty(this, "loggers", { value: config.loggers, enumerable: true });
+    Object.defineProperty(this, "console", { value: config.console });
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
     Object.defineProperty(this, "simple", { value: this[simple].bind(this), enumerable: true });
     Object.defineProperty(this, "macro", { value: this[macro].bind(this), enumerable: true });
@@ -284,7 +286,7 @@ Runner = function () {
       try {
         var fn = task.fn;
 
-        params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
+        params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers, console: this.console }, fn);
 
         this.loggers.debug("Starting sync run of simple task '" + opts.title + "'.");
         if (!opts.mute) this.reporters.start(opts.title, task);
@@ -355,7 +357,7 @@ Runner = function () {
 
 
 
-          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: _this3.loggers, log: _this3.loggers }, fn);
+          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: _this3.loggers, log: _this3.loggers, console: _this3.console }, fn);
           fn.apply(undefined, _toConsumableArray(params));});} 
 
       catch (e) {
@@ -688,7 +690,7 @@ Runner = function () {
 
         try {
           var fn = workflow.fn;
-          params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers }, fn);
+          params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers, console: this.console }, fn);
 
           this.loggers.debug("Starting run of workflow '" + title + "'.");
           if (!opts.mute) this.reporters.start(title, workflow);

@@ -32,8 +32,14 @@ describe("Runner", function() {
       }).must.raise("Expected loggers.");
     });
 
+    it("constructor(config) - without console", function() {
+      (function() {
+        var runner = new Runner({loggers: {}, reporters: {}});
+      }).must.raise("Expected console.");
+    });
+
     it("constructor({loggers, reporters})", function() {
-      var runner = new Runner({loggers: {}, reporters: {}});
+      var runner = new Runner({loggers: {}, reporters: {}, console: {}});
       runner.loggers.must.not.be.eq(undefined);
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(false);
@@ -41,8 +47,8 @@ describe("Runner", function() {
       runner.only.must.be.eq(false);
     });
 
-    it("constructor({loggers, reporters, onError})", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, onError: "break"});
+    it("constructor({loggers, reporters, console, onError})", function() {
+      var runner = new Runner({loggers: {}, reporters: {}, console: {}, onError: "break"});
       runner.loggers.must.not.be.eq(undefined);
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(true);
@@ -51,14 +57,14 @@ describe("Runner", function() {
     });
 
     it("constructor(config) - with !only", function() {
-      var runner = new Runner({loggers: {}, reporters: {}});
+      var runner = new Runner({loggers: {}, reporters: {}, console: {}});
       runner.loggers.must.not.be.eq(undefined);
       runner.reporters.must.not.be.eq(undefined);
       runner.only.must.be.eq(false);
     });
 
     it("constructor(config) - with only", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, only: true});
+      var runner = new Runner({loggers: {}, reporters: {}, console: {}, only: true});
       runner.loggers.must.not.be.eq(undefined);
       runner.reporters.must.not.be.eq(undefined);
       runner.only.must.be.eq(true);
@@ -69,7 +75,7 @@ describe("Runner", function() {
     var runner;
 
     beforeEach(function() {
-      runner = new Runner({loggers, reporters});
+      runner = new Runner({loggers, reporters, console});
     });
 
     it("#publishInto(object)", function() {

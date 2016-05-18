@@ -17,7 +17,7 @@ describe("TaskMacro (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters});
+    runner = new Runner({loggers, reporters, console});
     macro = runner.macro;
     simple = runner.simple;
   });
@@ -112,7 +112,7 @@ describe("TaskMacro (runner)", function() {
 
     describe("Ignore", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -160,7 +160,7 @@ describe("TaskMacro (runner)", function() {
 
     describe("Mute", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -206,7 +206,7 @@ describe("TaskMacro (runner)", function() {
 
     describe("OK", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -254,7 +254,7 @@ describe("TaskMacro (runner)", function() {
       it("Failed - continue on error", function() {
         var args, fw, exec1, exec2;
 
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         macro = runner.macro;
         simple = runner.simple;
 
@@ -313,7 +313,7 @@ describe("TaskMacro (runner)", function() {
       it("Failed - break on error", function() {
         var args, fw, exec1, exec2;
 
-        runner = new Runner({loggers, reporters, onError: "break"});
+        runner = new Runner({loggers, reporters, console, onError: "break"});
         macro = runner.macro;
         simple = runner.simple;
 

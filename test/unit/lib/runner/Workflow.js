@@ -11,7 +11,7 @@ describe("Workflow (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters});
+    runner = new Runner({loggers, reporters, console});
     workflow = runner.workflow;
   });
 
@@ -95,7 +95,7 @@ describe("Workflow (runner)", function() {
 
     describe("Ignore", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         workflow = runner.workflow;
       });
 
@@ -136,7 +136,7 @@ describe("Workflow (runner)", function() {
 
     describe("Mute", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         workflow = runner.workflow;
       });
 
@@ -171,7 +171,7 @@ describe("Workflow (runner)", function() {
 
     describe("OK", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         workflow = runner.workflow;
       });
 
@@ -203,7 +203,7 @@ describe("Workflow (runner)", function() {
 
     describe("Failed", function() {
       it("Failed - continue on error", function() {
-        runner = new Runner({loggers, reporters});
+        runner = new Runner({loggers, reporters, console});
         workflow = runner.workflow;
 
         var fw = workflow(function raise(params) { throw new Error(params[0]); });
@@ -231,7 +231,7 @@ describe("Workflow (runner)", function() {
       });
 
       it("Failed - break on error", function() {
-        runner = new Runner({loggers, reporters, onError: "break"});
+        runner = new Runner({loggers, reporters, console, onError: "break"});
         workflow = runner.workflow;
 
         var fw = workflow(function raise(params) { throw new Error(params[0]); });

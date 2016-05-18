@@ -13,7 +13,7 @@ describe("Initializer (runner)", function() {
   beforeEach(function() {
     loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = spy(new Tester({loggers, reporters}));
+    runner = spy(new Tester({loggers, reporters, console}));
     init = runner.init;
     fn = spy(function() {});
   });
