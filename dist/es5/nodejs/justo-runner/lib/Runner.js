@@ -800,8 +800,6 @@ Runner = function () {
 
 
       title = opts.title || suite.title;
-
-
       if (!opts.hasOwnProperty("mute")) opts.mute = suite.mute;
 
 
@@ -913,11 +911,11 @@ Runner = function () {
 
 
       title = opts.title || test.title;
-      if (!opts.hasOwnProperty("ignore")) opts.ignore = test.ignore;
+
       if (!opts.hasOwnProperty("mute")) opts.mute = test.mute;
 
 
-      if (opts.ignore) {
+      if (opts.ignore || test.ignore) {
         this.loggers.debug("Ignoring test '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, test);} else 
       {

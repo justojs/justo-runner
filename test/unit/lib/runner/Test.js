@@ -349,6 +349,26 @@ describe("Test (runner)", function() {
         fin4.spy.called().must.be.eq(1);
       });
     });
+
+    describe("ignore", function() {
+      it("no ignore", function() {
+        var fw = test("mytest", fn);
+        fw();
+        fn.spy.called().must.be.eq(1);
+      });
+
+      it("ignore: false", function() {
+        var fw = test({name: "mytest", ignore: false}, fn);
+        fw();
+        fn.spy.called().must.be.eq(1);
+      });
+
+      it("ignore: true", function() {
+        var fw = test({name: "mytest", ignore: true}, fn);
+        fw();
+        fn.spy.called().must.be.eq(0);
+      });
+    });
   });
 
   it("test.only()", function() {
