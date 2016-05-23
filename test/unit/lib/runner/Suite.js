@@ -521,6 +521,96 @@ describe("Suite (runner)", function() {
         fn4.spy.called().must.be.eq(1);
       });
     });
+
+    describe("ignore", function() {
+      it("parent with ignore", function() {
+        var fw, fn1, fn2, fn3;
+
+        fw = suite({name: "parent", ignore: true}, function() {
+          test("mytest", fn1 = spy(function() {}));
+
+          suite("child", function() {
+            test("mytest", fn2 = spy(function() {}));
+
+            suite("grandchild", function() {
+              test("mytest", fn3 = spy(function() {}));
+            });
+          });
+        });
+
+        fw();
+
+        fn1.spy.called().must.be.eq(0);
+        fn2.spy.called().must.be.eq(0);
+        fn3.spy.called().must.be.eq(0);
+      });
+
+      it("parent without ignore", function() {
+        var fw, fn1, fn2, fn3;
+
+        fw = suite({name: "parent"}, function() {
+          test("mytest", fn1 = spy(function() {}));
+
+          suite("child", function() {
+            test("mytest", fn2 = spy(function() {}));
+
+            suite("grandchild", function() {
+              test("mytest", fn3 = spy(function() {}));
+            });
+          });
+        });
+
+        fw();
+
+        fn1.spy.called().must.be.eq(1);
+        fn2.spy.called().must.be.eq(1);
+        fn3.spy.called().must.be.eq(1);
+      });
+
+      it("parent without ignore, child with ignore", function() {
+        var fw, fn1, fn2, fn3;
+
+        fw = suite("parent", function() {
+          test("mytest", fn1 = spy(function() {}));
+
+          suite({name: "child", ignore: true}, function() {
+            test("mytest", fn2 = spy(function() {}));
+
+            suite("grandchild", function() {
+              test("mytest", fn3 = spy(function() {}));
+            });
+          });
+        });
+
+        fw();
+
+        fn1.spy.called().must.be.eq(1);
+        fn2.spy.called().must.be.eq(0);
+        fn3.spy.called().must.be.eq(0);
+      });
+
+      it("parent without ignore, child with ignore, grandchild without ignore", function() {
+        var fw, fn1, fn2, fn3;
+
+        fw = suite("parent", function() {
+          test("mytest", fn1 = spy(function() {}));
+
+          suite({name: "child", ignore: true}, function() {
+            test("mytest", fn2 = spy(function() {}));
+
+            suite("grandchild", function() {
+              test("mytest", fn3 = spy(function() {}));
+            });
+          });
+        });
+
+        fw();
+
+        fn1.spy.called().must.be.eq(1);
+        fn2.spy.called().must.be.eq(0);
+        fn3.spy.called().must.be.eq(0);
+      });
+    });
   });
 
   describe("#wrapper.XXX()", function() {

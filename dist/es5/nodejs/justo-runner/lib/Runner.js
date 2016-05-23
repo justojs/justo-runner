@@ -133,7 +133,6 @@ Runner = function () {
 
 
 
-
     obj) {
       delete obj.catalog;
       delete obj.register;
@@ -801,11 +800,12 @@ Runner = function () {
 
 
       title = opts.title || suite.title;
-      if (!opts.hasOwnProperty("ignore")) opts.ignore = suite.ignore;
+
+
       if (!opts.hasOwnProperty("mute")) opts.mute = suite.mute;
 
 
-      if (opts.ignore) {
+      if (opts.ignore || suite.ignore) {
         this.loggers.debug("Ignoring suite '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, suite);} else 
       {
