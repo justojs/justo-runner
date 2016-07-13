@@ -6,6 +6,8 @@ var _CompositeTask2 = require("./CompositeTask");var _CompositeTask3 = _interopR
 
 
 
+
+
 Test = function (_CompositeTask) {_inherits(Test, _CompositeTask);
 
 
@@ -20,11 +22,21 @@ Test = function (_CompositeTask) {_inherits(Test, _CompositeTask);
 
     Object.defineProperty(_this, "fn", { value: fn, enumerable: true });
     Object.defineProperty(_this, "_parent", { value: undefined, writable: true });
-    Object.defineProperty(_this, "only", { value: !!opts.only, enumerable: true });return _this;}_createClass(Test, [{ key: "parent", get: function get() 
+    Object.defineProperty(_this, "only", { value: !!opts.only, enumerable: true });
+    Object.defineProperty(_this, "params", { value: opts.params, writable: true, enumerable: true });return _this;}_createClass(Test, [{ key: "hasParams", value: function hasParams() 
+
+
+
+
+
+
+
+
+
 
 
     {
-      return this._parent;} }, { key: "initializers", get: function get() 
+      return !!this.params;} }, { key: "parent", get: function get() {return this._parent;} }, { key: "initializers", get: function get() 
 
 
 

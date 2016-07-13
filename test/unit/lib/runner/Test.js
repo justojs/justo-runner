@@ -60,6 +60,47 @@ describe("Test (runner)", function() {
         it("wrapper.mute() exists", function() {
           fw.mute.must.be.instanceOf(Function);
         });
+
+        describe("title()", function() {
+          it("wrapper.title() exists", function() {
+            fw.title.must.be.instanceOf(Function);
+          });
+
+          it("wrapper.title(title)", function() {
+            fw.title("new title").must.be.same(fw);
+            fw.__task__.title.must.be.eq("new title");
+          });
+        });
+
+        describe("params()", function() {
+          it("wrapper.params() exists", function() {
+            fw.params.must.be.instanceOf(Function);
+          });
+
+          it("wrapper.params(one)", function() {
+            fw.params("one").must.be.same(fw);
+            fw.__task__.params.must.be.eq(["one"]);
+            fw.__task__.hasParams().must.be.eq(true);
+          });
+
+          it("wrapper.params(one, two)", function() {
+            fw.params("one", 2).must.be.same(fw);
+            fw.__task__.params.must.be.eq(["one", 2]);
+            fw.__task__.hasParams().must.be.eq(true);
+          });
+
+          it("wrapper.params(one, two, three)", function() {
+            fw.params("one", 2, "three").must.be.same(fw);
+            fw.__task__.params.must.be.eq(["one", 2, "three"]);
+            fw.__task__.hasParams().must.be.eq(true);
+          });
+
+          it("wrapper.params(one, two, three)", function() {
+            fw.params("one", 2, "three").must.be.same(fw);
+            fw.__task__.params.must.be.eq(["one", 2, "three"]);
+            fw.__task__.hasParams().must.be.eq(true);
+          });
+        });
       });
 
       it("test()", function() {

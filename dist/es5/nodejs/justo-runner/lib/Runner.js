@@ -922,16 +922,33 @@ Runner = function () {
         var oo = {};
         if (opts.mute) oo.mute = true;
 
+        if (test.hasParams()) {var _iteratorNormalCompletion13 = true;var _didIteratorError13 = false;var _iteratorError13 = undefined;try {
+            for (var _iterator13 = test.params[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {var _params = _step13.value;
+              var headline = title + " # " + ((typeof _params === "undefined" ? "undefined" : _typeof(_params)) == "object" ? JSON.stringify(_params) : _params);
 
-        this.loggers.debug("Starting run of test '" + title + "'.");
-        if (!opts.mute) this.reporters.start(title, test);var _iteratorNormalCompletion13 = true;var _didIteratorError13 = false;var _iteratorError13 = undefined;try {
 
-          for (var _iterator13 = test.initializers[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {var _init2 = _step13.value;_init2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError13 = true;_iteratorError13 = err;} finally {try {if (!_iteratorNormalCompletion13 && _iterator13.return) {_iterator13.return();}} finally {if (_didIteratorError13) {throw _iteratorError13;}}}
-        test.fn.apply(test, [oo].concat(_toConsumableArray(params)));var _iteratorNormalCompletion14 = true;var _didIteratorError14 = false;var _iteratorError14 = undefined;try {
-          for (var _iterator14 = test.finalizers[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {var _fin2 = _step14.value;_fin2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError14 = true;_iteratorError14 = err;} finally {try {if (!_iteratorNormalCompletion14 && _iterator14.return) {_iterator14.return();}} finally {if (_didIteratorError14) {throw _iteratorError14;}}}
+              this.loggers.debug("Starting run of test '" + headline + "'.");
+              if (!opts.mute) this.reporters.start(headline, test);var _iteratorNormalCompletion14 = true;var _didIteratorError14 = false;var _iteratorError14 = undefined;try {
 
-        this.loggers.debug("Ended run of test '" + title + "'.");
-        if (!opts.mute) this.reporters.end(test);}} }, { key: 
+                for (var _iterator14 = test.initializers[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {var _init2 = _step14.value;_init2.apply(undefined, [oo].concat([_params]));}} catch (err) {_didIteratorError14 = true;_iteratorError14 = err;} finally {try {if (!_iteratorNormalCompletion14 && _iterator14.return) {_iterator14.return();}} finally {if (_didIteratorError14) {throw _iteratorError14;}}}
+              test.fn.apply(test, [oo].concat([_params]));var _iteratorNormalCompletion15 = true;var _didIteratorError15 = false;var _iteratorError15 = undefined;try {
+                for (var _iterator15 = test.finalizers[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {var _fin2 = _step15.value;_fin2.apply(undefined, [oo].concat([_params]));}} catch (err) {_didIteratorError15 = true;_iteratorError15 = err;} finally {try {if (!_iteratorNormalCompletion15 && _iterator15.return) {_iterator15.return();}} finally {if (_didIteratorError15) {throw _iteratorError15;}}}
+
+              this.loggers.debug("Ended run of test '" + headline + "'.");
+              if (!opts.mute) this.reporters.end(test);}} catch (err) {_didIteratorError13 = true;_iteratorError13 = err;} finally {try {if (!_iteratorNormalCompletion13 && _iterator13.return) {_iterator13.return();}} finally {if (_didIteratorError13) {throw _iteratorError13;}}}} else 
+
+        {
+
+          this.loggers.debug("Starting run of test '" + title + "'.");
+          if (!opts.mute) this.reporters.start(title, test);var _iteratorNormalCompletion16 = true;var _didIteratorError16 = false;var _iteratorError16 = undefined;try {
+
+            for (var _iterator16 = test.initializers[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {var _init3 = _step16.value;_init3.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError16 = true;_iteratorError16 = err;} finally {try {if (!_iteratorNormalCompletion16 && _iterator16.return) {_iterator16.return();}} finally {if (_didIteratorError16) {throw _iteratorError16;}}}
+          test.fn.apply(test, [oo].concat(_toConsumableArray(params)));var _iteratorNormalCompletion17 = true;var _didIteratorError17 = false;var _iteratorError17 = undefined;try {
+            for (var _iterator17 = test.finalizers[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {var _fin3 = _step17.value;_fin3.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError17 = true;_iteratorError17 = err;} finally {try {if (!_iteratorNormalCompletion17 && _iterator17.return) {_iterator17.return();}} finally {if (_didIteratorError17) {throw _iteratorError17;}}}
+
+          this.loggers.debug("Ended run of test '" + title + "'.");
+          if (!opts.mute) this.reporters.end(test);}}} }, { key: 
+
 
 
 
@@ -1120,6 +1137,14 @@ Runner = function () {
           if (typeof opts == "string") opts = { title: opts };
           return wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
 
+        enumerable: true });
+
+
+      Object.defineProperty(wrapper, "title", { 
+        value: function value(title) {
+          wrapper.__task__._title = title;
+          return wrapper;}, 
+
         enumerable: true });} }, { key: "initTestWrapper", value: function initTestWrapper(
 
 
@@ -1139,6 +1164,14 @@ Runner = function () {
           if (typeof opts == "string") opts = { title: opts };
           wrapper.apply(undefined, [Object.assign({}, opts, { only: true })].concat(params));}, 
 
+        enumerable: true });
+
+
+      Object.defineProperty(wrapper, "params", { 
+        value: function value() {for (var _len19 = arguments.length, params = Array(_len19), _key19 = 0; _key19 < _len19; _key19++) {params[_key19] = arguments[_key19];}
+          wrapper.__task__.params = params;
+          return wrapper;}, 
+
         enumerable: true });} }, { key: "end", value: function end() 
 
 
@@ -1148,7 +1181,7 @@ Runner = function () {
 
     {
       this.reporters.end();
-      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion15 = true;var _didIteratorError15 = false;var _iteratorError15 = undefined;try {for (var _iterator15 = this.reporters.items[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {var rep = _step15.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError15 = true;_iteratorError15 = err;} finally {try {if (!_iteratorNormalCompletion15 && _iterator15.return) {_iterator15.return();}} finally {if (_didIteratorError15) {throw _iteratorError15;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get() 
+      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion18 = true;var _didIteratorError18 = false;var _iteratorError18 = undefined;try {for (var _iterator18 = this.reporters.items[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {var rep = _step18.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError18 = true;_iteratorError18 = err;} finally {try {if (!_iteratorNormalCompletion18 && _iterator18.return) {_iterator18.return();}} finally {if (_didIteratorError18) {throw _iteratorError18;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get() 
 
 
     {

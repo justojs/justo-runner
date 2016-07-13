@@ -28,7 +28,7 @@ Task = function () {
     Object.defineProperty(this, "name", { value: opts.name, enumerable: true });
     Object.defineProperty(this, "namespace", { value: opts.namespace || opts.ns, enumerable: true });
     Object.defineProperty(this, "description", { value: opts.description || opts.desc, enumerable: true });
-    Object.defineProperty(this, "_title", { value: opts.title });
+    Object.defineProperty(this, "_title", { value: opts.title, writable: true });
     Object.defineProperty(this, "ignore", { value: opts.hasOwnProperty("ignore") ? !!opts.ignore : false, enumerable: true });
     Object.defineProperty(this, "mute", { value: opts.hasOwnProperty("mute") ? !!opts.mute : false, enumerable: true });}_createClass(Task, [{ key: "isSimple", value: function isSimple() 
 
