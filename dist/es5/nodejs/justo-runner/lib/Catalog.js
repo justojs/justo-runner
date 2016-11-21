@@ -110,8 +110,12 @@ Catalog = function () {
 
 
 
+
+
     catalogWorkflow, value: function value(opts, fn) {
-      this.add(this.runner.workflow(opts, fn));
+      var task = this.runner.workflow(opts, fn);
+      this.add(task);
+      return task;
     } }, { key:
 
 
@@ -126,7 +130,9 @@ Catalog = function () {
 
 
     catalogMacro, value: function value(opts, tasks) {
-      this.add(this.runner.macro(opts, tasks));
+      var task = this.runner.macro(opts, tasks);
+      this.add(task);
+      return task;
     } }, { key:
 
 
@@ -141,5 +147,7 @@ Catalog = function () {
 
 
     catalogSimple, value: function value(opts, fn) {
-      this.add(this.runner.simple(opts, fn));
+      var task = this.runner.simple(opts, fn);
+      this.add(task);
+      return task;
     } }]);return Catalog;}();exports.default = Catalog;

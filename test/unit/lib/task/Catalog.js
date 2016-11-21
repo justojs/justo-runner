@@ -68,28 +68,28 @@ describe("Catalog", function() {
 
     describe("#catalog()", function() {
       it("catalog.workflow()", function() {
-        catalog.catalog.workflow("test", function() {});
+        catalog.catalog.workflow("test", function() {}).must.be.instanceOf(Function);
         catalog.exists("test");
         catalog.get("test").must.be.instanceOf(Function);
         catalog.get("test").__task__.must.be.instanceOf("Workflow");
       });
 
       it("catalog.macro() - task macro", function() {
-        catalog.catalog.macro("test", []);
+        catalog.catalog.macro("test", []).must.be.instanceOf(Function);
         catalog.exists("test");
         catalog.get("test").must.be.instanceOf(Function);
         catalog.get("test").__task__.must.be.instanceOf("TaskMacro");
       });
 
       it("catalog.macro() - file macro", function() {
-        catalog.catalog.macro("test", {});
+        catalog.catalog.macro("test", {}).must.be.instanceOf(Function);
         catalog.exists("test");
         catalog.get("test").must.be.instanceOf(Function);
         catalog.get("test").__task__.must.be.instanceOf("FileMacro");
       });
 
       it("catalog.simple()", function() {
-        catalog.catalog.simple("test", function() {});
+        catalog.catalog.simple("test", function() {}).must.be.instanceOf(Function);
         catalog.exists("test");
         catalog.get("test").must.be.instanceOf(Function);
         catalog.get("test").__task__.must.be.instanceOf("SimpleTask");
