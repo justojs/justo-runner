@@ -1,4 +1,4 @@
-"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
 var _justoInjector = require("justo-injector");
 var _justoResult = require("justo-result");
 var _justoLoader = require("justo-loader");
@@ -26,7 +26,7 @@ var test = Symbol();
 var init = Symbol();
 var fin = Symbol();
 var runSyncSimpleTask = Symbol();
-var runAsyncSimpleTask = Symbol();var 
+var runAsyncSimpleTask = Symbol();var
 
 
 
@@ -69,38 +69,38 @@ Runner = function () {
         var opts, def;
 
         if (arguments.length === 0) {
-          throw new Error("Invalid number of arguments. Expected, at least, the definition function.");} else 
-        if (arguments.length == 1) {
+          throw new Error("Invalid number of arguments. Expected, at least, the definition function.");
+        } else if (arguments.length == 1) {
           opts = { only: true };
-          def = arguments.length <= 0 ? undefined : arguments[0];} else 
-        if (arguments.length >= 2) {
-          if (typeof (arguments.length <= 0 ? undefined : arguments[0]) == "string") opts = { name: arguments.length <= 0 ? undefined : arguments[0], only: true };else 
+          def = arguments.length <= 0 ? undefined : arguments[0];
+        } else if (arguments.length >= 2) {
+          if (typeof (arguments.length <= 0 ? undefined : arguments[0]) == "string") opts = { name: arguments.length <= 0 ? undefined : arguments[0], only: true };else
           opts = arguments.length <= 0 ? undefined : arguments[0];
 
-          def = arguments.length <= 1 ? undefined : arguments[1];}
+          def = arguments.length <= 1 ? undefined : arguments[1];
+        }
 
-
-        return _this.suite(opts, def);} });
-
+        return _this.suite(opts, def);
+      } });
 
     Object.defineProperty(this.test, "only", { enumerable: true, value: function value() {
         var opts, fn;
 
         if (arguments.length === 0) {
-          throw new Error("Invalid number of arguments. Expected, at least, the definition function.");} else 
-        if (arguments.length == 1) {
+          throw new Error("Invalid number of arguments. Expected, at least, the definition function.");
+        } else if (arguments.length == 1) {
           opts = { only: true };
-          fn = arguments.length <= 0 ? undefined : arguments[0];} else 
-        if (arguments.length >= 2) {
-          if (typeof (arguments.length <= 0 ? undefined : arguments[0]) == "string") opts = { name: arguments.length <= 0 ? undefined : arguments[0], only: true };else 
+          fn = arguments.length <= 0 ? undefined : arguments[0];
+        } else if (arguments.length >= 2) {
+          if (typeof (arguments.length <= 0 ? undefined : arguments[0]) == "string") opts = { name: arguments.length <= 0 ? undefined : arguments[0], only: true };else
           opts = arguments.length <= 0 ? undefined : arguments[0];
 
-          fn = arguments.length <= 1 ? undefined : arguments[1];}
+          fn = arguments.length <= 1 ? undefined : arguments[1];
+        }
 
-
-        return _this.test(opts, fn);} });}_createClass(Runner, [{ key: "publishInto", value: function publishInto(
-
-
+        return _this.test(opts, fn);
+      } });
+  }_createClass(Runner, [{ key: "publishInto", value: function publishInto(
 
 
 
@@ -125,8 +125,8 @@ Runner = function () {
       Object.defineProperty(obj, "suite", { value: this.suite, enumerable: true, configurable: true });
       Object.defineProperty(obj, "test", { value: this.test, enumerable: true, configurable: true });
       Object.defineProperty(obj, "init", { value: this.init, enumerable: true, configurable: true });
-      Object.defineProperty(obj, "fin", { value: this.fin, enumerable: true, configurable: true });} }, { key: "unpublishFrom", value: function unpublishFrom(
-
+      Object.defineProperty(obj, "fin", { value: this.fin, enumerable: true, configurable: true });
+    } }, { key: "unpublishFrom", value: function unpublishFrom(
 
 
 
@@ -142,8 +142,8 @@ Runner = function () {
       delete obj.suite;
       delete obj.test;
       delete obj.init;
-      delete obj.fin;} }, { key: "runCatalogedTasks", value: function runCatalogedTasks(
-
+      delete obj.fin;
+    } }, { key: "runCatalogedTasks", value: function runCatalogedTasks(
 
 
 
@@ -174,16 +174,16 @@ Runner = function () {
 
 
         for (var _iterator = calls[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var call = _step.value;
-          if (!this.catalog.exists(call.name)) throw new Error("The '" + call.name + "' task is not cataloged.");}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
-
+          if (!this.catalog.exists(call.name)) throw new Error("The '" + call.name + "' task is not cataloged.");
+        }} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
 
 
         for (var _iterator2 = calls[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var _call = _step2.value;
           this.reporters.start(_call.name);
           this.catalog.get(_call.name).apply(undefined, [_call.name].concat(_toConsumableArray(_call.params)));
-          this.reporters.end();}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2.return) {_iterator2.return();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}} }, { key: 
-
-
+          this.reporters.end();
+        }} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2.return) {_iterator2.return();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}
+    } }, { key:
 
 
 
@@ -208,13 +208,13 @@ Runner = function () {
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, the task function must be passed.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. At least, the task function must be passed.");
+      } else if (args.length == 1) {
         fn = args[0];
-        opts = {};} else 
-      if (args.length >= 2) {
-        opts = args[0];fn = args[1];}
-
+        opts = {};
+      } else if (args.length >= 2) {
+        opts = args[0];fn = args[1];
+      }
 
       if ((typeof opts === "undefined" ? "undefined" : _typeof(opts)) == "object" && !opts.name) opts.name = fn.name || "simple anonymous task";
 
@@ -228,26 +228,26 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this2.runSimpleTask(task, opts, params);};
-
+        return _this2.runSimpleTask(task, opts, params);
+      };
 
       this.initWrapper(wrapper, task);
 
 
-      return wrapper;} }, { key: "runSimpleTask", value: function runSimpleTask(
-
+      return wrapper;
+    } }, { key: "runSimpleTask", value: function runSimpleTask(
 
 
 
@@ -268,18 +268,18 @@ Runner = function () {
 
       if (opts.ignore) {
         this.loggers.debug("Ignoring simple task '" + opts.title + "'.");
-        if (!opts.mute) this.reporters.ignore(opts.title, task);} else 
-      {
-        if (task.sync) res = this[runSyncSimpleTask](task, opts, params);else 
-        this[runAsyncSimpleTask](task, opts, params);}
+        if (!opts.mute) this.reporters.ignore(opts.title, task);
+      } else {
+        if (task.sync) res = this[runSyncSimpleTask](task, opts, params);else
+        this[runAsyncSimpleTask](task, opts, params);
+      }
 
 
-
-      return res;} }, { key: 
-
+      return res;
+    } }, { key:
 
     runSyncSimpleTask, value: function value(task, opts, params) {
-      var res = void 0, state = void 0, err = void 0, start = void 0, end = void 0;
+      var res = void 0,state = void 0,err = void 0,start = void 0,end = void 0;
 
 
       try {
@@ -292,21 +292,21 @@ Runner = function () {
 
         start = Date.now();
         res = fn.apply(undefined, _toConsumableArray(params));
-        state = _justoResult.ResultState.OK;} 
-      catch (e) {
+        state = _justoResult.ResultState.OK;
+      } catch (e) {
         err = e;
-        state = _justoResult.ResultState.FAILED;} finally 
-      {
-        end = Date.now();}
-
+        state = _justoResult.ResultState.FAILED;
+      } finally {
+        end = Date.now();
+      }
 
       this.loggers.debug("Ended sync run of simple task '" + opts.title + "' in '" + state + "' state.");
       if (!opts.mute) this.reporters.end(task, state, err, start, end);
       if (err && this.breakOnError) throw new _RunError2.default(task, err);
 
 
-      return res;} }, { key: 
-
+      return res;
+    } }, { key:
 
     runAsyncSimpleTask, value: function value(task, opts, params) {
       var state, err, start, end;
@@ -319,18 +319,18 @@ Runner = function () {
 
         start = Date.now();
         err = this.runAsyncFunction(fn, params);
-        state = err ? _justoResult.ResultState.FAILED : _justoResult.ResultState.OK;} 
-      catch (e) {
+        state = err ? _justoResult.ResultState.FAILED : _justoResult.ResultState.OK;
+      } catch (e) {
         err = e;
-        state = _justoResult.ResultState.FAILED;} finally 
-      {
-        end = Date.now();}
-
+        state = _justoResult.ResultState.FAILED;
+      } finally {
+        end = Date.now();
+      }
 
       this.loggers.debug("Ended async run of simple task '" + opts.title + "' in '" + state + "' state.");
       if (!opts.mute) this.reporters.end(task, state, err, start, end);
-      if (err && this.breakOnError) throw new _RunError2.default(task, err);} }, { key: "runAsyncFunction", value: function runAsyncFunction(
-
+      if (err && this.breakOnError) throw new _RunError2.default(task, err);
+    } }, { key: "runAsyncFunction", value: function runAsyncFunction(
 
 
 
@@ -349,22 +349,22 @@ Runner = function () {
         sync(function (done) {
           function jdone(err, res) {
             if (err) {
-              if (err instanceof Error) done(err);else 
-              done(new Error(err));} else 
-            {
-              done(undefined, res);}}
-
-
+              if (err instanceof Error) done(err);else
+              done(new Error(err));
+            } else {
+              done(undefined, res);
+            }
+          }
 
           params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: _this3.loggers, log: _this3.loggers, console: _this3.console }, fn);
-          fn.apply(undefined, _toConsumableArray(params));});} 
+          fn.apply(undefined, _toConsumableArray(params));
+        });
+      } catch (e) {
+        err = e;
+      }
 
-      catch (e) {
-        err = e;}
-
-
-      return err;} }, { key: 
-
+      return err;
+    } }, { key:
 
 
 
@@ -394,15 +394,15 @@ Runner = function () {
 
 
       if (args.length < 2) {
-        throw new Error("Invalid number of arguments. At least, two: name and array or object.");} else 
-      if (args.length >= 2) {
-        opts = args[0];tasks = args[1];}
+        throw new Error("Invalid number of arguments. At least, two: name and array or object.");
+      } else if (args.length >= 2) {
+        opts = args[0];tasks = args[1];
+      }
 
 
-
-      if (tasks instanceof Array) return this[taskMacro](opts, tasks);else 
-      return this[fileMacro](opts, tasks);} }, { key: 
-
+      if (tasks instanceof Array) return this[taskMacro](opts, tasks);else
+      return this[fileMacro](opts, tasks);
+    } }, { key:
 
 
 
@@ -418,14 +418,14 @@ Runner = function () {
           if (typeof task.task == "string") {
             if (!this.catalog.exists(task.task)) throw new Error("The '" + task.task + "' task is not cataloged.");
             if (!task.title) task.title = task.task;
-            task.task = this.catalog.get(task.task);}
-
+            task.task = this.catalog.get(task.task);
+          }
 
           if (!task.hasOwnProperty("title")) throw new Error("Title must be specified.");
           if (!task.hasOwnProperty("task")) throw new Error("Task must be specified.");
 
-          macro.add(task);}} catch (err) {_didIteratorError3 = true;_iteratorError3 = err;} finally {try {if (!_iteratorNormalCompletion3 && _iterator3.return) {_iterator3.return();}} finally {if (_didIteratorError3) {throw _iteratorError3;}}}
-
+          macro.add(task);
+        }} catch (err) {_didIteratorError3 = true;_iteratorError3 = err;} finally {try {if (!_iteratorNormalCompletion3 && _iterator3.return) {_iterator3.return();}} finally {if (_didIteratorError3) {throw _iteratorError3;}}}
 
 
       wrapper = function wrapper() {for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {args[_key4] = arguments[_key4];}
@@ -434,26 +434,26 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this4.runTaskMacro(macro, opts, params);};
-
+        return _this4.runTaskMacro(macro, opts, params);
+      };
 
       this.initWrapper(wrapper, macro);
 
 
-      return wrapper;} }, { key: "runTaskMacro", value: function runTaskMacro(
-
+      return wrapper;
+    } }, { key: "runTaskMacro", value: function runTaskMacro(
 
 
 
@@ -475,8 +475,8 @@ Runner = function () {
 
       if (opts.ignore) {
         this.loggers.debug("Ignoring macro '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, macro);} else 
-      {
+        if (!opts.mute) this.reporters.ignore(title, macro);
+      } else {
         var err = void 0;
 
         this.loggers.debug("Starting run of macro '" + title + "'.");
@@ -488,20 +488,20 @@ Runner = function () {
                 var oo = { title: task.title, mute: opts.mute };
                 var pp = params || task.params || [];
 
-                task.task.apply(task, [oo].concat(_toConsumableArray(pp)));} 
-              catch (e) {
+                task.task.apply(task, [oo].concat(_toConsumableArray(pp)));
+              } catch (e) {
                 err = e;
-                if (this.breakOnError) break;}}} catch (err) {_didIteratorError4 = true;_iteratorError4 = err;} finally {try {if (!_iteratorNormalCompletion4 && _iterator4.return) {_iterator4.return();}} finally {if (_didIteratorError4) {throw _iteratorError4;}}}} finally 
-
-
-        {
-          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else 
+                if (this.breakOnError) break;
+              }
+            }} catch (err) {_didIteratorError4 = true;_iteratorError4 = err;} finally {try {if (!_iteratorNormalCompletion4 && _iterator4.return) {_iterator4.return();}} finally {if (_didIteratorError4) {throw _iteratorError4;}}}
+        } finally {
+          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else
           this.loggers.debug("Ended run of macro '" + title + "'.");
 
-          if (!opts.mute) this.reporters.end(macro);}}} }, { key: 
-
-
-
+          if (!opts.mute) this.reporters.end(macro);
+        }
+      }
+    } }, { key:
 
 
 
@@ -519,39 +519,39 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this5.runFileMacro(macro, opts, params);};
-
+        return _this5.runFileMacro(macro, opts, params);
+      };
 
       this.initWrapper(wrapper, macro);
 
 
-      return wrapper;} }, { key: "runFileMacro", value: function runFileMacro(
-
+      return wrapper;
+    } }, { key: "runFileMacro", value: function runFileMacro(
 
     macro, opts, params) {var _this6 = this;
       var title, res;
       var loadFile = function loadFile(file) {
-        _this6.workflow(file, function () {_justoLoader.Loader.load(file);})({ title: file, mute: opts.mute });};
-
+        _this6.workflow(file, function () {_justoLoader.Loader.load(file);})({ title: file, mute: opts.mute });
+      };
       var loadDir = function loadDir(dir) {var _iteratorNormalCompletion5 = true;var _didIteratorError5 = false;var _iteratorError5 = undefined;try {
           for (var _iterator5 = new fs.Dir(dir).entries[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {var entry = _step5.value;
-            if (entry instanceof fs.File) loadFile(entry.path);else 
-            if (entry instanceof fs.Dir) loadDir(entry.path);else 
-            loadFile(entry.path);}} catch (err) {_didIteratorError5 = true;_iteratorError5 = err;} finally {try {if (!_iteratorNormalCompletion5 && _iterator5.return) {_iterator5.return();}} finally {if (_didIteratorError5) {throw _iteratorError5;}}}};
-
-
+            if (entry instanceof fs.File) loadFile(entry.path);else
+            if (entry instanceof fs.Dir) loadDir(entry.path);else
+            loadFile(entry.path);
+          }} catch (err) {_didIteratorError5 = true;_iteratorError5 = err;} finally {try {if (!_iteratorNormalCompletion5 && _iterator5.return) {_iterator5.return();}} finally {if (_didIteratorError5) {throw _iteratorError5;}}}
+      };
 
 
       title = opts.title || macro.title;
@@ -562,16 +562,16 @@ Runner = function () {
 
       if (opts.ignore) {
         this.loggers.debug("Ignoring macro '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, macro);} else 
-      {
+        if (!opts.mute) this.reporters.ignore(title, macro);
+      } else {
         var err = void 0;
 
         this.loggers.debug("Starting run of macro '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, macro);
 
         if (macro.require) {var _iteratorNormalCompletion6 = true;var _didIteratorError6 = false;var _iteratorError6 = undefined;try {
-            for (var _iterator6 = macro.require[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {var pkg = _step6.value;require(pkg);}} catch (err) {_didIteratorError6 = true;_iteratorError6 = err;} finally {try {if (!_iteratorNormalCompletion6 && _iterator6.return) {_iterator6.return();}} finally {if (_didIteratorError6) {throw _iteratorError6;}}}}
-
+            for (var _iterator6 = macro.require[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {var pkg = _step6.value;require(pkg);}} catch (err) {_didIteratorError6 = true;_iteratorError6 = err;} finally {try {if (!_iteratorNormalCompletion6 && _iterator6.return) {_iterator6.return();}} finally {if (_didIteratorError6) {throw _iteratorError6;}}}
+        }
 
         try {var _iteratorNormalCompletion7 = true;var _didIteratorError7 = false;var _iteratorError7 = undefined;try {
             for (var _iterator7 = macro.src[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {var src = _step7.value;
@@ -579,27 +579,27 @@ Runner = function () {
 
               try {
                 try {
-                  entry = fs.entry(src);} 
-                catch (e) {
-                  entry = undefined;}
+                  entry = fs.entry(src);
+                } catch (e) {
+                  entry = undefined;
+                }
 
-
-                if (entry instanceof fs.File) loadFile(src);else 
-                if (entry instanceof fs.Dir) loadDir(src);else 
-                loadFile(src);} 
-              catch (e) {
+                if (entry instanceof fs.File) loadFile(src);else
+                if (entry instanceof fs.Dir) loadDir(src);else
+                loadFile(src);
+              } catch (e) {
                 err = e;
-                if (this.breakOnError) break;}}} catch (err) {_didIteratorError7 = true;_iteratorError7 = err;} finally {try {if (!_iteratorNormalCompletion7 && _iterator7.return) {_iterator7.return();}} finally {if (_didIteratorError7) {throw _iteratorError7;}}}} finally 
-
-
-        {
-          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else 
+                if (this.breakOnError) break;
+              }
+            }} catch (err) {_didIteratorError7 = true;_iteratorError7 = err;} finally {try {if (!_iteratorNormalCompletion7 && _iterator7.return) {_iterator7.return();}} finally {if (_didIteratorError7) {throw _iteratorError7;}}}
+        } finally {
+          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else
           this.loggers.debug("Ended run of macro '" + title + "'.");
 
-          if (!opts.mute) this.reporters.end(macro);}}} }, { key: 
-
-
-
+          if (!opts.mute) this.reporters.end(macro);
+        }
+      }
+    } }, { key:
 
 
 
@@ -623,13 +623,13 @@ Runner = function () {
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, the workflow function must be passed.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. At least, the workflow function must be passed.");
+      } else if (args.length == 1) {
         fn = args[0];
-        opts = {};} else 
-      if (args.length >= 2) {
-        opts = args[0];fn = args[1];}
-
+        opts = {};
+      } else if (args.length >= 2) {
+        opts = args[0];fn = args[1];
+      }
 
       if ((typeof opts === "undefined" ? "undefined" : _typeof(opts)) == "object" && !opts.name) opts.name = fn.name || "anonymous workflow";
 
@@ -643,26 +643,26 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this7.runWorkflow(task, opts, params);};
-
+        return _this7.runWorkflow(task, opts, params);
+      };
 
       this.initWrapper(wrapper, task);
 
 
-      return wrapper;} }, { key: "runWorkflow", value: function runWorkflow(
-
+      return wrapper;
+    } }, { key: "runWorkflow", value: function runWorkflow(
 
 
 
@@ -683,9 +683,9 @@ Runner = function () {
 
       if (opts.ignore) {
         this.loggers.debug("Ignoring workflow '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, workflow);} else 
-      {
-        var state = void 0, err = void 0, start = void 0, end = void 0;
+        if (!opts.mute) this.reporters.ignore(title, workflow);
+      } else {
+        var state = void 0,err = void 0,start = void 0,end = void 0;
 
         try {
           var fn = workflow.fn;
@@ -696,22 +696,22 @@ Runner = function () {
 
           start = Date.now();
           res = fn.apply(undefined, _toConsumableArray(params));
-          state = _justoResult.ResultState.OK;} 
-        catch (e) {
+          state = _justoResult.ResultState.OK;
+        } catch (e) {
           err = e;
-          state = _justoResult.ResultState.FAILED;} finally 
-        {
-          end = Date.now();}
-
+          state = _justoResult.ResultState.FAILED;
+        } finally {
+          end = Date.now();
+        }
 
         this.loggers.debug("Ended run of workflow '" + title + "' in '" + state + "' state.");
         if (!opts.mute) this.reporters.end(workflow, state, err, start, end);
-        if (err && this.breakOnError) throw new _RunError2.default(workflow, err);}
+        if (err && this.breakOnError) throw new _RunError2.default(workflow, err);
+      }
 
 
-
-      return res;} }, { key: 
-
+      return res;
+    } }, { key:
 
 
 
@@ -735,13 +735,13 @@ Runner = function () {
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. Expected, at least, the definition function.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. Expected, at least, the definition function.");
+      } else if (args.length == 1) {
         opts = {};
-        def = args[0];} else 
-      if (args.length >= 2) {
-        opts = args[0];def = args[1];}
-
+        def = args[0];
+      } else if (args.length >= 2) {
+        opts = args[0];def = args[1];
+      }
 
       if (typeof opts == "string") opts = { name: opts };
       if (!opts.name) opts.name = "anonymous suite";
@@ -761,22 +761,22 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
         if (!_this8.only || _this8.only && (task.only || task.superonly || task.subonly)) {
-          return _this8.runSuite(task, opts, params);}};
-
-
+          return _this8.runSuite(task, opts, params);
+        }
+      };
 
       this.initTestWrapper(wrapper, task);
 
@@ -784,8 +784,8 @@ Runner = function () {
       if (this.stack.length > 0) this.stack.top.add(wrapper);
 
 
-      return wrapper;} }, { key: "runSuite", value: function runSuite(
-
+      return wrapper;
+    } }, { key: "runSuite", value: function runSuite(
 
 
 
@@ -805,8 +805,8 @@ Runner = function () {
 
       if (opts.ignore || suite.ignore) {
         this.loggers.debug("Ignoring suite '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, suite);} else 
-      {
+        if (!opts.mute) this.reporters.ignore(title, suite);
+      } else {
         var oo = {};
         if (opts.mute) oo.mute = true;
 
@@ -817,23 +817,23 @@ Runner = function () {
           for (var _iterator8 = suite.initializers[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {var _init = _step8.value;_init.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError8 = true;_iteratorError8 = err;} finally {try {if (!_iteratorNormalCompletion8 && _iterator8.return) {_iterator8.return();}} finally {if (_didIteratorError8) {throw _iteratorError8;}}}
 
         if (!this.only) {var _iteratorNormalCompletion9 = true;var _didIteratorError9 = false;var _iteratorError9 = undefined;try {
-            for (var _iterator9 = suite.tasks[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {var task = _step9.value;task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError9 = true;_iteratorError9 = err;} finally {try {if (!_iteratorNormalCompletion9 && _iterator9.return) {_iterator9.return();}} finally {if (_didIteratorError9) {throw _iteratorError9;}}}} else 
-        {
+            for (var _iterator9 = suite.tasks[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {var task = _step9.value;task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError9 = true;_iteratorError9 = err;} finally {try {if (!_iteratorNormalCompletion9 && _iterator9.return) {_iterator9.return();}} finally {if (_didIteratorError9) {throw _iteratorError9;}}}
+        } else {
           if (suite.only || suite.superonly) {var _iteratorNormalCompletion10 = true;var _didIteratorError10 = false;var _iteratorError10 = undefined;try {
-              for (var _iterator10 = suite.tasks[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {var _task = _step10.value;_task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError10 = true;_iteratorError10 = err;} finally {try {if (!_iteratorNormalCompletion10 && _iterator10.return) {_iterator10.return();}} finally {if (_didIteratorError10) {throw _iteratorError10;}}}} else 
-          if (suite.subonly) {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
+              for (var _iterator10 = suite.tasks[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {var _task = _step10.value;_task.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError10 = true;_iteratorError10 = err;} finally {try {if (!_iteratorNormalCompletion10 && _iterator10.return) {_iterator10.return();}} finally {if (_didIteratorError10) {throw _iteratorError10;}}}
+          } else if (suite.subonly) {var _iteratorNormalCompletion11 = true;var _didIteratorError11 = false;var _iteratorError11 = undefined;try {
               for (var _iterator11 = suite.tasks[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {var _task2 = _step11.value;
-                if (_task2.__task__.only || _task2.__task__.superonly || _task2.__task__.subonly) _task2.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}}}var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
-
-
-
+                if (_task2.__task__.only || _task2.__task__.superonly || _task2.__task__.subonly) _task2.apply(undefined, [oo].concat(_toConsumableArray(params)));
+              }} catch (err) {_didIteratorError11 = true;_iteratorError11 = err;} finally {try {if (!_iteratorNormalCompletion11 && _iterator11.return) {_iterator11.return();}} finally {if (_didIteratorError11) {throw _iteratorError11;}}}
+          }
+        }var _iteratorNormalCompletion12 = true;var _didIteratorError12 = false;var _iteratorError12 = undefined;try {
 
           for (var _iterator12 = suite.finalizers[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {var _fin = _step12.value;_fin.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError12 = true;_iteratorError12 = err;} finally {try {if (!_iteratorNormalCompletion12 && _iterator12.return) {_iterator12.return();}} finally {if (_didIteratorError12) {throw _iteratorError12;}}}
 
         this.loggers.debug("Ended run of suite '" + title + "'.");
-        if (!opts.mute) this.reporters.end(suite);}} }, { key: 
-
-
+        if (!opts.mute) this.reporters.end(suite);
+      }
+    } }, { key:
 
 
 
@@ -851,18 +851,18 @@ Runner = function () {
 
 
       if (this.stack.length === 0) {
-        throw new Error("test() must be invoked into a suite.");}
-
+        throw new Error("test() must be invoked into a suite.");
+      }
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, one expected: the test function.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. At least, one expected: the test function.");
+      } else if (args.length == 1) {
         fn = args[0];
-        opts = {};} else 
-      if (args.length >= 2) {
-        opts = args[0];fn = args[1];}
-
+        opts = {};
+      } else if (args.length >= 2) {
+        opts = args[0];fn = args[1];
+      }
 
       if (typeof opts == "string") opts = { name: opts };
       if (!opts.name) opts.name = "anonymous test";
@@ -877,20 +877,20 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this9.runTest(task, opts, params);};
-
+        return _this9.runTest(task, opts, params);
+      };
 
       this.initTestWrapper(wrapper, task);
 
@@ -898,8 +898,8 @@ Runner = function () {
       this.stack.top.add(wrapper);
 
 
-      return wrapper;} }, { key: "runTest", value: function runTest(
-
+      return wrapper;
+    } }, { key: "runTest", value: function runTest(
 
 
 
@@ -917,8 +917,8 @@ Runner = function () {
 
       if (opts.ignore || test.ignore) {
         this.loggers.debug("Ignoring test '" + title + "'.");
-        if (!opts.mute) this.reporters.ignore(title, test);} else 
-      {
+        if (!opts.mute) this.reporters.ignore(title, test);
+      } else {
         var oo = {};
         if (opts.mute) oo.mute = true;
 
@@ -935,9 +935,9 @@ Runner = function () {
                 for (var _iterator15 = test.finalizers[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {var _fin2 = _step15.value;_fin2.apply(undefined, [oo].concat([_params]));}} catch (err) {_didIteratorError15 = true;_iteratorError15 = err;} finally {try {if (!_iteratorNormalCompletion15 && _iterator15.return) {_iterator15.return();}} finally {if (_didIteratorError15) {throw _iteratorError15;}}}
 
               this.loggers.debug("Ended run of test '" + headline + "'.");
-              if (!opts.mute) this.reporters.end(test);}} catch (err) {_didIteratorError13 = true;_iteratorError13 = err;} finally {try {if (!_iteratorNormalCompletion13 && _iterator13.return) {_iterator13.return();}} finally {if (_didIteratorError13) {throw _iteratorError13;}}}} else 
-
-        {
+              if (!opts.mute) this.reporters.end(test);
+            }} catch (err) {_didIteratorError13 = true;_iteratorError13 = err;} finally {try {if (!_iteratorNormalCompletion13 && _iterator13.return) {_iterator13.return();}} finally {if (_didIteratorError13) {throw _iteratorError13;}}}
+        } else {
 
           this.loggers.debug("Starting run of test '" + title + "'.");
           if (!opts.mute) this.reporters.start(title, test);var _iteratorNormalCompletion16 = true;var _didIteratorError16 = false;var _iteratorError16 = undefined;try {
@@ -947,10 +947,10 @@ Runner = function () {
             for (var _iterator17 = test.finalizers[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {var _fin3 = _step17.value;_fin3.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError17 = true;_iteratorError17 = err;} finally {try {if (!_iteratorNormalCompletion17 && _iterator17.return) {_iterator17.return();}} finally {if (_didIteratorError17) {throw _iteratorError17;}}}
 
           this.loggers.debug("Ended run of test '" + title + "'.");
-          if (!opts.mute) this.reporters.end(test);}}} }, { key: 
-
-
-
+          if (!opts.mute) this.reporters.end(test);
+        }
+      }
+    } }, { key:
 
 
 
@@ -974,18 +974,18 @@ Runner = function () {
 
 
       if (this.stack.length === 0) {
-        throw new Error("init() must be invoked into a suite.");}
-
+        throw new Error("init() must be invoked into a suite.");
+      }
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, one expected: the init function.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. At least, one expected: the init function.");
+      } else if (args.length == 1) {
         fn = args[0];
-        opts = { name: "__suite__" };} else 
-      if (args.length >= 2) {
-        opts = args[0];fn = args[1];}
-
+        opts = { name: "__suite__" };
+      } else if (args.length >= 2) {
+        opts = args[0];fn = args[1];
+      }
 
       if (typeof opts == "string") opts = { name: opts };
       if (!opts.name) opts.name = "__suite__";
@@ -1000,20 +1000,20 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this10.runInit(task, opts, params);};
-
+        return _this10.runInit(task, opts, params);
+      };
 
       this.initWrapper(wrapper, task);
 
@@ -1021,8 +1021,8 @@ Runner = function () {
       this.stack.top.add(wrapper);
 
 
-      return wrapper;} }, { key: "runInit", value: function runInit(
-
+      return wrapper;
+    } }, { key: "runInit", value: function runInit(
 
 
 
@@ -1030,8 +1030,8 @@ Runner = function () {
 
 
     task, opts, params) {
-      return this.runSimpleTask(task, opts, params);} }, { key: 
-
+      return this.runSimpleTask(task, opts, params);
+    } }, { key:
 
 
 
@@ -1055,18 +1055,18 @@ Runner = function () {
 
 
       if (this.stack.length === 0) {
-        throw new Error("fin() must be invoked into a suite.");}
-
+        throw new Error("fin() must be invoked into a suite.");
+      }
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, one expected: the fin function.");} else 
-      if (args.length == 1) {
+        throw new Error("Invalid number of arguments. At least, one expected: the fin function.");
+      } else if (args.length == 1) {
         fn = args[0];
-        opts = { name: "__suite__" };} else 
-      if (args.length >= 2) {
-        opts = args[0];fn = args[1];}
-
+        opts = { name: "__suite__" };
+      } else if (args.length >= 2) {
+        opts = args[0];fn = args[1];
+      }
 
       if (typeof opts == "string") opts = { name: opts };
       if (!opts.name) opts.name = "__suite__";
@@ -1081,20 +1081,20 @@ Runner = function () {
 
         if (args.length === 0) {
           opts = {};
-          params = [];} else 
-        if (args.length == 1) {
+          params = [];
+        } else if (args.length == 1) {
           opts = args[0];
-          params = [];} else 
-        if (args.length >= 2) {
+          params = [];
+        } else if (args.length >= 2) {
           opts = args[0];
-          params = args.slice(1);}
-
+          params = args.slice(1);
+        }
 
         if (typeof opts == "string") opts = { title: opts };
 
 
-        return _this11.runFin(task, opts, params);};
-
+        return _this11.runFin(task, opts, params);
+      };
 
       this.initWrapper(wrapper, task);
 
@@ -1102,8 +1102,8 @@ Runner = function () {
       this.stack.top.add(wrapper);
 
 
-      return wrapper;} }, { key: "runFin", value: function runFin(
-
+      return wrapper;
+    } }, { key: "runFin", value: function runFin(
 
 
 
@@ -1111,8 +1111,8 @@ Runner = function () {
 
 
     task, opts, params) {
-      return this.runSimpleTask(task, opts, params);} }, { key: "initWrapper", value: function initWrapper(
-
+      return this.runSimpleTask(task, opts, params);
+    } }, { key: "initWrapper", value: function initWrapper(
 
 
 
@@ -1124,30 +1124,30 @@ Runner = function () {
     wrapper, task) {
       Object.defineProperty(wrapper, "__task__", { value: task });
 
-      Object.defineProperty(wrapper, "ignore", { 
+      Object.defineProperty(wrapper, "ignore", {
         value: function value(opts) {for (var _len16 = arguments.length, params = Array(_len16 > 1 ? _len16 - 1 : 0), _key16 = 1; _key16 < _len16; _key16++) {params[_key16 - 1] = arguments[_key16];}
           if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));}, 
-
+          wrapper.apply(undefined, [Object.assign({}, opts, { ignore: true })].concat(params));
+        },
         enumerable: true });
 
 
-      Object.defineProperty(wrapper, "mute", { 
+      Object.defineProperty(wrapper, "mute", {
         value: function value(opts) {for (var _len17 = arguments.length, params = Array(_len17 > 1 ? _len17 - 1 : 0), _key17 = 1; _key17 < _len17; _key17++) {params[_key17 - 1] = arguments[_key17];}
           if (typeof opts == "string") opts = { title: opts };
-          return wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));}, 
-
+          return wrapper.apply(undefined, [Object.assign({}, opts, { mute: true })].concat(params));
+        },
         enumerable: true });
 
 
-      Object.defineProperty(wrapper, "title", { 
+      Object.defineProperty(wrapper, "title", {
         value: function value(title) {
           wrapper.__task__._title = title;
-          return wrapper;}, 
+          return wrapper;
+        },
+        enumerable: true });
 
-        enumerable: true });} }, { key: "initTestWrapper", value: function initTestWrapper(
-
-
+    } }, { key: "initTestWrapper", value: function initTestWrapper(
 
 
 
@@ -1159,34 +1159,35 @@ Runner = function () {
     wrapper, task) {
       this.initWrapper(wrapper, task);
 
-      Object.defineProperty(wrapper, "only", { 
+      Object.defineProperty(wrapper, "only", {
         value: function value(opts) {for (var _len18 = arguments.length, params = Array(_len18 > 1 ? _len18 - 1 : 0), _key18 = 1; _key18 < _len18; _key18++) {params[_key18 - 1] = arguments[_key18];}
           if (typeof opts == "string") opts = { title: opts };
-          wrapper.apply(undefined, [Object.assign({}, opts, { only: true })].concat(params));}, 
-
+          wrapper.apply(undefined, [Object.assign({}, opts, { only: true })].concat(params));
+        },
         enumerable: true });
 
 
-      Object.defineProperty(wrapper, "params", { 
+      Object.defineProperty(wrapper, "params", {
         value: function value() {for (var _len19 = arguments.length, params = Array(_len19), _key19 = 0; _key19 < _len19; _key19++) {params[_key19] = arguments[_key19];}
           wrapper.__task__.params = params;
-          return wrapper;}, 
+          return wrapper;
+        },
+        enumerable: true });
 
-        enumerable: true });} }, { key: "end", value: function end() 
-
-
+    } }, { key: "end", value: function end()
 
 
 
 
     {
       this.reporters.end();
-      this.loggers.debug("Ending report.");} }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion18 = true;var _didIteratorError18 = false;var _iteratorError18 = undefined;try {for (var _iterator18 = this.reporters.items[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {var rep = _step18.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError18 = true;_iteratorError18 = err;} finally {try {if (!_iteratorNormalCompletion18 && _iterator18.return) {_iterator18.return();}} finally {if (_didIteratorError18) {throw _iteratorError18;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get() 
-
-
-    {
-      return DEFAULT_DISPLAY;} }, { key: "DEFAULT_LOGGER_OPTIONS", get: function get() 
-
+      this.loggers.debug("Ending report.");
+    } }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion18 = true;var _didIteratorError18 = false;var _iteratorError18 = undefined;try {for (var _iterator18 = this.reporters.items[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {var rep = _step18.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError18 = true;_iteratorError18 = err;} finally {try {if (!_iteratorNormalCompletion18 && _iterator18.return) {_iterator18.return();}} finally {if (_didIteratorError18) {throw _iteratorError18;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get()
 
     {
-      return DEFAULT_LOGGER_OPTIONS;} }]);return Runner;}();exports.default = Runner;
+      return DEFAULT_DISPLAY;
+    } }, { key: "DEFAULT_LOGGER_OPTIONS", get: function get()
+
+    {
+      return DEFAULT_LOGGER_OPTIONS;
+    } }]);return Runner;}();exports.default = Runner;

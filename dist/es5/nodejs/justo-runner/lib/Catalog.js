@@ -5,7 +5,7 @@ var _justoFs = require("justo-fs");var fs = _interopRequireWildcard(_justoFs);fu
 var catalog = Symbol();
 var catalogWorkflow = Symbol();
 var catalogMacro = Symbol();
-var catalogSimple = Symbol();var 
+var catalogSimple = Symbol();var
 
 
 
@@ -24,8 +24,8 @@ Catalog = function () {
     Object.defineProperty(this, "catalog", { enumerable: true, value: this[catalog].bind(this) });
     Object.defineProperty(this.catalog, "workflow", { enumerable: true, value: this[catalogWorkflow].bind(this) });
     Object.defineProperty(this.catalog, "macro", { enumerable: true, value: this[catalogMacro].bind(this) });
-    Object.defineProperty(this.catalog, "simple", { enumerable: true, value: this[catalogSimple].bind(this) });}_createClass(Catalog, [{ key: "add", value: function add(
-
+    Object.defineProperty(this.catalog, "simple", { enumerable: true, value: this[catalogSimple].bind(this) });
+  }_createClass(Catalog, [{ key: "add", value: function add(
 
 
 
@@ -33,18 +33,8 @@ Catalog = function () {
 
 
     wrapper) {
-      this.tasks[wrapper.__task__.fqn] = wrapper;} }, { key: "get", value: function get(
-
-
-
-
-
-
-
-
-    fqn) {
-      return this.tasks[fqn];} }, { key: "exists", value: function exists(
-
+      this.tasks[wrapper.__task__.fqn] = wrapper;
+    } }, { key: "get", value: function get(
 
 
 
@@ -53,8 +43,18 @@ Catalog = function () {
 
 
     fqn) {
-      return !!this.tasks[fqn];} }, { key: 
+      return this.tasks[fqn];
+    } }, { key: "exists", value: function exists(
 
+
+
+
+
+
+
+    fqn) {
+      return !!this.tasks[fqn];
+    } }, { key:
 
 
 
@@ -88,16 +88,16 @@ Catalog = function () {
 
 
       if (args.length < 2) {
-        throw new Error("Invalid number of arguments. At least, expected two: name or options and function or object[].");} else 
-      if (args.length >= 2) {
-        opts = args[0];task = args[1];}
+        throw new Error("Invalid number of arguments. At least, expected two: name or options and function or object[].");
+      } else if (args.length >= 2) {
+        opts = args[0];task = args[1];
+      }
 
 
-
-      if (task instanceof Function) this[catalogWorkflow](opts, task);else 
-      if (task instanceof Array || task instanceof Object) this[catalogMacro](opts, task);else 
-      throw new Error("Invalid task to catalog.");} }, { key: 
-
+      if (task instanceof Function) this[catalogWorkflow](opts, task);else
+      if (task instanceof Array || task instanceof Object) this[catalogMacro](opts, task);else
+      throw new Error("Invalid task to catalog.");
+    } }, { key:
 
 
 
@@ -111,8 +111,8 @@ Catalog = function () {
 
 
     catalogWorkflow, value: function value(opts, fn) {
-      this.add(this.runner.workflow(opts, fn));} }, { key: 
-
+      this.add(this.runner.workflow(opts, fn));
+    } }, { key:
 
 
 
@@ -126,8 +126,8 @@ Catalog = function () {
 
 
     catalogMacro, value: function value(opts, tasks) {
-      this.add(this.runner.macro(opts, tasks));} }, { key: 
-
+      this.add(this.runner.macro(opts, tasks));
+    } }, { key:
 
 
 
@@ -141,4 +141,5 @@ Catalog = function () {
 
 
     catalogSimple, value: function value(opts, fn) {
-      this.add(this.runner.simple(opts, fn));} }]);return Catalog;}();exports.default = Catalog;
+      this.add(this.runner.simple(opts, fn));
+    } }]);return Catalog;}();exports.default = Catalog;
