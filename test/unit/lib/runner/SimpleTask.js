@@ -17,74 +17,115 @@ describe("SimpleTask (runner)", function() {
     simple = runner.simple;
   });
 
-  describe("#Rummer.simple()", function() {
+  describe("#Runner.simple()", function() {
     function fn() {}
 
-    it("simple(fn)", function() {
-      var fw = simple(fn);
+    describe("New task", function() {
+      it("simple(fn)", function() {
+        var fw = simple(fn);
 
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("SimpleTask");
-      fw.__task__.name.must.be.eq("fn");
-      fw.__task__.fn.must.be.same(fn);
+        fw.must.be.instanceOf(Function);
+        fw.__task__.must.be.instanceOf("SimpleTask");
+        fw.__task__.name.must.be.eq("fn");
+        fw.__task__.fn.must.be.same(fn);
+      });
+
+      it("simple(name, fn)", function() {
+        var fw = simple("test", fn);
+
+        fw.must.be.instanceOf(Function);
+        fw.__task__.must.be.instanceOf("SimpleTask");
+        fw.__task__.name.must.be.eq("test");
+        fw.__task__.fn.must.be.same(fn);
+      });
+
+      it("simple(opts, fn)", function() {
+        var fw = simple({name: "test"}, fn);
+
+        fw.must.be.instanceOf(Function);
+        fw.__task__.must.be.instanceOf("SimpleTask");
+        fw.__task__.name.must.be.eq("test");
+        fw.__task__.fn.must.be.same(fn);
+      });
     });
 
-    it("simple(name, fn)", function() {
-      var fw = simple("test", fn);
+    describe("From existing task", function() {
+      it("simple(opts)", function() {
+        var fw = simple({
+          name: "test",
+          params: {one: 1, two: 2},
+          task: simple({name: "existing"}, fn)
+        });
 
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("SimpleTask");
-      fw.__task__.name.must.be.eq("test");
-      fw.__task__.fn.must.be.same(fn);
-    });
-
-    it("simple(opts, fn)", function() {
-      var fw = simple({name: "test"}, fn);
-
-      fw.must.be.instanceOf(Function);
-      fw.__task__.must.be.instanceOf("SimpleTask");
-      fw.__task__.name.must.be.eq("test");
-      fw.__task__.fn.must.be.same(fn);
+        fw.must.be.instanceOf(Function);
+        fw.__task__.must.be.instanceOf("Workflow");
+        fw.__task__.name.must.be.eq("test");
+        fw.__task__.fn.must.not.be.same(fn);
+      });
     });
   });
 
   describe("Wrapper", function() {
-    it("call()", function() {
-      var pp, fw = simple(function(params) { pp = params; });
-      fw();
-      pp.must.be.eq([]);
+    describe("For new task", function() {
+      it("call()", function() {
+        var pp, fw = simple(function(params) { pp = params; });
+        fw();
+        pp.must.be.eq([]);
+      });
+
+      it("call(title)", function() {
+        var pp, fw = simple(function(params) { pp = params; });
+        fw("title");
+        pp.must.be.eq([]);
+      });
+
+      it("call(title, params)", function() {
+        var pp, fw = simple(function(params) { pp = params; });
+        fw("title", 1, 2, 3);
+        pp.must.be.eq([1, 2, 3]);
+      });
+
+      it("call(opts)", function() {
+        var pp, fw = simple(function(params) { pp = params; });
+        fw({title: "title"});
+        pp.must.be.eq([]);
+      });
+
+      it("call(opts, params)", function() {
+        var pp, fw = simple(function(params) { pp = params; });
+        fw({title: "title"}, 1, 2, 3);
+        pp.must.be.eq([1, 2, 3]);
+      });
+
+      it("injection", function() {
+        var inj, fw = simple(function(params, log, logger) { inj = [params, log, logger]; });
+        fw("title", 1, 2, 3);
+        inj[0].must.be.eq([1, 2, 3]);
+        inj[1].must.not.be.eq(undefined);
+        inj[2].must.not.be.eq(undefined);
+      });
     });
 
-    it("call(title)", function() {
-      var pp, fw = simple(function(params) { pp = params; });
-      fw("title");
-      pp.must.be.eq([]);
-    });
+    describe("For existing task", function() {
+      it("call()", function() {
+        var pp, fw = simple({
+          name: "test",
+          params: {one: 1, two: 2},
+          task: simple(function(params) { pp = params; })
+        });
+        fw();
+        pp.must.be.eq([{one: 1, two: 2}]);
+      });
 
-    it("call(title, params)", function() {
-      var pp, fw = simple(function(params) { pp = params; });
-      fw("title", 1, 2, 3);
-      pp.must.be.eq([1, 2, 3]);
-    });
-
-    it("call(opts)", function() {
-      var pp, fw = simple(function(params) { pp = params; });
-      fw({title: "title"});
-      pp.must.be.eq([]);
-    });
-
-    it("call(opts, params)", function() {
-      var pp, fw = simple(function(params) { pp = params; });
-      fw({title: "title"}, 1, 2, 3);
-      pp.must.be.eq([1, 2, 3]);
-    });
-
-    it("injection", function() {
-      var inj, fw = simple(function(params, log, logger) { inj = [params, log, logger]; });
-      fw("title", 1, 2, 3);
-      inj[0].must.be.eq([1, 2, 3]);
-      inj[1].must.not.be.eq(undefined);
-      inj[2].must.not.be.eq(undefined);
+      it("call(title)", function() {
+        var pp, fw = simple({
+          name: "test",
+          params: {one: 1, two: 2},
+          task: simple(function(params) { pp = params; })
+        });
+        fw("the title");
+        pp.must.be.eq([{one: 1, two: 2}]);
+      });
     });
   });
 

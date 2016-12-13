@@ -18,6 +18,7 @@ node_js:
   - 6.3
   - 7.0
   - 7.1
+  - 7.2
 os:
   - linux
 sudo: false

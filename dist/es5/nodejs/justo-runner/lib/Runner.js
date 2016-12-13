@@ -203,15 +203,21 @@ Runner = function () {
 
 
 
+
+
     simple, value: function value() {var _this2 = this;for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
       var opts, fn, task, wrapper;
 
 
       if (args.length === 0) {
-        throw new Error("Invalid number of arguments. At least, the task function must be passed.");
+        throw new Error("Invalid number of arguments. At least, one parameter must be passed (function or object).");
       } else if (args.length == 1) {
-        fn = args[0];
-        opts = {};
+        if (args[0] instanceof Function) {
+          fn = args[0];
+          opts = {};
+        } else {
+          opts = args[0];
+        }
       } else if (args.length >= 2) {
         opts = args[0];fn = args[1];
       }
@@ -219,31 +225,38 @@ Runner = function () {
       if ((typeof opts === "undefined" ? "undefined" : _typeof(opts)) == "object" && !opts.name) opts.name = fn.name || "simple anonymous task";
 
 
-      task = new _SimpleTask2.default(opts, fn);
+      if (fn) {
+        task = new _SimpleTask2.default(opts, fn);
+
+        wrapper = function wrapper() {for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {args[_key2] = arguments[_key2];}
+          var opts, params;
 
 
-      wrapper = function wrapper() {for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {args[_key2] = arguments[_key2];}
-        var opts, params;
+          if (args.length === 0) {
+            opts = {};
+            params = [];
+          } else if (args.length == 1) {
+            opts = args[0];
+            params = [];
+          } else if (args.length >= 2) {
+            opts = args[0];
+            params = args.slice(1);
+          }
+
+          if (typeof opts == "string") opts = { title: opts };
 
 
-        if (args.length === 0) {
-          opts = {};
-          params = [];
-        } else if (args.length == 1) {
-          opts = args[0];
-          params = [];
-        } else if (args.length >= 2) {
-          opts = args[0];
-          params = args.slice(1);
-        }
+          return _this2.runSimpleTask(task, opts, params);
+        };
 
-        if (typeof opts == "string") opts = { title: opts };
+        this.initWrapper(wrapper, task);
+      } else {
+        if (!opts.task) throw new Error("task option expected.");
 
-
-        return _this2.runSimpleTask(task, opts, params);
-      };
-
-      this.initWrapper(wrapper, task);
+        wrapper = this[workflow](opts, function () {
+          return opts.task(opts, opts.params || []);
+        });
+      }
 
 
       return wrapper;

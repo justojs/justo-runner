@@ -1,11 +1,11 @@
 {
   "name": "justo-runner",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "Justo.js runner.",
   "homepage": "http://justojs.org",
   "author": {
     "name": "Justo Labs",
-    "email": "info@justolabs.com",
+    "email": "hello@justolabs.com",
     "url": "http://justojs.org"
   },
   "contributors": [
