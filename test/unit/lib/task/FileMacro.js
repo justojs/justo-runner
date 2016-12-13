@@ -14,7 +14,7 @@ describe("FileMacro (task)", function() {
         fqn: "test",
         desc: undefined,
         ignore: false,
-        onlyif: true,
+        onlyIf: true,
         require: [],
         src: []
       });
@@ -30,7 +30,7 @@ describe("FileMacro (task)", function() {
         fqn: "test",
         desc: undefined,
         ignore: false,
-        onlyif: true,
+        onlyIf: true,
         require: ["justo-assert"],
         src: ["test/unit/data/one.js"]
       });
@@ -46,7 +46,7 @@ describe("FileMacro (task)", function() {
         fqn: "test",
         desc: undefined,
         ignore: false,
-        onlyif: true,
+        onlyIf: true,
         require: ["justo-assert"],
         src: ["test/unit/data/one.js"]
       });
