@@ -8,16 +8,15 @@ const Runner = PKG.Runner;
 
 //suite
 describe("TaskMacro (runner)", function() {
-  var runner, loggers, reporters, macro, simple;
+  var runner, reporters, macro, simple;
   function fn() {}
   function fn1() {}
   function fn2() {}
   function fn3() {}
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters, console});
+    runner = new Runner({reporters, console});
     macro = runner.macro;
     simple = runner.simple;
   });
@@ -107,12 +106,11 @@ describe("TaskMacro (runner)", function() {
   describe("#runTaskMacro()", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
-      loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
     });
 
     describe("Ignore", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -132,9 +130,6 @@ describe("TaskMacro (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("TaskMacro");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
       });
 
       it("Implicitly", function() {
@@ -152,15 +147,12 @@ describe("TaskMacro (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("TaskMacro");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
       });
     });
 
     describe("Mute", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -176,12 +168,6 @@ describe("TaskMacro (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'one'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'one' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
 
       it("Implicitly", function() {
@@ -195,18 +181,12 @@ describe("TaskMacro (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'one'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'one' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
     });
 
     describe("OK", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         macro = runner.macro;
         simple = runner.simple;
       });
@@ -241,12 +221,6 @@ describe("TaskMacro (runner)", function() {
         args[0].must.be.instanceOf("TaskMacro");
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'one'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'one' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
     });
 
@@ -254,7 +228,7 @@ describe("TaskMacro (runner)", function() {
       it("Failed - continue on error", function() {
         var args, fw, exec1, exec2;
 
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         macro = runner.macro;
         simple = runner.simple;
 
@@ -300,20 +274,12 @@ describe("TaskMacro (runner)", function() {
         args[0].must.be.instanceOf("TaskMacro");
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(6);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'one'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'one' in 'FAILED' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Starting sync run of simple task 'two'."]);
-        runner.loggers.spy.getArguments("debug()", 4).must.be.eq(["Ended sync run of simple task 'two' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 5).must.be.eq(["Ended run of macro 'test'."]);
       });
 
       it("Failed - break on error", function() {
         var args, fw, exec1, exec2;
 
-        runner = new Runner({loggers, reporters, console, onError: "break"});
+        runner = new Runner({reporters, console, onError: "break"});
         macro = runner.macro;
         simple = runner.simple;
 
@@ -348,12 +314,6 @@ describe("TaskMacro (runner)", function() {
         args[0].must.be.instanceOf("TaskMacro");
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting sync run of simple task 'one'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended sync run of simple task 'one' in 'FAILED' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test' on error."]);
       });
     });
   });

@@ -7,13 +7,12 @@ const Suite = PKG.Suite;
 
 //suite
 describe("Initializer (runner)", function() {
-  var runner, init, loggers, reporters;
+  var runner, init, reporters;
   var fn;
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = spy(new Tester({loggers, reporters, console}));
+    runner = spy(new Tester({reporters, console}));
     init = runner.init;
     fn = spy(function() {});
   });

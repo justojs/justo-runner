@@ -5,13 +5,12 @@ const Tester = require("../../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("Suite (runner)", function() {
-  var runner, suite, init, fin, test, loggers, reporters;
+  var runner, suite, init, fin, test, reporters;
   function fn() {}
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = spy(new Tester({loggers, reporters, console}));
+    runner = spy(new Tester({reporters, console}));
     suite = runner.suite;
     init = runner.init;
     fin = runner.fin;
@@ -407,9 +406,8 @@ describe("Suite (runner)", function() {
 
     describe("only", function() {
       beforeEach(function() {
-        loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
         reporters = dummy({}, ["start()", "end()", "ignore()"]);
-        runner = spy(new Tester({loggers, reporters, console, only: true}));
+        runner = spy(new Tester({reporters, console, only: true}));
         suite = runner.suite;
         init = runner.init;
         fin = runner.fin;

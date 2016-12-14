@@ -1,6 +1,6 @@
 {
   "name": "justo-runner",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "Justo.js runner.",
   "homepage": "http://justojs.org",
   "author": {
@@ -37,7 +37,6 @@
     "justo-result": "*",
     "justo-sync": "*"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "babel-preset-es2015": "*",
     "grunt": "*",

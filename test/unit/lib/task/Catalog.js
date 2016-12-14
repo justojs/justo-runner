@@ -8,7 +8,6 @@ describe("Catalog", function() {
 
   beforeEach(function() {
     runner = new Runner({
-      loggers: {},
       reporters: {},
       console
     });

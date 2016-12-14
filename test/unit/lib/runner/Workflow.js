@@ -6,12 +6,11 @@ const Runner = require("../../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("Workflow (runner)", function() {
-  var runner, workflow, loggers, reporters;
+  var runner, workflow, reporters;
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters, console});
+    runner = new Runner({reporters, console});
     workflow = runner.workflow;
   });
 
@@ -79,23 +78,20 @@ describe("Workflow (runner)", function() {
 
     it("injection", function() {
       var inj;
-      var fw = workflow(function(params, log, logger) { inj = [params, log, logger]; });
+      var fw = workflow(function(params) { inj = [params]; });
       fw("title", 1, 2, 3);
       inj[0].must.be.eq([1, 2, 3]);
-      inj[1].must.not.be.eq(undefined);
-      inj[2].must.not.be.eq(undefined);
     });
   });
 
   describe("#Runner.runWorkflow()", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
-      loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
     });
 
     describe("Ignore", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         workflow = runner.workflow;
       });
 
@@ -111,9 +107,6 @@ describe("Workflow (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("Workflow");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getArguments("debug()")[0].must.be.eq("Ignoring workflow 'test'.");
       });
 
       it("Implicitly", function() {
@@ -128,15 +121,12 @@ describe("Workflow (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("Workflow");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getArguments("debug()")[0].must.be.eq("Ignoring workflow 'test'.");
       });
     });
 
     describe("Mute", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         workflow = runner.workflow;
       });
 
@@ -148,10 +138,6 @@ describe("Workflow (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getArguments("debug()", 0)[0].must.be.eq("Starting run of workflow 'test'.");
-        runner.loggers.spy.getArguments("debug()", 1)[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
       });
 
       it("Implicitly", function() {
@@ -162,16 +148,12 @@ describe("Workflow (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getArguments("debug()", 0)[0].must.be.eq("Starting run of workflow 'test'.");
-        runner.loggers.spy.getArguments("debug()", 1)[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
       });
     });
 
     describe("OK", function() {
       beforeEach(function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         workflow = runner.workflow;
       });
 
@@ -194,16 +176,12 @@ describe("Workflow (runner)", function() {
         runner.reporters.spy.getArguments("end()")[4].must.be.instanceOf(Number);
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
-        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'OK' state.");
       });
     });
 
     describe("Failed", function() {
       it("Failed - continue on error", function() {
-        runner = new Runner({loggers, reporters, console});
+        runner = new Runner({reporters, console});
         workflow = runner.workflow;
 
         var fw = workflow(function raise(params) { throw new Error(params[0]); });
@@ -224,14 +202,10 @@ describe("Workflow (runner)", function() {
         runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
-        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'FAILED' state.");
       });
 
       it("Failed - break on error", function() {
-        runner = new Runner({loggers, reporters, console, onError: "break"});
+        runner = new Runner({reporters, console, onError: "break"});
         workflow = runner.workflow;
 
         var fw = workflow(function raise(params) { throw new Error(params[0]); });
@@ -257,10 +231,6 @@ describe("Workflow (runner)", function() {
         runner.reporters.spy.getCall("end()").arguments[4].must.be.instanceOf(Number);
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(2);
-        runner.loggers.spy.getCall("debug()", 0).arguments[0].must.be.eq("Starting run of workflow 'test'.");
-        runner.loggers.spy.getCall("debug()", 1).arguments[0].must.be.eq("Ended run of workflow 'test' in 'FAILED' state.");
       });
     });
   });

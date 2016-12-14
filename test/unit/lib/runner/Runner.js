@@ -6,10 +6,9 @@ const Runner = require("../../../../dist/es5/nodejs/justo-runner").Runner;
 
 //suite
 describe("Runner", function() {
-  var loggers, reporters;
+  var reporters;
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
   });
 
@@ -22,34 +21,26 @@ describe("Runner", function() {
 
     it("constructor(config) - without reporters", function() {
       (function() {
-        var runner = new Runner({loggers: {}});
+        var runner = new Runner({});
       }).must.raise("Expected reporters.");
-    });
-
-    it("constructor(config) - without loggers", function() {
-      (function() {
-        var runner = new Runner({reporters: {}});
-      }).must.raise("Expected loggers.");
     });
 
     it("constructor(config) - without console", function() {
       (function() {
-        var runner = new Runner({loggers: {}, reporters: {}});
+        var runner = new Runner({reporters: {}});
       }).must.raise("Expected console.");
     });
 
-    it("constructor({loggers, reporters})", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, console: {}});
-      runner.loggers.must.not.be.eq(undefined);
+    it("constructor({reporters})", function() {
+      var runner = new Runner({reporters: {}, console: {}});
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(false);
       runner.continueOnError.must.be.eq(true);
       runner.only.must.be.eq(false);
     });
 
-    it("constructor({loggers, reporters, console, onError})", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, console: {}, onError: "break"});
-      runner.loggers.must.not.be.eq(undefined);
+    it("constructor({reporters, console, onError})", function() {
+      var runner = new Runner({reporters: {}, console: {}, onError: "break"});
       runner.reporters.must.not.be.eq(undefined);
       runner.breakOnError.must.be.eq(true);
       runner.continueOnError.must.be.eq(false);
@@ -57,15 +48,13 @@ describe("Runner", function() {
     });
 
     it("constructor(config) - with !only", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, console: {}});
-      runner.loggers.must.not.be.eq(undefined);
+      var runner = new Runner({reporters: {}, console: {}});
       runner.reporters.must.not.be.eq(undefined);
       runner.only.must.be.eq(false);
     });
 
     it("constructor(config) - with only", function() {
-      var runner = new Runner({loggers: {}, reporters: {}, console: {}, only: true});
-      runner.loggers.must.not.be.eq(undefined);
+      var runner = new Runner({reporters: {}, console: {}, only: true});
       runner.reporters.must.not.be.eq(undefined);
       runner.only.must.be.eq(true);
     });
@@ -75,7 +64,7 @@ describe("Runner", function() {
     var runner;
 
     beforeEach(function() {
-      runner = new Runner({loggers, reporters, console});
+      runner = new Runner({reporters, console});
     });
 
     it("#publishInto(object)", function() {

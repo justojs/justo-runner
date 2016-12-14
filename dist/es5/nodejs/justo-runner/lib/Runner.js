@@ -34,7 +34,6 @@ var runAsyncSimpleTask = Symbol();var
 
 
 
-
 Runner = function () {
 
 
@@ -45,7 +44,6 @@ Runner = function () {
 
     if (!config) throw new Error("Expected runner configuration.");
     if (!config.reporters) throw new Error("Expected reporters.");
-    if (!config.loggers) throw new Error("Expected loggers.");
     if (!config.console) throw new Error("Expected console.");
 
 
@@ -54,7 +52,6 @@ Runner = function () {
     Object.defineProperty(this, "catalog", { value: new _Catalog2.default(this), enumerable: true });
     Object.defineProperty(this, "stack", { value: new _Stack2.default() });
     Object.defineProperty(this, "tasks", { value: [] });
-    Object.defineProperty(this, "loggers", { value: config.loggers, enumerable: true });
     Object.defineProperty(this, "console", { value: config.console });
     Object.defineProperty(this, "reporters", { value: config.reporters, enumerable: true });
     Object.defineProperty(this, "simple", { value: this[simple].bind(this), enumerable: true });
@@ -279,7 +276,6 @@ Runner = function () {
 
 
       if (opts.ignore) {
-        this.loggers.debug("Ignoring simple task '" + opts.title + "'.");
         if (!opts.mute) this.reporters.ignore(opts.title, task);
       } else {
         if (task.sync) res = this[runSyncSimpleTask](task, opts, params);else
@@ -297,9 +293,8 @@ Runner = function () {
       try {
         var fn = task.fn;
 
-        params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers, console: this.console }, fn);
+        params = (0, _justoInjector.inject)({ params: params, console: this.console }, fn);
 
-        this.loggers.debug("Starting sync run of simple task '" + opts.title + "'.");
         if (!opts.mute) this.reporters.start(opts.title, task);
 
         start = Date.now();
@@ -312,7 +307,6 @@ Runner = function () {
         end = Date.now();
       }
 
-      this.loggers.debug("Ended sync run of simple task '" + opts.title + "' in '" + state + "' state.");
       if (!opts.mute) this.reporters.end(task, state, err, start, end);
       if (err && this.breakOnError) throw new _RunError2.default(task, err);
 
@@ -326,7 +320,6 @@ Runner = function () {
       try {
         var fn = task.fn;
 
-        this.loggers.debug("Starting async run of simple task '" + opts.title + "'.");
         if (!opts.mute) this.reporters.start(opts.title, task);
 
         start = Date.now();
@@ -339,7 +332,6 @@ Runner = function () {
         end = Date.now();
       }
 
-      this.loggers.debug("Ended async run of simple task '" + opts.title + "' in '" + state + "' state.");
       if (!opts.mute) this.reporters.end(task, state, err, start, end);
       if (err && this.breakOnError) throw new _RunError2.default(task, err);
     } }, { key: "runAsyncFunction", value: function runAsyncFunction(
@@ -368,7 +360,7 @@ Runner = function () {
             }
           }
 
-          params = (0, _justoInjector.inject)({ done: jdone, params: params, logger: _this3.loggers, log: _this3.loggers, console: _this3.console }, fn);
+          params = (0, _justoInjector.inject)({ done: jdone, params: params, console: _this3.console }, fn);
           fn.apply(undefined, _toConsumableArray(params));
         });
       } catch (e) {
@@ -486,12 +478,10 @@ Runner = function () {
 
 
       if (opts.ignore) {
-        this.loggers.debug("Ignoring macro '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, macro);
       } else {
         var err = void 0;
 
-        this.loggers.debug("Starting run of macro '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, macro);
 
         try {var _iteratorNormalCompletion4 = true;var _didIteratorError4 = false;var _iteratorError4 = undefined;try {
@@ -507,9 +497,6 @@ Runner = function () {
               }
             }} catch (err) {_didIteratorError4 = true;_iteratorError4 = err;} finally {try {if (!_iteratorNormalCompletion4 && _iterator4.return) {_iterator4.return();}} finally {if (_didIteratorError4) {throw _iteratorError4;}}}
         } finally {
-          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else
-          this.loggers.debug("Ended run of macro '" + title + "'.");
-
           if (!opts.mute) this.reporters.end(macro);
         }
       }
@@ -573,12 +560,10 @@ Runner = function () {
 
 
       if (opts.ignore) {
-        this.loggers.debug("Ignoring macro '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, macro);
       } else {
         var err = void 0;
 
-        this.loggers.debug("Starting run of macro '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, macro);
 
         if (macro.require) {var _iteratorNormalCompletion6 = true;var _didIteratorError6 = false;var _iteratorError6 = undefined;try {
@@ -605,9 +590,6 @@ Runner = function () {
               }
             }} catch (err) {_didIteratorError7 = true;_iteratorError7 = err;} finally {try {if (!_iteratorNormalCompletion7 && _iterator7.return) {_iterator7.return();}} finally {if (_didIteratorError7) {throw _iteratorError7;}}}
         } finally {
-          if (err) this.loggers.debug("Ended run of macro '" + title + "' on error.");else
-          this.loggers.debug("Ended run of macro '" + title + "'.");
-
           if (!opts.mute) this.reporters.end(macro);
         }
       }
@@ -694,16 +676,14 @@ Runner = function () {
 
 
       if (opts.ignore) {
-        this.loggers.debug("Ignoring workflow '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, workflow);
       } else {
         var state = void 0,err = void 0,start = void 0,end = void 0;
 
         try {
           var fn = workflow.fn;
-          params = (0, _justoInjector.inject)({ params: params, logger: this.loggers, log: this.loggers, console: this.console }, fn);
+          params = (0, _justoInjector.inject)({ params: params, console: this.console }, fn);
 
-          this.loggers.debug("Starting run of workflow '" + title + "'.");
           if (!opts.mute) this.reporters.start(title, workflow);
 
           start = Date.now();
@@ -716,7 +696,6 @@ Runner = function () {
           end = Date.now();
         }
 
-        this.loggers.debug("Ended run of workflow '" + title + "' in '" + state + "' state.");
         if (!opts.mute) this.reporters.end(workflow, state, err, start, end);
         if (err && this.breakOnError) throw new _RunError2.default(workflow, err);
       }
@@ -816,14 +795,12 @@ Runner = function () {
 
 
       if (opts.ignore || suite.ignore) {
-        this.loggers.debug("Ignoring suite '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, suite);
       } else {
         var oo = {};
         if (opts.mute) oo.mute = true;
 
 
-        this.loggers.debug("Starting run of suite '" + title + "'.");
         if (!opts.mute) this.reporters.start(title, suite);var _iteratorNormalCompletion8 = true;var _didIteratorError8 = false;var _iteratorError8 = undefined;try {
 
           for (var _iterator8 = suite.initializers[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {var _init = _step8.value;_init.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError8 = true;_iteratorError8 = err;} finally {try {if (!_iteratorNormalCompletion8 && _iterator8.return) {_iterator8.return();}} finally {if (_didIteratorError8) {throw _iteratorError8;}}}
@@ -842,7 +819,6 @@ Runner = function () {
 
           for (var _iterator12 = suite.finalizers[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {var _fin = _step12.value;_fin.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError12 = true;_iteratorError12 = err;} finally {try {if (!_iteratorNormalCompletion12 && _iterator12.return) {_iterator12.return();}} finally {if (_didIteratorError12) {throw _iteratorError12;}}}
 
-        this.loggers.debug("Ended run of suite '" + title + "'.");
         if (!opts.mute) this.reporters.end(suite);
       }
     } }, { key:
@@ -928,7 +904,6 @@ Runner = function () {
 
 
       if (opts.ignore || test.ignore) {
-        this.loggers.debug("Ignoring test '" + title + "'.");
         if (!opts.mute) this.reporters.ignore(title, test);
       } else {
         var oo = {};
@@ -939,26 +914,22 @@ Runner = function () {
               var headline = title + " # " + ((typeof _params === "undefined" ? "undefined" : _typeof(_params)) == "object" ? JSON.stringify(_params) : _params);
 
 
-              this.loggers.debug("Starting run of test '" + headline + "'.");
               if (!opts.mute) this.reporters.start(headline, test);var _iteratorNormalCompletion14 = true;var _didIteratorError14 = false;var _iteratorError14 = undefined;try {
 
                 for (var _iterator14 = test.initializers[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {var _init2 = _step14.value;_init2.apply(undefined, [oo].concat([_params]));}} catch (err) {_didIteratorError14 = true;_iteratorError14 = err;} finally {try {if (!_iteratorNormalCompletion14 && _iterator14.return) {_iterator14.return();}} finally {if (_didIteratorError14) {throw _iteratorError14;}}}
               test.fn.apply(test, [oo].concat([_params]));var _iteratorNormalCompletion15 = true;var _didIteratorError15 = false;var _iteratorError15 = undefined;try {
                 for (var _iterator15 = test.finalizers[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {var _fin2 = _step15.value;_fin2.apply(undefined, [oo].concat([_params]));}} catch (err) {_didIteratorError15 = true;_iteratorError15 = err;} finally {try {if (!_iteratorNormalCompletion15 && _iterator15.return) {_iterator15.return();}} finally {if (_didIteratorError15) {throw _iteratorError15;}}}
 
-              this.loggers.debug("Ended run of test '" + headline + "'.");
               if (!opts.mute) this.reporters.end(test);
             }} catch (err) {_didIteratorError13 = true;_iteratorError13 = err;} finally {try {if (!_iteratorNormalCompletion13 && _iterator13.return) {_iterator13.return();}} finally {if (_didIteratorError13) {throw _iteratorError13;}}}
         } else {
 
-          this.loggers.debug("Starting run of test '" + title + "'.");
           if (!opts.mute) this.reporters.start(title, test);var _iteratorNormalCompletion16 = true;var _didIteratorError16 = false;var _iteratorError16 = undefined;try {
 
             for (var _iterator16 = test.initializers[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {var _init3 = _step16.value;_init3.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError16 = true;_iteratorError16 = err;} finally {try {if (!_iteratorNormalCompletion16 && _iterator16.return) {_iterator16.return();}} finally {if (_didIteratorError16) {throw _iteratorError16;}}}
           test.fn.apply(test, [oo].concat(_toConsumableArray(params)));var _iteratorNormalCompletion17 = true;var _didIteratorError17 = false;var _iteratorError17 = undefined;try {
             for (var _iterator17 = test.finalizers[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {var _fin3 = _step17.value;_fin3.apply(undefined, [oo].concat(_toConsumableArray(params)));}} catch (err) {_didIteratorError17 = true;_iteratorError17 = err;} finally {try {if (!_iteratorNormalCompletion17 && _iterator17.return) {_iterator17.return();}} finally {if (_didIteratorError17) {throw _iteratorError17;}}}
 
-          this.loggers.debug("Ended run of test '" + title + "'.");
           if (!opts.mute) this.reporters.end(test);
         }
       }
@@ -1193,13 +1164,8 @@ Runner = function () {
 
     {
       this.reporters.end();
-      this.loggers.debug("Ending report.");
     } }, { key: "continueOnError", get: function get() {return !this.breakOnError;} }, { key: "state", get: function get() {var res;var _iteratorNormalCompletion18 = true;var _didIteratorError18 = false;var _iteratorError18 = undefined;try {for (var _iterator18 = this.reporters.items[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {var rep = _step18.value;if (rep.name == "state") res = rep.state;}} catch (err) {_didIteratorError18 = true;_iteratorError18 = err;} finally {try {if (!_iteratorNormalCompletion18 && _iterator18.return) {_iterator18.return();}} finally {if (_didIteratorError18) {throw _iteratorError18;}}}return res;} }], [{ key: "DEFAULT_DISPLAY", get: function get()
 
     {
       return DEFAULT_DISPLAY;
-    } }, { key: "DEFAULT_LOGGER_OPTIONS", get: function get()
-
-    {
-      return DEFAULT_LOGGER_OPTIONS;
     } }]);return Runner;}();exports.default = Runner;

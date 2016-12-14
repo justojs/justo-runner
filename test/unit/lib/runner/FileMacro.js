@@ -8,12 +8,11 @@ const Runner = PKG.Runner;
 
 //suite
 describe("FileMacro (runner)", function() {
-  var runner, loggers, reporters, macro, simple;
+  var runner, reporters, macro, simple;
 
   beforeEach(function() {
-    loggers = dummy({}, ["debug()", "info()", "warn()", "error()", "fatal()"]);
     reporters = dummy({}, ["start()", "end()", "ignore()"]);
-    runner = new Runner({loggers, reporters, console});
+    runner = new Runner({reporters, console});
     macro = runner.macro;
   });
 
@@ -67,8 +66,7 @@ describe("FileMacro (runner)", function() {
   describe("#Runner.runFileMacro()", function() {
     beforeEach(function() {
       reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
-      loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
-      runner = new Runner({loggers, reporters, console});
+      runner = new Runner({reporters, console});
       macro = runner.macro;
     });
 
@@ -86,9 +84,6 @@ describe("FileMacro (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("FileMacro");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
       });
 
       it("Implicitly", function() {
@@ -104,9 +99,6 @@ describe("FileMacro (runner)", function() {
         args = runner.reporters.spy.getArguments("ignore()");
         args[0].must.be.eq("test");
         args[1].must.be.instanceOf("FileMacro");
-
-        runner.loggers.spy.called("debug()").must.be.eq(1);
-        runner.loggers.spy.getCall("debug()").arguments[0].must.be.eq("Ignoring macro 'test'.");
       });
     });
 
@@ -119,12 +111,6 @@ describe("FileMacro (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/valid.js'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/valid.js' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
 
       it("Implicitly", function() {
@@ -135,12 +121,6 @@ describe("FileMacro (runner)", function() {
         runner.reporters.spy.called("start()").must.be.eq(0);
         runner.reporters.spy.called("end()").must.be.eq(0);
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/valid.js'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/valid.js' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
     });
 
@@ -172,12 +152,6 @@ describe("FileMacro (runner)", function() {
         args[0].must.be.instanceOf("FileMacro");
 
         runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-        runner.loggers.spy.called("debug()").must.be.eq(4);
-        runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-        runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/valid.js'."]);
-        runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/valid.js' in 'OK' state."]);
-        runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
       });
 
       describe("Failed", function() {
@@ -209,12 +183,6 @@ describe("FileMacro (runner)", function() {
           args[0].must.be.instanceOf("FileMacro");
 
           runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-          runner.loggers.spy.called("debug()").must.be.eq(4);
-          runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-          runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/unknown.js'."]);
-          runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/unknown.js' in 'FAILED' state."]);
-          runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test'."]);
         });
 
         it("Failed - continue on error", function() {
@@ -256,22 +224,13 @@ describe("FileMacro (runner)", function() {
           args[0].must.be.instanceOf("FileMacro");
 
           runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-          runner.loggers.spy.called("debug()").must.be.eq(6);
-          runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-          runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/invalid.js'."]);
-          runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/invalid.js' in 'FAILED' state."]);
-          runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Starting run of workflow 'test/unit/data/valid.js'."]);
-          runner.loggers.spy.getArguments("debug()", 4).must.be.eq(["Ended run of workflow 'test/unit/data/valid.js' in 'OK' state."]);
-          runner.loggers.spy.getArguments("debug()", 5).must.be.eq(["Ended run of macro 'test'."]);
         });
 
         it("Failed - break on error", function() {
           var args, fw;
 
           reporters = spy({}, ["start() {}", "end() {}", "ignore() {}"]);
-          loggers = spy({}, ["debug() {}", "info() {}", "warn() {}", "error() {}", "fatal() {}"]);
-          runner = new Runner({loggers, reporters, console, onError: "break"});
+          runner = new Runner({reporters, console, onError: "break"});
           macro = runner.macro;
 
           fw = macro("test", {src: ["test/unit/data/invalid.js", "test/unit/data/valid.js"]});
@@ -299,12 +258,6 @@ describe("FileMacro (runner)", function() {
           args[0].must.be.instanceOf("FileMacro");
 
           runner.reporters.spy.called("ignore()").must.be.eq(0);
-
-          runner.loggers.spy.called("debug()").must.be.eq(4);
-          runner.loggers.spy.getArguments("debug()", 0).must.be.eq(["Starting run of macro 'test'."]);
-          runner.loggers.spy.getArguments("debug()", 1).must.be.eq(["Starting run of workflow 'test/unit/data/invalid.js'."]);
-          runner.loggers.spy.getArguments("debug()", 2).must.be.eq(["Ended run of workflow 'test/unit/data/invalid.js' in 'FAILED' state."]);
-          runner.loggers.spy.getArguments("debug()", 3).must.be.eq(["Ended run of macro 'test' on error."]);
         });
       });
     });
